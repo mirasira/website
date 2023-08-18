@@ -1,0 +1,60 @@
+.container-1{
+    border: 1px solid black;
+    width: 75%;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.subcontainer-1, .subcontainer-rps, .subcontainer-15{
+    display: flex;
+    border: 1px solid black;
+    padding: 10px;
+    flex-wrap: wrap;
+    justify-content:space-around;
+}
+
+.subcontainer-1 div{
+    display: flex;
+    padding: 10px;
+    align-items: center;
+}
+.subcontainer-1 img{
+    margin: 15px;
+    box-shadow: 0px 10px 50px rgba(0, 0, 0, 0.7);
+}
+
+.subcontainer-rps img:hover{
+    box-shadow: 0px 10px 50px rgba(7, 91, 236, 0.7);
+}
+
+.table15{
+    margin-left: auto;
+    margin-right: auto;
+
+
+}
+.subcontainer-15 img{
+    margin: 5px;
+    box-shadow: 0px 10px 50px rgba(0, 0, 0, 0.7);
+    width: 50px;
+    height: 50px;
+    align-items: center;
+}
+
+.subcontainer-15 img:hover{
+    box-shadow: 0px 10px 50px rgba(7, 91, 236, 0.7);
+}
+
+.plot{
+    margin: 0 auto;
+    text-align: center;
+
+}
+
+.Canavas{
+    border: 1px solid black;
+    align-items: center;
+    margin: 5px;
+    width: 90%;
+}
+
