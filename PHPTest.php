@@ -18,7 +18,7 @@
 
     <?php
     
-    echo "XD"
+    echo "XD";
 
     ?>
     
