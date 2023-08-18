@@ -12,5 +12,15 @@
 </head>
 <body>
     <h1>Hello</h1>
+
+    <py-script> print('Now you can!') </py-script>|
+
+
+    <?php
+    
+    echo "XD"
+
+    ?>
+    
 </body>
 </html>
