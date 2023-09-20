@@ -10,6 +10,7 @@ let mouse = {
     y: undefined,
     radius: 50
 }
+
 let maxRadius = 20;
 window.addEventListener("mousemove",
     function(event){

@@ -15,7 +15,6 @@
 
     <py-script> print('Now you can!') </py-script>|
 
-
     <?php
     
     echo "XD";
