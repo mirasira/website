@@ -16,3 +16,9 @@
     margin-top: 8px;
     vertical-align: middle;
 }
+
+.sheet {
+    width: 50%; 
+    vertical-align: middle;
+    height: 600px;
+}
