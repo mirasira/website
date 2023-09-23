@@ -4,6 +4,7 @@ body{
     text-align: center;
     background-color: black;
     color: white;
+    scroll-behavior: smooth;
 }
 
 h1{
@@ -41,6 +42,7 @@ h2{
 .mainh1::before{
     content:"";
     position:absolute;
+    background-position: center;
     z-index:-1;
     top:0;
     bottom:0;
@@ -78,7 +80,9 @@ h2{
     color: #04AA6D;
 }
 
-
+#ButterDog{
+    
+}
 
 
 .FullScreen{
@@ -94,8 +98,17 @@ h2{
 }
 
 
+.OneColumnLeft{
+    flex: 1;
+    padding: 20px;
+    justify-content:left;
+    text-align:left;
+}
+
+
 .OneColumn{
     flex: 1;
     padding: 20px;
+    justify-content:left;
 }
 
