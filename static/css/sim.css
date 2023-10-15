@@ -1,0 +1,25 @@
+.mainwindow{
+    display:flex;
+    flex-direction: row;
+    /* justify-content: space-between; */
+    width: 100%;
+}
+
+.inputs, .sliders{
+    display: flex;
+    flex-direction: column;
+}
+
+.Canavas1{
+    width: 100%;
+}
+
+.canvas{
+    min-height: 200px;
+    min-width: 200px;
+    max-height: 1000px;
+    max-height: 1000px;
+    outline: black 2px solid;
+    flex: 1;
+
+}
