@@ -80,6 +80,8 @@ r3Text.oninput = function(){
 ZoomIn.onclick = function(){
     r2 = r2*2;
     r3 = r3*2;
+    x = x*2-screen.availWidth/2;
+    y = y*2-screen.availHeight/2;
     r2Text.value = r2;
     r3Text.value = r3;
     SetSliders(r3Slider, r3);
@@ -90,6 +92,8 @@ ZoomIn.onclick = function(){
 ZoomOut.onclick = function(){
     r2 = Math.round(r2/2);
     r3 = Math.round(r3/2);
+    x = x/2+screen.availWidth/4;
+    y = y/2+screen.availHeight/4;
     if(r2 < 1){
         r2 = 1;
     }
@@ -145,8 +149,24 @@ function plotGraph(r2, r3, x, y) {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     ctx.beginPath();
     ctx.moveTo(list[0][0]+x, list[1][0]+y);
+    lastout = 0;
+    lastwas = 0;
     for (let i = 1; i < list[0].length; i++) {
-        ctx.lineTo(list[0][i]+x, list[1][i]+y);
+        if(list[0][i]+x < canvas.width && list[0][i]+x > 0 && list[1][i]+y < canvas.height && list[1][i]+y > 0){
+            if(lastwas == 0){
+                ctx.lineTo(list[0][lastout]+x, list[1][lastout]+y);
+            }
+            ctx.lineTo(list[0][i]+x, list[1][i]+y);
+            lastwas = 1;
+        }else{
+            if(lastwas == 1){
+                ctx.lineTo(list[0][i]+x, list[1][i]+y);
+            }
+            ctx.moveTo(list[0][i]+x, list[1][i]+y);
+            lastout = i;
+            lastwas = 0;
+        }
+        
     }
     ctx.lineWidth = 1;
     ctx.strokeStyle = 'blue';

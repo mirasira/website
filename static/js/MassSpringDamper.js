@@ -71,15 +71,32 @@ function MassSpringDamper(mass, b, k, speed, position, radius, xbase, ybase, col
 
     this.draw = function(){
 
-        ctx.moveTo(xbase, ybase);
-        ctx.lineTo(this.xbase, this.position+this.ybase);
-        ctx.strokeStyle ="white";
-        ctx.lineWidth = 1;
+        ctx.moveTo(xbase-50, ybase);
+        for (let i = 0; i < 20; i++) {
+            ctx.lineTo(xbase-50+7*Math.pow(-1, i%2), (this.position+this.ybase)-(1/20*(i+1)));
+        }
+        ctx.lineTo(xbase-50, this.position+this.ybase);
+        ctx.strokeStyle ="black";
+        ctx.lineWidth = 3;
         ctx.stroke();
 
+        ctx.moveTo(xbase+50, ybase);
+        ctx.lineTo(xbase+50, (this.position+this.ybase)/2);
+        ctx.moveTo(xbase+50-10, (this.position+this.ybase)/2);
+        ctx.lineTo(xbase+50+10, (this.position+this.ybase)/2);
+        ctx.moveTo(xbase+50+10, (this.position+this.ybase)/2-8);
+        ctx.lineTo(xbase+50+10, (this.position+this.ybase)/2+13);
+        ctx.lineTo(xbase+50-10, (this.position+this.ybase)/2+13);
+        ctx.lineTo(xbase+50-10, (this.position+this.ybase)/2-8);
+        ctx.moveTo(xbase+50, (this.position+this.ybase)/2+13);
+        ctx.lineTo(xbase+50, (this.position+this.ybase));
+        ctx.strokeStyle ="black";
+        ctx.stroke();
 
         ctx.beginPath();
-        ctx.arc(this.xbase, this.position+this.ybase, this.radius, 0, 2 * Math.PI);
+        ctx.rect(this.xbase-60, this.position+this.ybase, 120, 20);
+
+        
         ctx.fillStyle = color;
         ctx.fill();
         ctx.stroke();   
@@ -125,7 +142,7 @@ function init(){
     let speed = 0;
     let position = -20;
     let xbase = canvas.width/2;
-    let ybase = canvas.height/2;
+    let ybase = 100;
     circleArray.push(new MassSpringDamper(m, b, k, speed, position, radius, xbase, ybase, color));
 }
 

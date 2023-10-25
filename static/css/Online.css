@@ -1,0 +1,113 @@
+body{
+    width: 75%;
+    margin: 0 auto;
+    text-align: center;
+    background-color: black;
+    color: white;
+    scroll-behavior: smooth;
+}
+
+h1{
+    color: white;
+    font-size: 3.5rem;
+    margin-top: 0;
+    margin: 0.67rem;
+}
+
+h2{
+    color: white;
+}
+
+.mainh1{
+    display:flex;
+    min-height:calc(100vh - 60px);
+    align-items:center;
+    justify-content:center;
+    position:relative;
+    z-index:1;
+    padding:1.5rem;
+    color:#fff;
+    background-color:#000;
+    flex-direction: column;
+}
+
+#why{
+    flex-direction: column;
+}
+
+#octávka{
+    flex-direction: column;
+}
+
+.mainh1::before{
+    content:"";
+    position:absolute;
+    background-position: center;
+    z-index:-1;
+    top:0;
+    bottom:0;
+    left:0;
+    right:0;
+    background-size:cover;
+    opacity:.6;
+}
+
+.topnav {
+    width: 100%;
+    top: 0;
+    position: fixed;
+    background-color: black;
+    overflow: hidden;
+    z-index:5;
+}
+
+.topnav a {
+    float: left;
+    color: #f2f2f2;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    font-size: 17px;
+}
+
+.topnav a:hover {
+    /* background-color: #ddd; */
+    color: #04AA6D;
+}
+
+.topnav a.active {
+    color: #04AA6D;
+}
+
+#ButterDog{
+    
+}
+
+
+.FullScreen{
+    display:flex;
+    min-height:100vh;
+    width:100%;
+    align-items:center;
+    justify-content:center;
+    position:relative;
+    z-index:1;
+    padding:0 0 1.5rem;
+    
+}
+
+
+.OneColumnLeft{
+    flex: 1;
+    padding: 20px;
+    justify-content:left;
+    text-align:left;
+}
+
+
+.OneColumn{
+    flex: 1;
+    padding: 20px;
+    justify-content:left;
+}
+
