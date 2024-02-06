@@ -1,0 +1,86 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="500" height="300"><link xmlns="" type="text/css" rel="stylesheet" id="dark-mode-custom-link"/><link xmlns="" type="text/css" rel="stylesheet" id="dark-mode-general-link"/><style xmlns="" lang="en" type="text/css" id="dark-mode-custom-style"/><style xmlns="" lang="en" type="text/css" id="dark-mode-native-style"/><style xmlns="" lang="en" type="text/css" id="dark-mode-native-sheet"/>
+    <g transform="translate(50,130) scale(1)">
+        <!-- Now Draw the main X and Y axis -->
+        <g style="stroke-width:2; stroke:black">
+            <!-- X Axis -->
+            <path d="M 0 100 L 400 100 Z"/>
+            <!-- Y Axis -->
+            <!-- <path d="M 0 -100 L 0 100 Z"/> -->
+        </g>
+
+        <g style="stroke-width:0.1; stroke:black">
+            <!-- X llines -->
+            <path d="M 0 -100 L 400 -100 Z"/>
+            <path d="M 0 -75 L 400 -75 Z"/>
+            <path d="M 0 -50 L 400 -50 Z"/>
+            <path d="M 0 -25 L 400 -25 Z"/>
+            <path d="M 0 0 L 400 0 Z"/>
+            <path d="M 0 25 L 400 25 Z"/>
+            <path d="M 0 50 L 400 50 Z"/>
+            <path d="M 0 75 L 400 75 Z"/>
+            <path d="M 0 100 L 400 100 Z"/>
+
+
+            <!-- Y lines -->
+            <path d="M 0 -100 L 0 100 Z"/>
+            <path d="M 50 -100 L 50 100 Z"/>
+            <path d="M 100 -100 L 100 100 Z"/>
+            <path d="M 150 -100 L 150 100 Z"/>
+            <path d="M 200 -100 L 200 100 Z"/>
+            <path d="M 250 -100 L 250 100 Z"/>
+            <path d="M 300 -100 L 300 100 Z"/>
+            <path d="M 350 -100 L 350 100 Z"/>
+            <path d="M 400 -100 L 400 100 Z"/>
+        </g>
+
+        <g style="fill:none; stroke:#B0B0B0; stroke-width:1; stroke-dasharray:2 4;text-anchor:end; font-size:15">
+            <text style="fill:black; stroke:none" x="-5" y="100">0</text>
+            <text style="fill:black; stroke:none" x="-5" y="75">200</text>
+            <text style="fill:black; stroke:none" x="-5" y="50">400</text>
+            <text style="fill:black; stroke:none" x="-5" y="25">600</text>
+            <text style="fill:black; stroke:none" x="-5" y="0">800</text>
+            <text style="fill:black; stroke:none" x="-5" y="-25">1000</text>
+            <text style="fill:black; stroke:none" x="-5" y="-50">1200</text>
+            <text style="fill:black; stroke:none" x="-5" y="-75">1400</text>
+            <text style="fill:black; stroke:none" x="-5" y="-100">1600</text>
+
+            <g style="text-anchor:middle">
+                <text style="fill:black; stroke:none" x="50" y="115">0</text>
+                <text style="fill:black; stroke:none" x="100" y="115">0.5</text>
+                <text style="fill:black; stroke:none" x="150" y="115">1</text>
+                <text style="fill:black; stroke:none" x="200" y="115">1.5</text>
+                <text style="fill:black; stroke:none" x="250" y="115">2</text>
+                <text style="fill:black; stroke:none" x="300" y="115">2.5</text>
+                <text style="fill:black; stroke:none" x="350" y="115">3</text>
+                <text style="fill:black; stroke:none" x="400" y="115">3.5</text>
+
+
+                <!-- X-label -->
+                <text style="fill:black; stroke:none" x="200" y="130">Time [ms]</text>
+
+                <!-- Y-label -->
+                <text transform="rotate(-90)" style="fill:black; stroke:none" x="0" y="-40">Rotations [°]</text>
+
+                <!-- Legend -->
+                <text style="fill:black; stroke:none" x="200" y="150" xml:space="preserve">Wanted rotations       Real rotations</text>
+            </g>
+
+
+        </g>
+
+        <g style="stroke-width:4">
+            <g style="stroke:blue">
+                <path d="M 75 147 L 90 147 Z"/>
+            </g>
+            <g style="stroke:red">
+                <path d="M 200 147 L 215 147 Z"/>
+            </g>
+            
+        </g>
+
+        <polyline points=" 0,     0         10,    20         20,    39         30,    56         40,    72         50,    84         60,    93         70,    99         80,   100         90,    97         100,   91         110,   81         120,   68         130,   52         140,   33         150,   14         160,   -6         170,  -26         180,  -44         190,  -61         200,  -76         210,  -87         220,  -95         230,  -99         240, -100         250,  -96         260,  -88         270,  -77         280,  -63         290,  -46         300,  -28         310,   -8         320,   12" style="stroke:red; stroke-width: 1; fill : none;"/>
+        
+        <polyline points=" 0,     1         10,    21         20,    40         30,    57         40,    85         50,    84         60,    93         70,    99         80,   100         90,    97         100,   91         110,   81         120,   68         130,   52         140,   33         150,   14         160,   -6         170,  -26         180,  -44         190,  -61         200,  -76         210,  -87         220,  -95         230,  -99         240, -100         250,  -96         260,  -88         270,  -77         280,  -63         290,  -43         300,  -28         310,   -8         320,   12" style="stroke:blue; stroke-width: 1; fill : none;"/>
+
+    </g>
+</svg>

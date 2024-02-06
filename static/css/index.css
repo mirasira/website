@@ -35,22 +35,22 @@ h2{
     flex-direction: column;
 }
 
-#octávka{
+#CoolStuff{
     flex-direction: column;
 }
 
 .mainh1::before{
     content:"";
-    position:absolute;
+    position: absolute;
     background-position: center;
     z-index:-1;
     top:0;
     bottom:0;
     left:0;
     right:0;
-    background:url('/pictures/index/Background\ Image.jpg');
+    background:url('/pictures/index/MeOnRock.jpeg');
     background-size:cover;
-    opacity:.6;
+    opacity:.4;
 }
 
 .topnav {
@@ -112,3 +112,24 @@ h2{
     justify-content:left;
 }
 
+
+
+#list{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+#list a {
+    margin-right: 20px; 
+}
+
+.link-container{
+    /* width: 94px;  */
+    /* white-space: nowrap;  */
+    /* overflow: hidden; */
+    text-overflow: ellipsis; 
+    word-wrap: normal; 
+  }

@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Lul</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="static/css/PendulumTheory.css">
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+<h1>Simulating pendulum with lagrangian mechanics</h1>
+
+Lagrangian equation: \(\frac{d}{dt}\frac{\partial \mathcal{L}}{\partial \dot{x}}-\frac{\partial \mathcal{L}}{\partial x} = 0\) <br>
+Where \(\mathcal{L}\) is langrangian operator, we can calculate lagrangian oprator like this: \(L = T-V\) <br>
+Where \(T\) is kinetic energy and \(V\) is potential energy. <br>
+
+    <div class="img-with-text">
+        <img
+        src="pictures/pendulum.svg"
+        alt="triangle with all three sides equal"
+        height="200"
+        width="100" 
+        class="centerImg"/>
+        <p>Pendulum</p>
+    </div>
+
+Position of end of the pendulum is described by angle \(\varphi\) and length of the beam \(l\). <br>
+
+Equation for calculating kinectic energy is \(T = \frac{1}{2}mv^2\) and equation for potential is \(V = mgh\). <br>
+
+Postion of ball in cartesian coordinates is described with vertical position \(y\) and horisontal position \(x\).<br>
+
+\(y = -l\cos(\varphi), x = l\sin(\varphi)\). <br>
+
+Potential energy is then \(V = mgy = -mgl\cos(\varphi)\). <br>
+
+For kinetic energy speed has to be calculated like this: \(v = \sqrt{\dot{x}^2+\dot{y}^2}\). <br>
+
+Calculating \(x\) and \(y\) derivatives. \(\dot{x} = l\dot{\varphi}\cos(\varphi), \dot{y}=l\dot{\varphi}\sin(\varphi)\). <br>
+
+So kinetic energy is \(T = \frac{1}{2}m(l^2\dot{\varphi}^2\cos(\varphi)^2+l^2\dot{\varphi}^2\sin(\varphi)^2)=\frac{1}{2}ml^2\dot{\varphi}^2\) <br>
+
+Now substitute to Lagrangian \(L = T-V = \frac{1}{2}ml^2\dot{\varphi}^2+mgl\cos(\varphi)\) <br>
+
+<h2>Substituting into Lagrangian equation</h2>
+
+\(\frac{\partial \mathcal{L}}{\partial \dot{\varphi}}=m\dot{\varphi}l^2\) <br>
+
+\(\frac{d}{dt}\frac{\partial \mathcal{L}}{\partial \dot{\varphi}}=m\ddot{\varphi}l^2\) <br>
+
+\(\frac{\partial \mathcal{L}}{\partial \varphi} = -mgl\sin(\varphi)\) <br>
+
+\(\begin{aligned} m\ddot{\varphi}l^2+mgl\sin(\varphi) &= 0 \\ \ddot{\varphi}+\frac{g}{l}\sin(\varphi) &= 0 \end{aligned}\) <br>
+
+Now we have obtained diferencial equation for simple pendulum. Notice that it doesn't depend on weight of the ball. Substituting angular velocity \(\omega = \dot{\varphi}\) we get: <br> 
+
+\(\begin{aligned} \dot{\varphi} &= \omega \\ \dot{\omega} &= -\frac{g}{l}\sin(\varphi) \end{aligned}\) <br>
+
+
+
+We can solving it using Range kuta (RK4) metodth
+
+<h2>Range kuta for solving diferential equations</h2>
+
+\(\begin{aligned} 
+    k_1 &= f(t_n, y_n) \\ 
+    k_2 &= f\left(t_n +\frac{h}{2}, y_n + \frac{k_1}{2}\right) \\ 
+    k_3 &= f\left( t_n+\frac{h}{2}, y_n+h\frac{k_2}{2} \right) \\ 
+    k_4 &= f(t_n+h, y_n + hk_3)\\
+    \\
+    y_{n+1} &= y_n+\frac{h}{6}(k_1+2k_2+2k_3+k_4) \\ 
+    t_{n+1} &= t_n +h 
+\end{aligned}\)
+
+<!-- <h2>Calculating period of pendulum</h2>
+
+For angles close to 0, \( T \approx 2 \pi \sqrt{\frac{L}{g}} \)<br>
+
+For any angle there is better formula:<br>
+
+\( T = 2 \pi \sqrt{\frac{L}{g}} \left[ \sum_{n=0}^{\infty}  \left( \frac{(2n)!}{2^{2n}(n!)^2} \right)^2 \sin^{2n}(\frac{\theta_0}{2}) \right]\)
+ -->
+
+<h2> Visualising the pendulum </h2>
+
+    <div class="gridtest">
+        <div>
+            <canvas class="Canavas2" id="myCanvas"></canvas>
+        </div>
+        <div class="subgrid">
+            <div id="inline">Gravity (g) \([ m/s^2 ]\)</div>
+            <div id="inline">Length (l) \([cm]\)</div>
+            <!-- Period should be:  -->
+            <button onclick = "ResetVelocity()">Set velocity to 0</button>
+            <!-- <div id="inline">Weight (m)</div> -->
+        </div>
+        <div class="subgrid">
+            <label for="GSlider">Gravity (g)</label>
+            <input type="range" min="0" max="100" step="0.01" value="9.81" class="slider" id="GSlider">
+            <label for="LSlider">Length (l)</label>
+            <input type="range" min="10" max="200" step="0.1" value="50" class="slider" id="LSlider">
+            <button onclick = "ResetAngle()">Set angle to 0</button>
+            <!-- <div id="PeriodCalculated"></div> -->
+            <!-- <label for="WSlider">Weight (m)</label>
+            <input type="range" min="1" max="20" value="5" class="slider" id="WSlider"> -->
+        </div>
+        <div class="subgrid">
+            <label for="Gnumber">Gravity (g)</label>
+            <input type="number" min="0" max="100" value="9.81" id="Gnumber"/>
+            <label for="Lnumber">Length (l)</label>
+            <input type="number" min="10" max="200" value = "50" id="Lnumber"/>
+            <button onclick = "ResetVelocityAngle()">To 0</button>
+            <!-- <label for="Wnumber">Weight (m)</label>
+            <input type="number" min="1" max="20" id="Wnumber"/> -->
+        </div>
+    </div>
+
+    
+    <script src="static/js/PendulumTheory.js"></script>
+
+</body>
+</html>

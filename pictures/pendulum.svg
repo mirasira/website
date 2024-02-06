@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="30.872322mm"
+   height="42.877029mm"
+   viewBox="0 0 30.872322 42.877029"
+   version="1.1"
+   id="svg5"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs2" />
+  <g
+     id="layer1"
+     transform="translate(-101.71285,-133.88003)">
+    <g
+       id="g3249">
+      <g
+         id="g2450"
+         transform="translate(-1.2890625,3.0078125)">
+        <circle
+           style="fill:#000000;stroke:#000000;stroke-width:0.35269;stroke-linecap:square;stroke-linejoin:bevel;stroke-opacity:1;paint-order:fill markers stroke"
+           id="path234"
+           cx="128.90625"
+           cy="168.78125"
+           r="4.7916484" />
+        <path
+           style="fill:none;stroke:#000000;stroke-width:1.165;stroke-linecap:butt;stroke-linejoin:miter;stroke-dasharray:none;stroke-opacity:1"
+           d="m 128.90625,169.08203 c -5.26692,-7.83286 -10.55606,-15.65081 -15.80174,-23.4979 -3.20611,-4.79607 -6.41222,-9.59213 -9.61833,-14.3882"
+           id="path2112" />
+        <path
+           style="fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:square;stroke-linejoin:bevel;stroke-dasharray:none;stroke-opacity:1;paint-order:fill markers stroke"
+           id="path2116"
+           d="m 108.5211,139.24803 a 9.6245375,9.6245375 0 0 1 -4.93361,1.28868" />
+        <path
+           style="fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-dasharray:none;stroke-opacity:1"
+           d="m 103.42541,131.22631 c 0.0506,3.10924 0.10128,6.21849 0.15192,9.32773"
+           id="path2234" />
+      </g>
+      <text
+         xml:space="preserve"
+         style="font-style:normal;font-weight:normal;font-size:3.52778px;line-height:1.85;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.4;stroke-dasharray:none"
+         x="102.6953"
+         y="141.96875"
+         id="text3180"><tspan
+           id="tspan3178"
+           style="font-size:3.52778px;stroke-width:0.4;stroke-dasharray:none"
+           x="102.6953"
+           y="141.96875">φ</tspan></text>
+      <text
+         xml:space="preserve"
+         style="font-style:normal;font-weight:normal;font-size:3.52778px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
+         x="116.01562"
+         y="153.22656"
+         id="text3238"><tspan
+           id="tspan3236"
+           style="font-size:3.52778px;stroke-width:0.264583"
+           x="116.01562"
+           y="153.22656">l</tspan></text>
+    </g>
+  </g>
+</svg>

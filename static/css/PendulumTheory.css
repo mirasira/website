@@ -1,0 +1,36 @@
+.gridtest{
+    display: grid;
+    grid-template-columns: 52% minmax(100px, 125px) minmax(120px, 150px) minmax(10px, 30px);
+    gap: 20px;
+}
+
+.subgrid{
+    display: grid;
+    grid-template-rows: 20px 20px 20px;
+    gap: 5px;
+}
+
+button{
+    height: 20px;
+}
+
+h1 {color: blue}
+
+.img-with-text {
+    text-align: justify;
+    width: 200;
+    margin-left: auto;
+    margin-right: auto
+}
+
+label[for="GSlider"], label[for="LSlider"], label[for="WSlider"], label[for="Gnumber"], label[for="Lnumber"], label[for="Wnumber"]{
+    display: none;
+}
+
+.slider-label {  /* doesnt work */
+    display: none;
+}
+
+#myCanvas{
+    border:1px solid black
+}

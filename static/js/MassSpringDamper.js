@@ -73,7 +73,7 @@ function MassSpringDamper(mass, b, k, speed, position, radius, xbase, ybase, col
 
         ctx.moveTo(xbase-50, ybase);
         for (let i = 0; i < 20; i++) {
-            ctx.lineTo(xbase-50+7*Math.pow(-1, i%2), (this.position+this.ybase)-(1/20*(i+1)));
+            ctx.lineTo(xbase-50+7*Math.pow(-1, i%2), (this.ybase)+this.position*(1/20*(i+1)));
         }
         ctx.lineTo(xbase-50, this.position+this.ybase);
         ctx.strokeStyle ="black";
@@ -81,14 +81,14 @@ function MassSpringDamper(mass, b, k, speed, position, radius, xbase, ybase, col
         ctx.stroke();
 
         ctx.moveTo(xbase+50, ybase);
-        ctx.lineTo(xbase+50, (this.position+this.ybase)/2);
-        ctx.moveTo(xbase+50-10, (this.position+this.ybase)/2);
-        ctx.lineTo(xbase+50+10, (this.position+this.ybase)/2);
-        ctx.moveTo(xbase+50+10, (this.position+this.ybase)/2-8);
-        ctx.lineTo(xbase+50+10, (this.position+this.ybase)/2+13);
-        ctx.lineTo(xbase+50-10, (this.position+this.ybase)/2+13);
-        ctx.lineTo(xbase+50-10, (this.position+this.ybase)/2-8);
-        ctx.moveTo(xbase+50, (this.position+this.ybase)/2+13);
+        ctx.lineTo(xbase+50, (this.position/2+this.ybase));
+        ctx.moveTo(xbase+50-10, (this.position/2+this.ybase));
+        ctx.lineTo(xbase+50+10, (this.position/2+this.ybase));
+        ctx.moveTo(xbase+50+10, (this.position/2+this.ybase)-8);
+        ctx.lineTo(xbase+50+10, (this.position/2+this.ybase)+13);
+        ctx.lineTo(xbase+50-10, (this.position/2+this.ybase)+13);
+        ctx.lineTo(xbase+50-10, (this.position/2+this.ybase)-8);
+        ctx.moveTo(xbase+50, (this.position/2+this.ybase)+13);
         ctx.lineTo(xbase+50, (this.position+this.ybase));
         ctx.strokeStyle ="black";
         ctx.stroke();
@@ -99,11 +99,8 @@ function MassSpringDamper(mass, b, k, speed, position, radius, xbase, ybase, col
         
         ctx.fillStyle = color;
         ctx.fill();
-        ctx.stroke();   
-        
+        ctx.stroke();           
     }
-
-
 
     this.update = function(){
 
