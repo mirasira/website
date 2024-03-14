@@ -194,7 +194,23 @@ function CalculatePeriod(Length, Gravity, Angle){
 
 // PeriodCalculated.innerHTML = CalculatePeriod(length, g, Math.asin(-(length*angularspeed)/(g))).toFixed(2) + " seconds";
 
-
+window.addEventListener("keydown", function (event) {
+    if (event.defaultPrevented) {
+      return; // Do nothing if the event was already processed
+    }
+  
+    switch (event.key) {
+      case "ArrowLeft":
+        xbase -= 5;
+        break;
+      case "ArrowRight":
+        xbase += 5;
+        break;
+      default:
+        return;
+    }
+    event.preventDefault();
+}, true);
 
 
 

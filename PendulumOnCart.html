@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Lul</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="static/css/PendulumTheory.css">
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+
+    <div class="gridtest">
+        <div>
+            <canvas class="Canavas2" id="myCanvas"></canvas>
+        </div>
+        <div class="subgrid">
+            <div id="inline">Gravity (g) \([ m/s^2 ]\)</div>
+            <div id="inline">Length (l) \([cm]\)</div>
+            <!-- Period should be:  -->
+            <button onclick = "ResetVelocity()">Set velocity to 0</button>
+            <!-- <div id="inline">Weight (m)</div> -->
+
+        </div>
+        <div class="subgrid">
+            <label for="GSlider">Gravity (g)</label>
+            <input type="range" min="0" max="100" step="0.01" value="9.81" class="slider" id="GSlider">
+            <label for="LSlider">Length (l)</label>
+            <input type="range" min="10" max="200" step="0.1" value="50" class="slider" id="LSlider">
+            <button onclick = "ResetAngle()">Set angle to 0</button>
+            <!-- <div id="PeriodCalculated"></div> -->
+            <!-- <label for="WSlider">Weight (m)</label>
+            <input type="range" min="1" max="20" value="5" class="slider" id="WSlider"> -->
+        </div>
+        <div class="subgrid">
+            <label for="Gnumber">Gravity (g)</label>
+            <input type="number" min="0" max="100" value="9.81" id="Gnumber"/>
+            <label for="Lnumber">Length (l)</label>
+            <input type="number" min="10" max="200" value = "50" id="Lnumber"/>
+            <button onclick = "ResetVelocityAngle()">To 0</button>
+            <!-- <label for="Wnumber">Weight (m)</label>
+            <input type="number" min="1" max="20" id="Wnumber"/> -->
+        </div>
+    </div>
+
+    
+    <script src="static/js/PendulumOnCart.js"></script>
+
+</body>
+</html>

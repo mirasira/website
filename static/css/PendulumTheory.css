@@ -1,6 +1,6 @@
 .gridtest{
     display: grid;
-    grid-template-columns: 52% minmax(100px, 125px) minmax(120px, 150px) minmax(10px, 30px);
+    grid-template-columns: 52% minmax(100px, 250px) minmax(120px, 150px) minmax(10px, 30px);
     gap: 20px;
 }
 
@@ -23,7 +23,10 @@ h1 {color: blue}
     margin-right: auto
 }
 
-label[for="GSlider"], label[for="LSlider"], label[for="WSlider"], label[for="Gnumber"], label[for="Lnumber"], label[for="Wnumber"]{
+/* label[for="GSlider"], label[for="LSlider"], label[for="WSlider"], label[for="Gnumber"], label[for="Lnumber"], label[for="Wnumber"], label[for="mass"], label[for="DamperStifness"], label[for="SpringStifness"]{
+    display: none;
+} */
+label{
     display: none;
 }
 

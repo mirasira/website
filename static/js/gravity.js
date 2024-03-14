@@ -43,6 +43,29 @@ window.addEventListener("resize",
 height = window.innerHeight;
 width = window.innerWidth;
 
+function ThreeBodyBalanced(){
+    let radius = 5;
+    let dx = 25/10;
+    let dy = -43.3/10;
+    let weight = 10;
+    let accelerationx = 0;
+    let accelerationy = 0;
+    let tailLenght = 1;
+    color = "red"
+    circleArray.push(new gravityBalls(250, 300, dx, dy, radius, color, weight, accelerationx, accelerationy, tailLenght));
+
+    dx = 25/10;
+    dy = 43.3/10;
+    color = " green"
+    weight = 10;
+    circleArray.push(new gravityBalls(350, 300, dx, dy, radius, color, weight, accelerationx, accelerationy, tailLenght));
+
+    dx = -50/10;
+    dy = 0/10;
+    color = "blue"
+    weight = 10;
+    circleArray.push(new gravityBalls(300, 386.6, dx, dy, radius, color, weight, accelerationx, accelerationy, tailLenght));
+}
 
 function gravityBalls(x, y, dx, dy, radius, color, weight, accelerationx, accelerationy, tailLenght){
     this.x = x;

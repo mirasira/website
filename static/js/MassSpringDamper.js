@@ -1,27 +1,68 @@
 let canvas = document.querySelector("canvas");
-document.querySelector('canvas').height = screen.availHeight;
-document.querySelector('canvas').width = screen.availWidth;
+// document.querySelector('canvas').height = screen.availHeight;
+// document.querySelector('canvas').width = screen.availWidth;
 
 var MassSlider = document.getElementById("mass");
 var SpringStifnessSlider = document.getElementById("SpringStifness");
 var DamperStifnessSlider = document.getElementById("DamperStifness");
+var GravitySlider = document.getElementById("Gravity");
+
+var massNumber = document.getElementById("massNumber");
+var SpringStifnessNumber = document.getElementById("SpringStifnessNumber");
+var DamperStifnessNumber = document.getElementById("DamperStifnessNumber");
+var GravityNumber = document.getElementById("GravityNumber");
 
 var MassSliderValue = 50;
-var SpringStifnessSliderValue = -1;
-var DamperStifnessSliderValue = -1;
+var SpringStifnessSliderValue = 1;
+var DamperStifnessSliderValue = 1;
+
+massNumber.value = MassSliderValue;
+SpringStifnessNumber.value = SpringStifnessSliderValue;
+DamperStifnessNumber.value = DamperStifnessSliderValue;
 
 MassSlider.oninput = function(){
     MassSliderValue = this.value;
+    massNumber.value = MassSliderValue;
 }
 SpringStifnessSlider.oninput = function(){
     SpringStifnessSliderValue = this.value;
+    SpringStifnessNumber.value = SpringStifnessSliderValue;
 }
 DamperStifnessSlider.oninput = function(){
     DamperStifnessSliderValue = this.value;
+    DamperStifnessNumber.value = DamperStifnessSliderValue;
 }
+GravitySlider.oninput = function(){
+    g = this.value;
+    GravityNumber.value = g;
+}
+
+var Mass = MassSliderValue;
+
+massNumber.oninput = function(){
+    Mass = Math.round(this.value, 2);
+    if (Mass < MassSliderValue.min){
+        Mass = MassSliderValue.min;
+        massNumber.value = Mass;
+    }
+    if (Mass > MassSliderValue.max){
+        Mass = MassSliderValue.max;
+        massNumber.value = Mass;
+    }
+    MassSlider.value = Mass;
+}
+
+
+
+
+
 // canvas.width = 600;
 // canvas.height = 400;
-
+function resizeCanvas() {
+    canvas.width = window.innerWidth/2;
+    canvas.height = window.innerHeight/1.5;
+}
+resizeCanvas();
 
 console.log(canvas);
 
@@ -53,7 +94,7 @@ window.addEventListener("resize",
 height = window.innerHeight;
 width = window.innerWidth;
 
-g = -9.81;
+g = 9.81;
 h = 0.1;
 
 
@@ -108,11 +149,11 @@ function MassSpringDamper(mass, b, k, speed, position, radius, xbase, ybase, col
         this.k = SpringStifnessSliderValue;
         this.b = DamperStifnessSliderValue;
         
-        k1 = [this.speed, (this.k*this.position-this.mass*g+this.b*this.speed)/this.mass];
-        k2 = [this.speed+h*k1[1]/2, (this.k*this.position+h*k1[0]/2-this.mass*g+this.b*this.speed+h*k1[1]/2)/this.mass];
+        k1 = [this.speed, (-this.k*this.position+this.mass*g-this.b*this.speed)/this.mass];
+        k2 = [this.speed+h*k1[1]/2, (-this.k*this.position+h*k1[0]/2+this.mass*g-this.b*this.speed+h*k1[1]/2)/this.mass];
 
-        k3 = [this.speed+h*k2[1]/2, (this.k*this.position+h*k2[0]/2-this.mass*g+this.b*this.speed+h*k2[1]/2)/this.mass];
-        k4 = [this.speed+h*k3[1], (this.k*this.position+h*k3[0]-this.mass*g+this.b*this.speed+h*k3[1])/this.mass];
+        k3 = [this.speed+h*k2[1]/2, (-this.k*this.position+h*k2[0]/2+this.mass*g-this.b*this.speed+h*k2[1]/2)/this.mass];
+        k4 = [this.speed+h*k3[1], -(this.k*this.position+h*k3[0]+this.mass*g-this.b*this.speed+h*k3[1])/this.mass];
 
         
         this.position = this.position + h/6*(k1[0]+2*k2[0]+2*k3[0]+k4[0]);
@@ -134,8 +175,8 @@ function init(){
     let radius = 10;
     let color = "#FFFFFF";
     let m = 10;
-    let b = -1;
-    let k = -1;
+    let b = 1;
+    let k = 1;
     let speed = 0;
     let position = -20;
     let xbase = canvas.width/2;
