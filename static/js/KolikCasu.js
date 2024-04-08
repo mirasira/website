@@ -17,8 +17,8 @@ function ToDate(today){
 }
 
 function ToEnd(today){
-    EndHours = 14;
-    EndMinutes = 15;
+    EndHours = 10;
+    EndMinutes = 45;
     EndSeconds = 0;
 
     minus = false;
