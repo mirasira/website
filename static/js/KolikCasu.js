@@ -69,9 +69,13 @@ function ToEnd(today){
 
 }
 
+// const TameTible = 
+
+
 window.setInterval(
     () => {
         const today = new Date();
+        let weekday = today.getDay();
         document.getElementById("Time").innerHTML = "<h1>" + ToEnd(today) + "</h1>";
 
     }
