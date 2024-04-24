@@ -1,5 +1,4 @@
 function ToDate(today){
-
     let Hours = String(today.getHours());
     let Minutes = String(today.getMinutes());
     let Seconds = String(today.getSeconds());
@@ -16,9 +15,9 @@ function ToDate(today){
     return Hours +":"+Minutes+":"+Seconds
 }
 
-function ToEnd(today){
-    EndHours = 10;
-    EndMinutes = 45;
+function ToEnd(today, EndMinutes){
+    EndHours = Math.floor(EndMinutes/60);
+    EndMinutes = EndMinutes%60;
     EndSeconds = 0;
 
     minus = false;
@@ -69,14 +68,33 @@ function ToEnd(today){
 
 }
 
-// const TameTible = 
+// TimeTabel Structure will be Weekday | Start | End | Subject
+
+const TimeTable = [[1, 9*60+45, 10*65+45, "MPV"], [1, 11*60+0, 12*60+30, "ARO"], [1, 14*60+30, 16*60+30, "KOA"], [3, 9*60+0, 10*60+30, "SPD"], [3, 14*60+30, 16*60+0, "MPV"], [4, 9*60+15, 10*60+45, "ARO"], [4, 12*60+45, 14*60+15, "KOA"], [4, 16*60+15, 17*60+45, "SPD"], [3, 19*60+0, 20*60+30, "MPV"]] // , [3, 19*60+0, 20*60+30, "whaaaaaat???"]
 
 
 window.setInterval(
     () => {
         const today = new Date();
         let weekday = today.getDay();
-        document.getElementById("Time").innerHTML = "<h1>" + ToEnd(today) + "</h1>";
+        IsClass = false;
+        for (let i = 0; i < TimeTable.length; i++){
+            if (TimeTable[i][0] == weekday){
+                if (TimeTable[i][1] <= today.getHours()*60+today.getMinutes() && TimeTable[i][2] >= today.getHours()*60+today.getMinutes()){
+                    // document.getElementById("Time").innerHTML = "<h1>" + TimeTable[i][3] + "</h1>";
+                    document.getElementById("Time").innerHTML =ToEnd(today, TimeTable[i][2]);
+                    document.getElementById("ClasName").innerHTML =TimeTable[i][3];
+                    IsClass = true;
+                    return;
+                }
+            }
+        }
+
+        if (!IsClass){
+            document.getElementById("Time").innerHTML = "VOLNOOOOOOOOOOOOOOOOO";
+        }
+
+        // document.getElementById("Time").innerHTML = "<h1>" + ToEnd(today) + "</h1>";
 
     }
 );
