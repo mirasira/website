@@ -85,7 +85,7 @@ window.setInterval(
                     document.getElementById("Time").innerHTML =ToEnd(today, TimeTable[i][2]);
                     document.getElementById("ClasName").innerHTML =TimeTable[i][3];
                     IsClass = true;
-                    return;
+                    break;
                 }
             }
         }
