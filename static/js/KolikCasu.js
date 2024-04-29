@@ -86,12 +86,18 @@ window.setInterval(
                     document.getElementById("ClasName").innerHTML =TimeTable[i][3];
                     IsClass = true;
                     break;
+                }else if (TimeTable[i][1] >= today.getHours()*60+today.getMinutes() && TimeTable[i][1]-15 <= today.getHours()*60+today.getMinutes()){
+                    document.getElementById("Time").innerHTML = "Starts in "+ToEnd(today, TimeTable[i][1]);
+                    document.getElementById("ClasName").innerHTML =TimeTable[i][3];
+                    IsClass = true;
+                    break;
                 }
             }
         }
 
         if (!IsClass){
-            document.getElementById("Time").innerHTML = "VOLNOOOOOOOOOOOOOOOOO";
+            document.getElementById("Time").innerHTML = "VOLNOOOOOOO";
+            document.getElementById("ClasName").innerHTML = "";
         }
 
         // document.getElementById("Time").innerHTML = "<h1>" + ToEnd(today) + "</h1>";
