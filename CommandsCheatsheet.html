@@ -16,15 +16,29 @@
         h1, h2 {
             color: #333;
         }
-        .CommandSection, .section {
+        h1 {
+            margin-bottom: 10px;
+        }
+        .header {
+            grid-column: span 2;
+            margin-bottom: 30px;
+            background-color: #f4f4f4;
+            border: 1px solid #333;
+            border-radius: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            
+        }
+        .section {
             padding: 10px;
             background-color: #f4f4f4;
             border: 1px solid #ddd;
             border-radius: 5px;
         }
-        .section:nth-child(odd) {
+        /* .section:nth-child(odd) {
             background-color: #e9ecef;
-        }
+        } */
         pre {
             background-color: #e9ecef;
             padding: 10px;
@@ -46,15 +60,25 @@
     </style>
 </head>
 <body>
-    <div class="section">
-        <h1>Command Cheat Sheet</h1>
-        <h1>tmux</h1>
+    <div class="header">
+        <h1>Commands Cheat Sheet</h1>
+    </div>
+    
+    <div class="header">
+        <h1>Karolina</h1>
     </div>
 
     <div class="section">
         <h2>Login to Karolina</h2>
-        <p class="note">Use alias <code>karolina</code></p>
-        <pre>ssh davidm15@login4.karolina.it4i.cz</pre>
+        <pre>ssh davidm15@karolina.it4i.cz</pre>
+    </div>
+    
+    <div class="section">
+        <h2>Job Management</h2>
+        <p class="note">My jobs</p>
+        <pre>squeue -u $USER</pre>
+        <p class="note">Cancel job</p>
+        <pre>scancel &lt;job_id&gt;</pre>
     </div>
 
     <div class="section">
@@ -67,12 +91,6 @@
         <pre>salloc -A OPEN-29-7 -p qgpu</pre>
         <p class="note">For more GPUs</p>
         <pre>salloc -A OPEN-29-7 -p qgpu --gpus 8</pre>
-    </div>
-
-    <div class="section">
-        <h2>Job Management</h2>
-        <pre>squeue -u $USER</pre>
-        <pre>scancel &lt;job_id&gt;</pre>
     </div>
 
     <div class="section">
@@ -89,7 +107,7 @@
 
     <div class="section">
         <h2>Mount Network Directory</h2>
-        <!-- <pre>sshfs -o IdentityFile=/home/pickplace/Projects/ZeroShotPicking/KarolinaAccess/id_rsa -o ssh_command="ssh -v" davidm15@karolina.it4i.cz:/mnt/proj3/open-29-7 /mnt/Karolina/</pre> -->
+        <pre style="font-size: 0.9em; white-space: pre-wrap; word-wrap: break-word;">sshfs -o IdentityFile=/home/pickplace/Projects/ZeroShotPicking/KarolinaAccess/id_rsa -o ssh_command="ssh -v" davidm15@karolina.it4i.cz:/mnt/proj3/open-29-7 /mnt/Karolina/</pre>
     </div>
 
     <div class="section">
@@ -105,9 +123,14 @@
 
     <div class="section">
         <h2>Conda Environment</h2>
+        <p class="note">Activate environment</p>
+        <pre>conda activate ZeroShotPicking</pre>
         <p class="note">Change Python version</p>
         <pre>ml Python/3.11.5-GCCcore-13.2.0</pre>
-        <pre>conda activate ZeroShotPicking</pre>
+    </div>
+
+    <div class="header">
+        <h1>tmux</h1>
     </div>
 
     <div class="section">
