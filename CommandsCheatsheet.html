@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Command Cheat Sheet</title>    
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            line-height: 1.6;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        h1, h2 {
+            color: #333;
+        }
+        .CommandSection, .section {
+            padding: 10px;
+            background-color: #f4f4f4;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .section:nth-child(odd) {
+            background-color: #e9ecef;
+        }
+        pre {
+            background-color: #e9ecef;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            overflow-x: auto;
+            margin-top: 5px;
+        }
+        .note {
+            font-style: italic;
+            color: #555;
+            margin-bottom: 5px;
+        }
+        @media (max-width: 768px) {
+            body {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="section">
+        <h1>Command Cheat Sheet</h1>
+        <h1>tmux</h1>
+    </div>
+
+    <div class="section">
+        <h2>Login to Karolina</h2>
+        <p class="note">Use alias <code>karolina</code></p>
+        <pre>ssh davidm15@login4.karolina.it4i.cz</pre>
+    </div>
+
+    <div class="section">
+        <h2>Allocate Interactive Job</h2>
+        <p class="note">Run interactive job, one task:</p>
+        <pre>salloc -A OPEN-29-7 -p qcpu_exp</pre>
+        <p class="note">For 1 hour</p>
+        <pre>salloc -A OPEN-29-7 -p qgpu_exp</pre>
+        <p class="note">For 24 hours</p>
+        <pre>salloc -A OPEN-29-7 -p qgpu</pre>
+        <p class="note">For more GPUs</p>
+        <pre>salloc -A OPEN-29-7 -p qgpu --gpus 8</pre>
+    </div>
+
+    <div class="section">
+        <h2>Job Management</h2>
+        <pre>squeue -u $USER</pre>
+        <pre>scancel &lt;job_id&gt;</pre>
+    </div>
+
+    <div class="section">
+        <h2>File and Directory Operations</h2>
+        <p class="note">Working directory</p>
+        <pre>/mnt/proj3/open-29-7/mira_ws/Projects/ZeroShotPicking/utils</pre>
+        <p class="note">Cache directory</p>
+        <pre>cd /scratch/project/open-29-7/.cache</pre>
+        <p class="note">Link to cache directory</p>
+        <pre>ls -l /home/davidm15/.cache</pre>
+        <p class="note">Create link to cache directory</p>
+        <pre>ln -s /scratch/project/open-29-7/.cache /home/davidm15/.cache</pre>
+    </div>
+
+    <div class="section">
+        <h2>Mount Network Directory</h2>
+        <!-- <pre>sshfs -o IdentityFile=/home/pickplace/Projects/ZeroShotPicking/KarolinaAccess/id_rsa -o ssh_command="ssh -v" davidm15@karolina.it4i.cz:/mnt/proj3/open-29-7 /mnt/Karolina/</pre> -->
+    </div>
+
+    <div class="section">
+        <h2>Attach to Running Job</h2>
+        <p class="note">NODELIST is the last column when running <code>squeue -u $USER</code></p>
+        <pre>ssh NODELIST</pre>
+    </div>
+
+    <div class="section">
+        <h2>File Size Information</h2>
+        <pre>du -hs * | sort -h</pre>
+    </div>
+
+    <div class="section">
+        <h2>Conda Environment</h2>
+        <p class="note">Change Python version</p>
+        <pre>ml Python/3.11.5-GCCcore-13.2.0</pre>
+        <pre>conda activate ZeroShotPicking</pre>
+    </div>
+
+    <div class="section">
+        <h2>Tmux Commands</h2>
+        <p class="note">Start a new session</p>
+        <pre>tmux</pre>
+        <p class="note">Attach to an existing session</p>
+        <pre>tmux a</pre>
+        <p class="note">Default prefix key</p>
+        <pre>$prefix (ctrl+b)</pre>
+        <p class="note">Detach from the session while it keeps running</p>
+        <pre>$prefix + d</pre>
+        <p class="note">Create new window</p>
+        <pre>$prefix + c</pre>
+        <p class="note">List windows with option to select one to see</p>
+        <pre>$prefix + w</pre>
+        <p class="note">Next window</p>
+        <pre>$prefix + n</pre>
+        <p class="note">Previous window</p>
+        <pre>$prefix + p</pre>
+        <p class="note">Name window</p>
+        <pre>$prefix + ,</pre>
+        <p class="note">Split vertically</p>
+        <pre>$prefix + %</pre>
+        <p class="note">Split horizontally</p>
+        <pre>$prefix + "</pre>
+        <p class="note">Scrolling</p>
+        <pre>$prefix + [</pre>
+        <p class="note">Kill window</p>
+        <pre>$prefix + &</pre>
+    </div>
+
+    <div class="section">
+        <h2>Additional Commands</h2>
+        <p>Here you can add more commands or sections as needed.</p>
+    </div>
+</body>
+</html>
