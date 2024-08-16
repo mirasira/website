@@ -57,11 +57,35 @@
                 grid-template-columns: 1fr;
             }
         }
+        table {
+            font-family: arial, sans-serif;
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        td, th {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+
+        tr:nth-child(even) {
+            background-color: #dddddd;
+        }
     </style>
 </head>
 <body>
     <div class="header">
         <h1>Commands Cheat Sheet</h1>
+    </div>
+
+    <div class="header">
+        <h1>Cluster</h1>
+    </div>
+
+    <div class="section">
+        <h2>Login to Cluster</h2>
+        <pre>ssh pickplace@10.100.16.15</pre>
     </div>
     
     <div class="header">
@@ -70,15 +94,19 @@
 
     <div class="section">
         <h2>Login to Karolina</h2>
-        <pre>ssh davidm15@karolina.it4i.cz</pre>
+        <pre>karolina</pre>
     </div>
     
     <div class="section">
         <h2>Job Management</h2>
         <p class="note">My jobs</p>
-        <pre>squeue -u $USER</pre>
+        <pre>squeue -u $USER <br>squeue --me</pre>
         <p class="note">Cancel job</p>
         <pre>scancel &lt;job_id&gt;</pre>
+        <p class="note">Submit batch with job</p>
+        <pre>sbatch script.sh</pre>
+
+        
     </div>
 
     <div class="section">
@@ -91,12 +119,32 @@
         <pre>salloc -A OPEN-29-7 -p qgpu</pre>
         <p class="note">For more GPUs</p>
         <pre>salloc -A OPEN-29-7 -p qgpu --gpus 8</pre>
+
+        <a href="hhttps://docs.it4i.cz/general/karolina-partitions/">Karolina partitions</a>
+        <table>
+            <tr>
+              <th><b>Partition</b></th>
+              <th><b>Max Time</b></th>
+            </tr>
+            <tr>
+              <td>qcpu</td>
+              <td>24h</td>
+            </tr>
+            <tr>
+              <td>qcpu_exp</td>
+              <td>1h</td>
+            </tr>
+            <tr>
+              <td>qcpu_free</td>
+              <td>18h</td>
+            </tr>
+          </table>
     </div>
 
     <div class="section">
         <h2>File and Directory Operations</h2>
         <p class="note">Working directory</p>
-        <pre>/mnt/proj3/open-29-7/mira_ws/Projects/ZeroShotPicking/utils</pre>
+        <pre id="myInput"> /mnt/proj3/open-29-7/mira_ws/Projects/ZeroShotPicking/utils </pre> 
         <p class="note">Cache directory</p>
         <pre>cd /scratch/project/open-29-7/.cache</pre>
         <p class="note">Link to cache directory</p>
@@ -134,7 +182,6 @@
     </div>
 
     <div class="section">
-        <h2>Tmux Commands</h2>
         <p class="note">Start a new session</p>
         <pre>tmux</pre>
         <p class="note">Attach to an existing session</p>
@@ -151,6 +198,10 @@
         <pre>$prefix + n</pre>
         <p class="note">Previous window</p>
         <pre>$prefix + p</pre>
+
+    </div>
+
+    <div class="section">
         <p class="note">Name window</p>
         <pre>$prefix + ,</pre>
         <p class="note">Split vertically</p>
@@ -161,11 +212,14 @@
         <pre>$prefix + [</pre>
         <p class="note">Kill window</p>
         <pre>$prefix + &</pre>
+        <p class="note">Switch views horizontal-vertical</p>
+        <pre>$prefix + space</pre>
+        <p class="note">Switch panels</p>
+        <pre>$prefix + ctrl + o</pre>
+
     </div>
 
-    <div class="section">
-        <h2>Additional Commands</h2>
-        <p>Here you can add more commands or sections as needed.</p>
-    </div>
+
+    <script src="static/js/CommandsCheatsheet.js"></script>
 </body>
 </html>

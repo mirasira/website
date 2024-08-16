@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="static\css\style.css">
+    <script src="https://cdn.plot.ly/plotly-2.12.1.min.js"></script>
+    <link rel="icon" href="https://preview.redd.it/vpt8xffqv3q71.jpg?auto=webp&s=75c366d7794c6134e93a3907650a804c7932ae3a">
+    <title>Lul</title>
+</head>
+<body>
+<h1>15 puzzle</h1>
+    <div class="subcontainer-1" id="15puzzle buttons">
+            <div id="NumberMoves">Number of moves: <div id="Moves15">0</div></div>
+            <div><button class="btn ntn-primary" id="rpsreset" onclick="Shuffle()">Shuffle</button></div>
+    </div>
+    <div class="subcontainer-15" id="15puzzle">
+        <table class = "table15">
+            <tr>
+                <td id="position1" onclick="Move(this)" Name="img1"><img src="./static/images/15puzzle/1.png" alt=""></td>
+                <td id="position2" onclick="Move(this)" Name="img2"><img src="./static/images/15puzzle/2.png" alt=""></td>
+                <td id="position3" onclick="Move(this)" Name="img3"><img src="./static/images/15puzzle/3.png" alt=""></td>
+                <td id="position4" onclick="Move(this)" Name="img4"><img src="./static/images/15puzzle/4.png" alt=""></td>
+            </tr>
+            <tr>
+                <td id="position5" onclick="Move(this)" Name="img5"><img src="./static/images/15puzzle/5.png" alt=""></td>
+                <td id="position6" onclick="Move(this)" Name="img6"><img src="./static/images/15puzzle/6.png" alt=""></td>
+                <td id="position7" onclick="Move(this)" Name="img7"><img src="./static/images/15puzzle/7.png" alt=""></td>
+                <td id="position8" onclick="Move(this)" Name="img8"><img src="./static/images/15puzzle/8.png" alt=""></td>
+            </tr>
+            <tr>
+                <td id="position9" onclick="Move(this)" Name="img9"><img src="./static/images/15puzzle/9.png" alt=""></td>
+                <td id="position10" onclick="Move(this)" Name="img10"><img src="./static/images/15puzzle/10.png" alt=""></td>
+                <td id="position11" onclick="Move(this)" Name="img11"><img src="./static/images/15puzzle/11.png" alt=""></td>
+                <td id="position12" onclick="Move(this)" Name="img12"><img src="./static/images/15puzzle/12.png" alt=""></td>
+            </tr>
+            <tr>
+                <td id="position13" onclick="Move(this)" Name="img13"><img src="./static/images/15puzzle/13.png" alt=""></td>
+                <td id="position14" onclick="Move(this)" Name="img14"><img src="./static/images/15puzzle/14.png" alt=""></td>
+                <td id="position15" onclick="Move(this)" Name="img15"><img src="./static/images/15puzzle/15.png" alt=""></td>
+                <td id="position16" onclick="Move(this)" Name="imgBlank"><img src="./static/images/15puzzle/blank.png" alt=""></td>
+            </tr>
+            </table>
+
+    </div>
+    <script src="static/js/script.js"></script>
+        
+   
+    
+</body>
+</html>
