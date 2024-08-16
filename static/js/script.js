@@ -322,7 +322,7 @@ window.setInterval(
     }
 );
 
-
+rpsReset()
 
 
 document.addEventListener('keydown', function(event) {
