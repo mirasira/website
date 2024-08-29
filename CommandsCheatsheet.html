@@ -107,6 +107,8 @@
         <li><a href="#conda">Conda</a></li>
         <li><a href="#tmux">tmux</a></li>
         <li><a href="#pip">pip</a></li>
+        <li><a href="#gdown">gdown</a></li>
+        <li><a href="#linux commands">Linux Commands</a></li>
     </ul>
 
     <button onclick="topFunction()" id="myBtn" title="Go to top">Top</button>
@@ -133,9 +135,12 @@
 
     <div class="section">
         <h2>Login to Karolina</h2>
+        <p class="note">Login to Karolina</p>
         <pre>karolina</pre>
+        <p class="note">Login to Karolina with X11 forwarding</p>
+        <pre>ssh -i /home/pickplace/KarolinaAccess/id_rsa -X davidm15@karolina.it4i.cz </pre>
     </div>
-    
+
     <div class="section">
         <h2>Job Management</h2>
         <p class="note">My jobs</p>
@@ -148,14 +153,16 @@
 
     <div class="section">
         <h2>Allocate Interactive Job</h2>
-        <p class="note">Run interactive job, one task:</p>
+        <p class="note">Run interactive job with cpu, one hour:</p>
         <pre>salloc -A OPEN-29-7 -p qcpu_exp</pre>
-        <p class="note">For 1 hour</p>
+        <p class="note">Run interactive job with gpu, one hour:</p>
         <pre>salloc -A OPEN-29-7 -p qgpu_exp</pre>
         <p class="note">For 24 hours</p>
         <pre>salloc -A OPEN-29-7 -p qgpu</pre>
         <p class="note">For more GPUs</p>
         <pre>salloc -A OPEN-29-7 -p qgpu --gpus 8</pre>
+        <p class="note">Set time</p>
+        <pre>salloc -A OPEN-29-7 -p qgpu --time 24:00:00</pre>
 
         <a href="https://docs.it4i.cz/general/karolina-partitions/">Karolina partitions</a>
         <table>
@@ -217,6 +224,12 @@
         <pre>ml Python/3.11.5-GCCcore-13.2.0</pre>
     </div>
 
+    <div class="section">
+        <h2>X server</h2>
+        <p class="note">Start X server</p>
+        <pre>module load Xvfb <br>Xvfb :99 -screen 0 1024x768x16 & <br>export DISPLAY=:99 </pre>
+    </div>
+
     <div class="header" id="tmux">
         <h1>tmux</h1>
     </div>
@@ -238,6 +251,8 @@
         <pre>$prefix + n</pre>
         <p class="note">Previous window</p>
         <pre>$prefix + p</pre>
+        <p class="note">Rename window</p>
+        <pre>$prefix + ,</pre>
 
     </div>
 
@@ -256,6 +271,11 @@
         <pre>$prefix + space</pre>
         <p class="note">Switch panels</p>
         <pre>$prefix + ctrl + o</pre>
+        <p class="note">Break panel into a new window</p>
+        <pre>$prefix + !</pre>
+        <p class="note">List all panels</p>
+        <pre>$prefix + w</pre>
+
 
     </div>
 
@@ -312,10 +332,18 @@
         <h2>Download folder from Google Drive</h2>
         <p class="note">final url format</p>
         <pre>gdown --folder https://drive.google.com/drive/folders/10mDNZnYrg55ZiP9GV4upKWnxlxay1OwM</pre>
-        
-
-
     </div>
+
+    <div class="header" id="linux commands">
+        <h1>linux commands</h1>
+    </div>
+
+    <div class="section">
+        <p class="note"> <code> for </code> code example, deletes all .zip files in folder</p>
+        <pre>for file in *.zip; do rm "$file"; done</pre>
+    </div>
+
+    
 
 
     <script src="static/js/CommandsCheatsheet.js"></script>
