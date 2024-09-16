@@ -116,6 +116,7 @@ function rpsFinal(HumanChoice, botchoice, message){
     document.getElementById("rps").appendChild(messageDiv);
     document.getElementById("rps").appendChild(botDiv);
 }
+// rpsFinal(0, 1, {"message": "you lost", "color":"red"})
 
 // 15 puzzle
 function Move(stone){
@@ -203,7 +204,7 @@ let trace2 = {
 
 let data = [trace1, trace2];
 
-Plotly.newPlot('myDiv', data);
+// Plotly.newPlot('myDiv', data);
 
 
 
@@ -286,41 +287,41 @@ for(let i = 0; i < 100; i++){
 
 
 
-var c = document.getElementById("myCanvas");
-var ctx = c.getContext("2d");
+// var c = document.getElementById("myCanvas");
+// var ctx = c.getContext("2d");
 
-function animate(){
-    ctx.clearRect(0, 0, width, height);
-    requestAnimationFrame(animate);
-    for(let i = 0; i < 100; i++){
-        circleArray[i].update();
+// function animate(){
+//     ctx.clearRect(0, 0, width, height);
+//     requestAnimationFrame(animate);
+//     for(let i = 0; i < 100; i++){
+//         circleArray[i].update();
     
-    }
-}
-animate();
+//     }
+// }
+// animate();
 
 
-ctx.fillRect(100, 100, 100, 100);
-ctx.beginPath();
-ctx.moveTo(100, 100);
-ctx.lineTo(300,300);
-ctx.strokeStyle = "blue";
+// ctx.fillRect(100, 100, 100, 100);
+// ctx.beginPath();
+// ctx.moveTo(100, 100);
+// ctx.lineTo(300,300);
+// ctx.strokeStyle = "blue";
 
-ctx.fillStyle = "rgba(255, 0, 0, 0.5)"
-ctx.fillRect(500, 300, 100, 100);
-ctx.fillStyle = "rgba(0, 255, 0, 0.5)"
-ctx.fillRect(525, 350, 100, 100);
-ctx.fillStyle = "rgba(0, 0, 255, 0.5)"
-ctx.fillRect(475, 350, 100, 100);
-ctx.stroke();
+// ctx.fillStyle = "rgba(255, 0, 0, 0.5)"
+// ctx.fillRect(500, 300, 100, 100);
+// ctx.fillStyle = "rgba(0, 255, 0, 0.5)"
+// ctx.fillRect(525, 350, 100, 100);
+// ctx.fillStyle = "rgba(0, 0, 255, 0.5)"
+// ctx.fillRect(475, 350, 100, 100);
+// ctx.stroke();
 
-window.setInterval(
-    () => {
-        const today = new Date();
-        document.getElementById("Time").innerHTML = "<h1>" + ToDate(today) + "</h1>";
+// window.setInterval(
+//     () => {
+//         const today = new Date();
+//         document.getElementById("Time").innerHTML = "<h1>" + ToDate(today) + "</h1>";
 
-    }
-);
+//     }
+// );
 
 rpsReset()
 

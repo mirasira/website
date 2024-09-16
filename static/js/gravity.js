@@ -14,7 +14,7 @@ var MiddleXMinus = 200;
 var MiddleYPlus = 200;
 var MiddleYMinus = 200;
 
-console.log(canvas);
+// console.log(canvas);
 
 let mouse = {
     x: undefined,
@@ -43,28 +43,46 @@ window.addEventListener("resize",
 height = window.innerHeight;
 width = window.innerWidth;
 
-function ThreeBodyBalanced(){
-    let radius = 5;
+
+let circleArray = [];
+
+function AddBall(){
+
     let dx = 25/10;
     let dy = -43.3/10;
     let weight = 10;
+    let radius = 2*weight;
     let accelerationx = 0;
     let accelerationy = 0;
     let tailLenght = 1;
     color = "red"
     circleArray.push(new gravityBalls(250, 300, dx, dy, radius, color, weight, accelerationx, accelerationy, tailLenght));
+}
 
-    dx = 25/10;
-    dy = 43.3/10;
-    color = " green"
-    weight = 10;
-    circleArray.push(new gravityBalls(350, 300, dx, dy, radius, color, weight, accelerationx, accelerationy, tailLenght));
+function Configuration13(){
+    circleArray = [];
+    let colors = ["#EAC8CA", "#F2D5F8", "#E6C0E9", "#BFABCB", "#8D89A6"]//["red", "orange", "yellow", "green", "blue", "green", "violet", "indigo"];
+    let del = 2;
+    offsetX = 100;
+    offsetY = 100;
 
-    dx = -50/10;
-    dy = 0/10;
-    color = "blue"
-    weight = 10;
-    circleArray.push(new gravityBalls(300, 386.6, dx, dy, radius, color, weight, accelerationx, accelerationy, tailLenght));
+    function createGravityBalls(direction_vector, offset, color) {
+        norm_vector = Math.sqrt(Math.pow(direction_vector[0],2)+Math.pow(direction_vector[1],2));
+        norm_vector = [direction_vector[0]/norm_vector, direction_vector[1]/norm_vector];
+        let speed_size = 3;
+        let dx = norm_vector[1]*speed_size;
+        let dy = -norm_vector[0]*speed_size;
+        let weight = 10;
+        let radius = 2*weight;
+        let accelerationx = 0;
+        let accelerationy = 0;
+        let tailLenght = 0;
+        circleArray.push(new gravityBalls(direction_vector[0]+offsetX, direction_vector[1]+offsetY, dx, dy, radius, color, weight, accelerationx, accelerationy, tailLenght));
+    }
+
+    createGravityBalls([0, 100], [offsetX, offsetY], "red");
+    createGravityBalls([86.60254037, -50], [offsetX, offsetY], "green");
+    createGravityBalls([-86.60254037, -50], [offsetX, offsetY], "blue");
 }
 
 function gravityBalls(x, y, dx, dy, radius, color, weight, accelerationx, accelerationy, tailLenght){
@@ -130,7 +148,6 @@ function gravityBalls(x, y, dx, dy, radius, color, weight, accelerationx, accele
         if(this.y < MiNxy){
             MiNxy = this.y;
         }
-        console.log(MaXx, MaXy, MiNxx, MiNxy);
 
         this.draw();
 
@@ -138,42 +155,19 @@ function gravityBalls(x, y, dx, dy, radius, color, weight, accelerationx, accele
 }
 
 
-let circleArray = [];
 function init(){
+    Configuration13();
+
     
+
+
+}
+
+function Configuration8(){
     circleArray = [];
     let colors = ["#EAC8CA", "#F2D5F8", "#E6C0E9", "#BFABCB", "#8D89A6"]//["red", "orange", "yellow", "green", "blue", "green", "violet", "indigo"];
     let del = 2;
-    /*
-    let color = colors[Math.floor(Math.random()*colors.length)];
-    let radius = 5;
-    //let x = Math.random()*(width-radius*2.1)+radius+0.1;
-    //let y = Math.random()*(height-radius*2.1)+radius+0.1;
-    let dx = 23.93544574/del;//(Math.random()-0.5)*20;
-    let dy = 0/del;//(Math.random()-0.5)*3;
-    let weight = 100;
-    let accelerationx = 0;
-    let accelerationy = 0;
-    let tailLenght = 100;
-    color = "green"
-    circleArray.push(new gravityBalls(500, 573.20508075689, dx, dy, radius, color, weight, accelerationx, accelerationy, tailLenght));
 
-    dx = -11.967728/del;
-    dy = -20.728714333961/del;
-    radius = 5;
-    weight = 100;
-    tailLenght = 100;
-    color = "red";
-    circleArray.push(new gravityBalls(600, 400, dx, dy, radius, color, weight, accelerationx, accelerationy, tailLenght));
-
-    dx = -11.9677284/del;
-    dy = 20.728714/del;
-    radius = 5;
-    weight = 100;
-    tailLenght = 100;
-    color = "blue";
-    circleArray.push(new gravityBalls(400, 400, dx, dy, radius, color, weight, accelerationx, accelerationy, tailLenght));
-    */
     let radius = 5;
     let dx = 25/10;
     let dy = -43.3/10;
@@ -195,40 +189,9 @@ function init(){
     color = "blue"
     weight = 10;
     circleArray.push(new gravityBalls(300, 386.6, dx, dy, radius, color, weight, accelerationx, accelerationy, tailLenght));
-
-
 }
 
-init();
-
-var c = document.getElementById("myCanvas");
-var ctx = c.getContext("2d");
-
-function animate(){
-    ctx.clearRect(0, 0, width, height);
-    requestAnimationFrame(animate);
-    MiddlePointx = 0;
-    MiddlePointy = 0;
-    for(let i = 0; i < circleArray.length; i++){
-        circleArray[i].update();
-        accxsum = 0;
-        accysum = 0;
-        for(let j = 0; j < circleArray.length; j++){
-            if(i != j){
-                distance = Math.sqrt(Math.pow(circleArray[i].x-circleArray[j].x,2)+Math.pow(circleArray[i].y-circleArray[j].y,2));
-                accxsum -= circleArray[j].weight/distance*(circleArray[i].x-circleArray[j].x)/(distance);
-                accysum -= circleArray[j].weight/distance*(circleArray[i].y-circleArray[j].y)/(distance);
-            }
-        }
-        circleArray[i].accelerationx = accxsum;
-        circleArray[i].accelerationy = accysum;
-
-        MiddlePointx += circleArray[i].x;
-        MiddlePointy += circleArray[i].y;
-        
-    }
-    MiddlePointx /= circleArray.length;
-    MiddlePointy /= circleArray.length;
+function DrawLines(){
 
     ctx.beginPath();
     ctx.moveTo(0, 0);
@@ -244,7 +207,69 @@ function animate(){
     let AxPoints = 10
     for (let i = 0; i < AxPoints; i++) {
         ctx.fillText(AxPoints*i, 10, i*canvas.height/AxPoints);
+        ctx.fillText(AxPoints*i, i*canvas.width/AxPoints, 10);
+        ctx.beginPath();
+        ctx.moveTo(0, i * canvas.height / AxPoints);
+        ctx.lineTo(canvas.width, i * canvas.height / AxPoints);
+        ctx.strokeStyle = "white";
+        lineWidth = 0.3;
+        ctx.lineWidth = lineWidth;
+        ctx.stroke();
+        ctx.beginPath();
+        ctx.moveTo(i * canvas.width / AxPoints, 0);
+        ctx.lineTo(i * canvas.width / AxPoints, canvas.height);
+        ctx.strokeStyle = "white";
+        ctx.lineWidth = lineWidth;
+        ctx.stroke();
     }
+}
+
+init();
+
+var c = document.getElementById("myCanvas");
+var ctx = c.getContext("2d");
+
+function animate(){
+    ctx.clearRect(0, 0, width, height);
+    DrawLines();
+    requestAnimationFrame(animate);
+    MiddlePointx = 0;
+    MiddlePointy = 0;
+    for(let i = 0; i < circleArray.length; i++){
+        console.log(circleArray.length);
+        circleArray[i].update();
+        accxsum = 0;
+        accysum = 0;
+        merged = false;
+        for(let j = 0; j < circleArray.length; j++){
+            if(i != j){
+                distance = Math.sqrt(Math.pow(circleArray[i].x-circleArray[j].x,2)+Math.pow(circleArray[i].y-circleArray[j].y,2));
+                if (distance < circleArray[i].radius+circleArray[j].radius){
+                    let mergedWeight = circleArray[i].weight + circleArray[j].weight;
+                    let mergedVelocityX = (circleArray[i].dx * circleArray[i].weight + circleArray[j].dx * circleArray[j].weight) / mergedWeight;
+                    let mergedVelocityY = (circleArray[i].dy * circleArray[i].weight + circleArray[j].dy * circleArray[j].weight) / mergedWeight;
+                    circleArray.push(new gravityBalls(circleArray[i].x, circleArray[i].y, mergedVelocityX, mergedVelocityY, circleArray[i].radius, circleArray[i].color, mergedWeight, circleArray[i].accelerationx, circleArray[i].accelerationy, circleArray[i].tailLenght));
+                    circleArray.splice(j, 1);
+                    circleArray.splice(i, 1);
+                    merged = true;
+                    break;
+                }
+                accxsum -= circleArray[j].weight/distance*(circleArray[i].x-circleArray[j].x)/(distance);
+                accysum -= circleArray[j].weight/distance*(circleArray[i].y-circleArray[j].y)/(distance);
+            }
+        }
+        if(!merged){
+            circleArray[i].accelerationx = accxsum;
+            circleArray[i].accelerationy = accysum;
+
+            MiddlePointx += circleArray[i].x;
+            MiddlePointy += circleArray[i].y;
+        }
+        
+    }
+    MiddlePointx /= circleArray.length;
+    MiddlePointy /= circleArray.length;
+
 
 }
 animate();
