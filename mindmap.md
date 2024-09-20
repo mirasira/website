@@ -5,12 +5,12 @@ markmap:
 ---
 
 
-# Říše
-## Kmen
-### Třída
-#### Řád
-##### Čeleď
-###### Rod
+# (Nadříše)Říše(Podříše)
+## (Nadkmen)Kmen(Podkmen)
+### (Nadtřída)Třída(Podtřída)
+#### (Nadřád)Řád(Podřád)
+##### (Nadčeleď)Čeleď(Podčeleď)
+###### Rod(Podrod)
 - Druh
 
 
@@ -37,10 +37,10 @@ markmap:
 
 
 
-#### polokřídlí
-##### ploštice
-###### ruměnicovití
-  - [ruměnice](https://cs.wikipedia.org/wiki/Rum%C4%9Bnice_pospoln%C3%A1)
+#### polokřídlí(ploštice)
+##### ruměnicovití
+###### ruměnice
+  - [pospolná](https://cs.wikipedia.org/wiki/Rum%C4%9Bnice_pospoln%C3%A1)
 
 ### klepítkatci
 #### Pavoukovci
@@ -49,10 +49,21 @@ markmap:
   - [vodouch](https://cs.wikipedia.org/wiki/Vodouch_st%C5%99%C3%ADb%C5%99it%C3%BD)
 
 
-## strunatci
+## [strunatci](https://cs.wikipedia.org/wiki/Strunatci)
 ### savci
 #### sudokopytníci
 ##### plejtvákovití
 ###### plejtvák 
+
+
+#### lichokopitníci
+##### koňovití
+###### kůň
+
+### ptáci
+#### svišťouni
+##### rorýsovití
+###### salangana
+  - [ostrovní](https://cs.wikipedia.org/wiki/Salangana_ostrovn%C3%AD)
 
 # Rostliny
