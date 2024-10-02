@@ -156,9 +156,39 @@ function gravityBalls(x, y, dx, dy, radius, color, weight, accelerationx, accele
 
 
 function init(){
-    Configuration13();
+    // Configuration13();
+    Configuration10()
 
     
+}
+
+function Configuration10(){
+    circleArray = [];
+    let colors = ["#EAC8CA", "#F2D5F8", "#E6C0E9", "#BFABCB", "#8D89A6"]//["red", "orange", "yellow", "green", "blue", "green", "violet", "indigo"];
+    let del = 2;
+
+    
+    let dx = 0;
+    let dy = -43.3/20;
+    let weight = 10;
+    let radius = 2*weight;
+    let accelerationx = 0;
+    let accelerationy = 0;
+    let tailLenght = 1;
+    color = "red"
+    circleArray.push(new gravityBalls(250, 300, dx, dy, radius, color, weight, accelerationx, accelerationy, tailLenght));
+
+    dx = 0;
+    dy = 43.3/20;
+    color = " green"
+    weight = 10;
+    circleArray.push(new gravityBalls(350, 300, dx, dy, radius, color, weight, accelerationx, accelerationy, tailLenght));
+
+    dx = -50/10;
+    dy = 0/10;
+    color = "blue"
+    weight = 10;
+    circleArray.push(new gravityBalls(300, 0, dx, dy, radius, color, weight, accelerationx, accelerationy, tailLenght));
 
 
 }
@@ -168,10 +198,11 @@ function Configuration8(){
     let colors = ["#EAC8CA", "#F2D5F8", "#E6C0E9", "#BFABCB", "#8D89A6"]//["red", "orange", "yellow", "green", "blue", "green", "violet", "indigo"];
     let del = 2;
 
-    let radius = 5;
+    
     let dx = 25/10;
     let dy = -43.3/10;
     let weight = 10;
+    let radius = 2*weight;
     let accelerationx = 0;
     let accelerationy = 0;
     let tailLenght = 1;
