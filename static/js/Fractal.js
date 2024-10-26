@@ -1,7 +1,13 @@
 var c = document.getElementById("plotCanvas");
 var ctx = c.getContext("2d");
+let rect = c.getBoundingClientRect();
 
-
+function getMousePosition(canvas, event) {
+    let rect = canvas.getBoundingClientRect();
+    let x = event.clientX - rect.left;
+    let y = event.clientY - rect.top;
+    return {x: x, y: y};
+}
 
 class ComplexNumber{
     constructor(Real, Imaginary) {
@@ -40,14 +46,88 @@ function FRACTAL(Real, Imaginary, CReal, CImaginary, Itrs) {
 }
 
 
-const imageData = ctx.createImageData(c.width, c.height);
-// const imageData = ctx.getImageData(0, 0, c.width, c.height);
-const data = imageData.data;
-for (let i = 0; i < data.length; i += 4) {
-    data[i] = 128; // red
-    data[i + 1] = 128; // green
-    data[i + 2] = 128; // blue
-    console.log(data[i], data[i+1], data[i+2]);
 
+
+var canvasWidth = c.width;
+var canvasHeight = c.height;
+
+
+function DrawFractal(Xmin, Xmax, Ymin, Ymax, Itrs) {
+    for (let x = 0; x < canvasWidth; x++) {
+        for (let y = 0; y < canvasHeight; y++) {
+            let Real = Xmin + (Xmax - Xmin) * x / canvasWidth;
+            let Imaginary = Ymin + (Ymax - Ymin) * y / canvasHeight;
+            let CReal = Real;
+            let CImaginary = Imaginary;
+            let itrs = FRACTAL(Real, Imaginary, CReal, CImaginary, Itrs);
+            let r = Math.floor(255 * itrs / Itrs);
+            let g = Math.floor(255 * itrs / Itrs);
+            let b = Math.floor(255 * itrs / Itrs);
+            ctx.fillStyle = "rgb(" + r + "," + g + "," + b + ")";
+            ctx.fillRect(x, y, 1, 1);
+        }
+    }
 }
-ctx.putImageData(imageData, 0, 0);
+
+varHeightvsWidth = c.height / c.width;
+
+var Xmin = -2;
+var Xmax = 2;
+var Ymin = -2 * varHeightvsWidth;
+var Ymax = 2 * varHeightvsWidth;
+var Itrs = 1000;
+
+
+console.log(Xmin, Xmax, Ymin, Ymax);
+DrawFractal(Xmin, Xmax, Ymin, Ymax, Itrs);
+
+
+
+
+c.addEventListener('contextmenu', function(event) {
+    event.preventDefault();
+    var mousePos = getMousePosition(c, event);
+    var x = mousePos.x;
+    var y = mousePos.y;
+    x = Xmin + (Xmax - Xmin) * x / rect.right;
+    y = Ymin + (Ymax - Ymin) * y / rect.bottom;
+    var NewXmin = x - (Xmax - Xmin);
+    var NewXmax = x + (Xmax - Xmin);
+    var NewYmin = y - (Ymax - Ymin);
+    var NewYmax = y + (Ymax - Ymin);
+
+    Xmin = NewXmin;
+    Xmax = NewXmax;
+    Ymin = NewYmin;
+    Ymax = NewYmax;
+
+    console.log(Xmin, Xmax, Ymin, Ymax);
+
+    DrawFractal(Xmin, Xmax, Ymin, Ymax, Itrs);
+});
+
+c.addEventListener('click', function(event) {
+    var mousePos = getMousePosition(c, event);
+    var x = mousePos.x;
+    var y = mousePos.y;
+    x = Xmin + (Xmax - Xmin) * x / rect.right;
+    y = Ymin + (Ymax - Ymin) * y / rect.bottom;
+    var NewXmin = x - (Xmax - Xmin) / 4;
+    var NewXmax = x + (Xmax - Xmin) / 4;
+    var NewYmin = y - (Ymax - Ymin) / 4;
+    var NewYmax = y + (Ymax - Ymin) / 4;
+
+
+    Xmin = NewXmin;
+    Xmax = NewXmax;
+    Ymin = NewYmin;
+    Ymax = NewYmax;
+
+    console.log(Xmin, Xmax, Ymin, Ymax);
+
+    DrawFractal(Xmin, Xmax, Ymin, Ymax, Itrs);
+
+});
+
+
+

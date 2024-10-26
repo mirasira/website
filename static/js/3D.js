@@ -238,7 +238,8 @@ window.onload = function() {
 				}
 				else {
 					translateModel(0, -20, 0);
-					CameraPose[0][2][0] += 0.2;
+					CameraPose[0][2][0] += 0.2*Math.cos(CameraPose[1][1][0]);
+					CameraPose[0][0][0] -= 0.2*Math.sin(CameraPose[1][1][0]);
 				}
 				break;
 			case 40: // down

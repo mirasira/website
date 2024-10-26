@@ -147,10 +147,15 @@
         <h2>Job Management</h2>
         <p class="note">My jobs</p>
         <pre>squeue -u $USER <br>squeue --me</pre>
+        <p class="note">Get job info with time limit</p>
+        <pre>squeue --me -l</pre>
         <p class="note">Cancel job</p>
         <pre>scancel &lt;job_id&gt;</pre>
         <p class="note">Submit batch with job</p>
         <pre>sbatch script.sh</pre>
+        <p class="note">Modify job's time limit</p>
+        <pre>scontrol update JobId=JOBID timelimit=4:00:00</pre>
+
     </div>
 
     <div class="section">
@@ -377,6 +382,20 @@
         <pre>source ~/.bashrc</pre>
     </div>
 
+    <div class="header" id="C">
+        <h1>C</h1>
+    </div>
+
+    <div class="section">
+        <h2>Compile C code</h2>
+        <p class="note">distance.c is name of the file, distance is name of the executable </p>
+        <p class="note">Compile C code</p>
+        <pre>gcc distance.c -o distance -lm</pre>
+        <p class="note">Compile C code with debugging</p>
+        <pre>gcc -g distance.c -o distance -lm</pre>
+        <p class="note">Compile C code with debugging and warnings</p>
+        <pre>gcc -g -Wall distance.c -o distance -lm</pre>
+    </div>
 
     <script src="static/js/CommandsCheatsheet.js"></script>
 </body>
