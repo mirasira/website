@@ -8,6 +8,11 @@
 
     <!-- <link rel="icon" href="https://preview.redd.it/vpt8xffqv3q71.jpg?auto=webp&s=75c366d7794c6134e93a3907650a804c7932ae3a"> -->
     <style>
+        pre {
+            font-size: 0.9em;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
         body {
             font-family: Arial, sans-serif;
             margin: 20px;
@@ -109,6 +114,8 @@
         <li><a href="#pip">pip</a></li>
         <li><a href="#gdown">gdown</a></li>
         <li><a href="#linux commands">Linux Commands</a></li>
+        <li><a href="#C">C</a></li>
+        <li><a href="#LLaVA-Plus">LLaVA-Plus</a></li>
     </ul>
 
     <button onclick="topFunction()" id="myBtn" title="Go to top">Top</button>
@@ -169,7 +176,9 @@
         <p class="note">For more GPUs</p>
         <pre>salloc -A OPEN-29-7 -p qgpu --gpus 8</pre>
         <p class="note">Set time</p>
-        <pre>salloc -A OPEN-29-7 -p qgpu --time 24:00:00</pre>
+        <pre>salloc -A OPEN-29-7 -p qgpu --gpus 8 --time 24:00:00</pre>
+        <pre>gpus NUM_OF_GPUS TIME</pre>
+        <pre>cpus TIME</pre>
 
         <a href="https://docs.it4i.cz/general/karolina-partitions/">Karolina partitions</a>
         <table>
@@ -255,7 +264,14 @@
         <pre style="font-size: 0.9em; white-space: pre-wrap; word-wrap: break-word;">blender --background /mnt/proj3/open-29-7/mira_ws/Projects/ZeroShotPicking/utils/Blender/untitled.blend -P /mnt/proj3/open-29-7/mira_ws/Projects/ZeroShotPicking/utils/Blender/script.py</pre>
     </div>
 
+    <div class="section">
+        <h2>module</h2>
+        <p class="note">Search modules</p>
+        <pre>module spider MODULE_NAME</pre>
+        <p class="note">Quitting from spider</p>
+        <pre>q</pre>
 
+    </div>
 
     <div class="header" id="tmux">
         <h1>tmux</h1>
@@ -370,6 +386,11 @@
     <div class="section">
         <p class="note"> <code> for </code> code example, deletes all .zip files in folder</p>
         <pre>for file in *.zip; do rm "$file"; done</pre>
+        <p class="note"> Search specific string in specific file</p>
+        <pre>grep -rnw FILE_PATH -e STRING</pre>
+        <p class="note">Search for a file</p>
+        <pre>find . -name FILE_NAME</pre>
+
     </div>
 
     <div class="section">
@@ -396,6 +417,30 @@
         <p class="note">Compile C code with debugging and warnings</p>
         <pre>gcc -g -Wall distance.c -o distance -lm</pre>
     </div>
+
+    <div class="header" id="LLaVA-Plus">
+        <h1>LLaVA-Plus</h1>
+    </div>
+
+    <div class="section">
+        <h2>Running the LLaVA-PLUS</h2>
+        <p class="note">1. Launch a controller</p>
+        <pre>python -m llava.serve.controller --host 0.0.0.0 --port 20001</pre>
+        <p class="note">2. Launch a model worker</p>
+        <pre>python -m llava.serve.model_worker --host 0.0.0.0 --controller http://localhost:20001 --port 40000 --worker http://localhost:40000 --model-path PATH</pre>
+        <p class="note">3. Launch tool workers</p>
+        <pre>???</pre>
+        <p class="note">4. Launch a gradio web server.</p>
+        <pre>python -m llava.serve.gradio_web_server_llava_plus --controller http://localhost:20001 --model-list-mode reload</pre>
+        <p class="note">5. SSH to the server</p>
+        <p class="note">Connect to karolina with vpn, go to <a href="https://ood-karolina.it4i.cz/pun/sys/dashboard/batch_connect/sys/bc_desktop/login-mate/session_contexts/new">karolina dashboard</a>, launch desktop, in command line write: </p>
+        <pre> ssh -L 7860:localhost:7860 NODENAME(e.g. acn18)</pre>
+        <p class="note">the the LLaVA-PLUS is available on</p>
+        <pre>http://localhost:7860</pre>
+
+
+    </div>
+
 
     <script src="static/js/CommandsCheatsheet.js"></script>
 </body>

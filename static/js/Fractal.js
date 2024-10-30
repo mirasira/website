@@ -46,23 +46,34 @@ function FRACTAL(Real, Imaginary, CReal, CImaginary, Itrs) {
 }
 
 
-
+// https://www.sekinoworld.com/fractal/coloring.htm   inspiration
 
 var canvasWidth = c.width;
 var canvasHeight = c.height;
-
+let CReal = -0.77146;
+let CImaginary = -0.10119;
 
 function DrawFractal(Xmin, Xmax, Ymin, Ymax, Itrs) {
     for (let x = 0; x < canvasWidth; x++) {
         for (let y = 0; y < canvasHeight; y++) {
             let Real = Xmin + (Xmax - Xmin) * x / canvasWidth;
             let Imaginary = Ymin + (Ymax - Ymin) * y / canvasHeight;
-            let CReal = Real;
-            let CImaginary = Imaginary;
+            CReal = Real;
+            CImaginary = Imaginary;
             let itrs = FRACTAL(Real, Imaginary, CReal, CImaginary, Itrs);
             let r = Math.floor(255 * itrs / Itrs);
             let g = Math.floor(255 * itrs / Itrs);
             let b = Math.floor(255 * itrs / Itrs);
+            if (itrs%2==0){
+                r = Math.floor(0);
+                g = Math.floor(0);
+                b = Math.floor(0);
+            }
+            else{
+                r = Math.floor(255);
+                g = Math.floor(255);
+                b = Math.floor(255);
+            }
             ctx.fillStyle = "rgb(" + r + "," + g + "," + b + ")";
             ctx.fillRect(x, y, 1, 1);
         }
