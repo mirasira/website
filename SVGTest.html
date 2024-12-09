@@ -4,16 +4,71 @@
     <link type="text/css" rel="stylesheet" id="dark-mode-general-link">
     <style lang="en" type="text/css" id="dark-mode-custom-style"></style>
     <style lang="en" type="text/css" id="dark-mode-native-style"></style>
-    <style lang="en" type="text/css" id="dark-mode-native-sheet"></style>    
+    <style lang="en" type="text/css" id="dark-mode-native-sheet"></style>  
+    <style>
+        .lines {
+            fill: none;
+            stroke: black;
+            stroke-width: 0.5;
+        }
+        .rects {
+            fill: none;
+            stroke: black;
+            stroke-width: 0.5;
+        }
+
+    </style>  
     <head>
-    <meta charset="UTF-8">
-    <title>Motor Status Example</title>
-  </head>
-  <body onload="setTimeout(function(){location.reload()}, 100000);">
-    <h1>Motor Status Example</h1>
-    <div id="plots">
-        <img style="display: block;" alt="" src="graph.svg">
-        <img alt="" src="graph2.svg">
-    </div>
+        <meta charset="UTF-8">
+        <title>Motor Status Example</title>
+    </head>
+    <body>
+
+        <svg width="250" height="250" >
+            <circle r="120" cx="125" cy="125" fill="none" stroke="black" stroke-width="10" />
+            <circle r="70" cx="125" cy="125" fill="none" stroke="black" stroke-width="10" />
+        </svg>
+
+        <svg width="200" height="100" xmlns="http://www.w3.org/2000/svg">
+            <use href="#Example" x="0" y="0" />
+        </svg>
+
+
+        <svg xmlns="http://www.w3.org/2000/svg" >
+            <symbol id="Example" class="Example" viewBox="0 0 200 100">
+                <rect
+                class="rects"
+                id="rect234"
+                width="131.52957"
+                height="56.129276"
+                x="35.983765"
+                y="26.504116" />
+                <path
+                class="lines"
+                d="M 35.921875,34.375 167.57812,35.062501"
+                id="path1053" />
+                <path
+                class="lines"
+                d="M 47.781249,26.812499 46.578125,82.499998"
+                id="path1055" />
+                <path
+                class="lines"
+                d="m 35.921875,45.546875 131.312495,1.03125"
+                id="path1057" />
+                <path
+                class="lines"
+                d="M 36.093749,55.859375 167.40625,58.437499"
+                id="path1059" />
+                <path
+                class="lines"
+                d="M 35.921875,67.890625 167.23437,68.234374"
+                id="path1061" />
+                <path
+                class="lines"
+                d="M 35.40625,75.453125 167.0625,75.624999"
+                id="path1063" />
+            </symbol>
+        </svg>
+
   
-  <div id="adsbox">&nbsp;</div><div id="forest-ext-shadow-host"></div></body></html>
+</html>

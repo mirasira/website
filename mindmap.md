@@ -51,6 +51,9 @@ markmap:
 
 ## [strunatci](https://cs.wikipedia.org/wiki/Strunatci)
 ### savci
+#### afrosoricidi
+##### [bodlínovití](https://cs.wikipedia.org/wiki/Bodl%C3%ADnovit%C3%AD)
+##### [zlatokrtovití](https://cs.wikipedia.org/wiki/Zlatokrtovit%C3%AD)
 #### sudokopytníci
 ##### plejtvákovití
 ###### plejtvák 

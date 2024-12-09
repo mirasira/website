@@ -127,7 +127,7 @@
     <!-- Rest of the code... -->
     <div class="section">
         <h2>Login to Cluster</h2>
-        <pre>karolina</pre>
+        <pre>cluster</pre>
         <pre>ssh pickplace@10.100.16.15</pre>
     </div>
 
@@ -214,6 +214,8 @@
         <pre>ln -s /scratch/project/open-29-7/.cache /home/davidm15/.cache</pre>
         <p class="note">Folder path on cluster</p>
         <pre>/mnt/Karolina/mira_ws/Projects/ZeroShotPicking</pre>
+        <p class="note">nvcc folder example</p>
+        <pre>/mnt/proj3/open-29-7/.conda/envs/GLIP/lib/python3.10/site-packages/nvidia</pre>
     </div>
 
     <div class="section">
@@ -341,7 +343,14 @@
         <p class="note">Create conda enviroment with requirements.txt</p>
         <pre>conda create --name myenv --file requirements.txt</pre>
     </div>
-    
+
+    <div class="section">
+        <h2>Some tricks</h2>
+        <p class="note">install nvcc</p>
+        <pre>conda install cuda -c nvidia</pre>
+
+    </div>
+
     <div class="header" id="pip">
         <h1>pip</h1>
     </div>
