@@ -16,6 +16,26 @@
             stroke: black;
             stroke-width: 0.5;
         }
+        .outer {
+            fill: none;
+            stroke: red;
+            stroke-width: 5;
+        }
+        .inner {
+            fill: none;
+            stroke: green;
+            stroke-width: 5;
+        }
+        .Example {
+            fill: none;
+            stroke: black;
+            stroke-width: 5;
+            width: 10px;
+        }
+
+        svg {
+            border: 1px solid black;
+        }
 
     </style>  
     <head>
@@ -24,51 +44,15 @@
     </head>
     <body>
 
-        <svg width="250" height="250" >
-            <circle r="120" cx="125" cy="125" fill="none" stroke="black" stroke-width="10" />
-            <circle r="70" cx="125" cy="125" fill="none" stroke="black" stroke-width="10" />
-        </svg>
-
-        <svg width="200" height="100" xmlns="http://www.w3.org/2000/svg">
-            <use href="#Example" x="0" y="0" />
-        </svg>
-
-
-        <svg xmlns="http://www.w3.org/2000/svg" >
-            <symbol id="Example" class="Example" viewBox="0 0 200 100">
-                <rect
-                class="rects"
-                id="rect234"
-                width="131.52957"
-                height="56.129276"
-                x="35.983765"
-                y="26.504116" />
-                <path
-                class="lines"
-                d="M 35.921875,34.375 167.57812,35.062501"
-                id="path1053" />
-                <path
-                class="lines"
-                d="M 47.781249,26.812499 46.578125,82.499998"
-                id="path1055" />
-                <path
-                class="lines"
-                d="m 35.921875,45.546875 131.312495,1.03125"
-                id="path1057" />
-                <path
-                class="lines"
-                d="M 36.093749,55.859375 167.40625,58.437499"
-                id="path1059" />
-                <path
-                class="lines"
-                d="M 35.921875,67.890625 167.23437,68.234374"
-                id="path1061" />
-                <path
-                class="lines"
-                d="M 35.40625,75.453125 167.0625,75.624999"
-                id="path1063" />
+        <svg viewBox="0 0 200 200" width="200" height="200" xmlns="http://www.w3.org/2000/svg">
+            <symbol id="Example" class="Example">
+                <circle class="outer" r="60" cx="80" cy="80" fill="none" stroke="black" stroke-width="10" />
+                <circle class="inner" r="40" cx="80" cy="80" fill="none" stroke="black" stroke-width="10" />
+                <rect rx="25" ry="25" x="20" y="20" width="50" height="115" fill="blue" />
+                <polygon points="20,20 70,20 70,135" fill="red" stroke="black" stroke-width="5" />
             </symbol>
+            <use href="#Example"></use>
         </svg>
 
-  
+    </body>
 </html>
