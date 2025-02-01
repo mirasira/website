@@ -66,7 +66,9 @@ const jsonString = `[
     },
     {
         "name": "Shakespeare (programovací jazyk)",
-        "url": "https://cs.wikipedia.org/wiki/Shakespeare_(programovac%C3%AD_jazyk)"
+        "url": "https://cs.wikipedia.org/wiki/Shakespeare_(programovac%C3%AD_jazyk)",
+        "Why interesting": "Cool esoteric programing language.",
+        "additional URLs": []
     },
     {
         "name": "Taikyoku shogi",
@@ -302,7 +304,12 @@ const jsonString = `[
         "name": "Fainting goat",
         "url": "https://en.wikipedia.org/wiki/Fainting_goat",
         "Why interesting": "The goat that faint when exited/scared.",
-        "additional URLs": []
+        "additional URLs": [
+            {
+                "name": "video",
+                "url": "https://www.youtube.com/watch?v=uT-UGTQd6zQ"
+            }
+        ]
     },
     {
         "name": "Sonoluminescence",
