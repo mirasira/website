@@ -821,6 +821,25 @@ const jsonString = `[
     }
 ]`;
 
+function ToEnd(today, EndDate) {
+    const Diff = EndDate - today;
+    const minus = Diff < 0;
+
+    const absDiff = Math.abs(Diff);
+    const days = Math.floor(absDiff / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((absDiff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutes = Math.floor((absDiff % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((absDiff % (1000 * 60)) / 1000);
+
+    const formattedDays = String(days).padStart(2, '0');
+    const formattedHours = String(hours).padStart(2, '0');
+    const formattedMinutes = String(minutes).padStart(2, '0');
+    const formattedSeconds = String(seconds).padStart(2, '0');
+
+    return (minus ? '-' : '') + `${formattedDays} days <br>  ${formattedHours}:${formattedMinutes}:${formattedSeconds}`;
+}
+
+
 YearZero = 2024;
 WeekZero = 19;
 const objs = JSON.parse(jsonString);
@@ -888,12 +907,16 @@ objs.slice(0, FactIndex+1).reverse().forEach((obj, index) => {
     pastFunFacts.appendChild(row);
 });
 
+Deadline = new Date(2025, 5, 23, 23, 59, 59, 0);
+
 window.setInterval(
     () => {
         IsClass = false;
         if (!IsClass){
-            document.getElementById("Time").innerHTML = "ZKOUŠKYYYYYYYYYYYYYYYYYY";
-            document.getElementById("ClasName").innerHTML = "";
+            const today = new Date();
+            document.getElementById("ClasName").innerHTML = "Diplomka";
+            document.getElementById("Time").innerHTML =ToEnd(today, Deadline);
+
         }
         
 
