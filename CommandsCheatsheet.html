@@ -272,8 +272,16 @@
         <pre>module spider MODULE_NAME</pre>
         <p class="note">Quitting from spider</p>
         <pre>q</pre>
-
     </div>
+
+    <div class="section">
+        <h2>Port forwarding</h2>
+        <p class="note">Forward port to Karolina</p>
+        <pre>ssh -i C:\Users\siram\.ssh\it4i -L 5000:localhost:5000 davidm15@karolina.it4i.cz</pre>
+        <p class="note">Forward to a specific node</p>
+        <pre>ssh -L 5000:localhost:5000 acn01 </pre>
+
+    </div>    
 
     <div class="header" id="tmux">
         <h1>tmux</h1>

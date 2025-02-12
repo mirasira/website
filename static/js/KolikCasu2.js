@@ -820,7 +820,6 @@ const jsonString = `[
         "url": "https://cs.wikipedia.org/wiki/Taxonomick%C3%A1_kategorie"
     }
 ]`;
-
 function ToEnd(today, EndDate) {
     const Diff = EndDate - today;
     const minus = Diff < 0;
@@ -835,8 +834,12 @@ function ToEnd(today, EndDate) {
     const formattedHours = String(hours).padStart(2, '0');
     const formattedMinutes = String(minutes).padStart(2, '0');
     const formattedSeconds = String(seconds).padStart(2, '0');
-
     return (minus ? '-' : '') + `${formattedDays} days <br>  ${formattedHours}:${formattedMinutes}:${formattedSeconds}`;
+
+    // return {
+    //     days: (minus ? '-' : '') + formattedDays,
+    //     time: `${formattedHours}:${formattedMinutes}:${formattedSeconds}`
+    // };
 }
 
 
@@ -852,7 +855,7 @@ function getDateWeek(date) {
         new Date(currentDate.getFullYear(), 0, 1);
     const daysToNextMonday = 
         (januaryFirst.getDay() === 1) ? 0 : 
-        (7 - januaryFirst.getDay()) % 7;
+        (7 - januaryFirst.getDay() + 1) % 7; // Adjusted to set Monday as the first day of the week
     const nextMonday = 
         new Date(currentDate.getFullYear(), 0, 
         januaryFirst.getDate() + daysToNextMonday);
@@ -909,16 +912,53 @@ objs.slice(0, FactIndex+1).reverse().forEach((obj, index) => {
 
 Deadline = new Date(2025, 5, 23, 23, 59, 59, 0);
 
-window.setInterval(
-    () => {
-        IsClass = false;
-        if (!IsClass){
-            const today = new Date();
-            document.getElementById("ClasName").innerHTML = "Diplomka";
-            document.getElementById("Time").innerHTML =ToEnd(today, Deadline);
+function drawCountdown(countdownData) {  // Receive the object
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-        }
-        
+    ctx.font = "15px Arial";
+    ctx.fillStyle = "black";
 
+    const daysText = countdownData.days + " days"; // Add "days" text
+    const timeText = countdownData.time;
+
+    // Measure the width of the days text to center the time below it.
+    const daysWidth = ctx.measureText(daysText).width;
+    const timeWidth = ctx.measureText(timeText).width;
+    const daysHeight = 20;
+    const timeHeight = 20;
+
+
+    ctx.fillText(daysText, canvas.width / 2 - daysWidth / 2, canvas.height/2); // Centered days
+    ctx.fillText(timeText, canvas.width / 2 - timeWidth / 2, canvas.height/2 + daysHeight); // Centered time (adjust vertical position as needed)
+    ctx.fillText("Diplomka", canvas.width / 2 - timeWidth / 2, canvas.height/2 + daysHeight + timeHeight);
+}
+
+// const canvas = document.getElementById('countdownCanvas');
+// const ctx = canvas.getContext('2d');
+
+
+function resizeCanvas() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+}
+
+// resizeCanvas();
+// window.addEventListener('resize', resizeCanvas);
+
+
+const today = new Date();
+const countdownData = ToEnd(today, Deadline); // Get the object
+// drawCountdown(countdownData);
+
+window.setInterval(() => {
+    IsClass = false; // Make sure to define IsClass somewhere in your code
+    if (!IsClass) {
+        const today = new Date();
+        const countdownData = ToEnd(today, Deadline); // Get the object
+        document.getElementById("ClasName").innerHTML = "Diplomka";
+        document.getElementById("Time").innerHTML =ToEnd(today, Deadline);
+
+
+        // drawCountdown(countdownData); // Pass the object
     }
-);
+}, 1000); // Update every second (1000 milliseconds)
