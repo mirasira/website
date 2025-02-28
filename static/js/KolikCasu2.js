@@ -820,31 +820,31 @@ const jsonString = `[
         "url": "https://cs.wikipedia.org/wiki/Taxonomick%C3%A1_kategorie"
     }
 ]`;
+
+
+
 function ToEnd(today, EndDate) {
-    const Diff = EndDate - today;
+    const Diff = Math.abs(EndDate - today); // Get difference in milliseconds
     const minus = Diff < 0;
 
-    const absDiff = Math.abs(Diff);
-    const days = Math.floor(absDiff / (1000 * 60 * 60 * 24));
-    const hours = Math.floor((absDiff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-    const minutes = Math.floor((absDiff % (1000 * 60 * 60)) / (1000 * 60));
-    const seconds = Math.floor((absDiff % (1000 * 60)) / 1000);
+    // Convert to exact days (avoiding daylight saving issues)
+    let totalSeconds = Math.floor(Diff / 1000);
+    let days = Math.floor(totalSeconds / (24 * 60 * 60));
+    let hours = Math.floor((totalSeconds % (24 * 60 * 60)) / (60 * 60));
+    let minutes = Math.floor((totalSeconds % (60 * 60)) / 60);
+    let seconds = totalSeconds % 60;
 
     const formattedDays = String(days).padStart(2, '0');
     const formattedHours = String(hours).padStart(2, '0');
     const formattedMinutes = String(minutes).padStart(2, '0');
     const formattedSeconds = String(seconds).padStart(2, '0');
-    return (minus ? '-' : '') + `${formattedDays} days <br>  ${formattedHours}:${formattedMinutes}:${formattedSeconds}`;
 
-    // return {
-    //     days: (minus ? '-' : '') + formattedDays,
-    //     time: `${formattedHours}:${formattedMinutes}:${formattedSeconds}`
-    // };
+    return (minus ? '-' : '') + `${formattedDays} days <br> ${formattedHours}:${formattedMinutes}:${formattedSeconds}`;
 }
 
 
-YearZero = 2024;
-WeekZero = 19;
+let YearZero = 2024;
+let WeekZero = 19;
 const objs = JSON.parse(jsonString);
 
 
@@ -868,14 +868,14 @@ function getDateWeek(date) {
 const today1 = new Date();
 const weekNumber = getDateWeek(today1);
 const year = today1.getFullYear();
-FactIndex = (year - YearZero) * 52 + weekNumber - 8;
+let FactIndex = (year - YearZero) * 52 + weekNumber - 8;
 
 
 document.getElementById("FunFact").innerHTML = "<a href='"+objs[FactIndex]["url"]+"'>"+objs[FactIndex]["name"]+"</a>";
 
 
 const pastFunFacts = document.querySelector(".PastFunFacts tbody");
-index = 0;
+let index = 0;
 objs.slice(0, FactIndex+1).reverse().forEach((obj, index) => {
     const row = document.createElement("tr");
     const sourceCell = document.createElement("td");
@@ -893,8 +893,8 @@ objs.slice(0, FactIndex+1).reverse().forEach((obj, index) => {
     if (obj["additional URLs"]) {
         const additionalLinks = obj["additional URLs"];
         additionalLinks.forEach((nameurl) => {
-            name = nameurl["name"];
-            url = nameurl["url"];
+            let name = nameurl["name"];
+            let url = nameurl["url"];
             const additionalLink = document.createElement("a");
             additionalLink.href = url;
             additionalLink.textContent = name;
@@ -910,7 +910,7 @@ objs.slice(0, FactIndex+1).reverse().forEach((obj, index) => {
     pastFunFacts.appendChild(row);
 });
 
-Deadline = new Date(2025, 5, 23, 23, 59, 59, 0);
+let Deadline = new Date(2025, 4, 23, 23, 59, 59, 0);
 
 function drawCountdown(countdownData) {  // Receive the object
     ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -951,7 +951,7 @@ const countdownData = ToEnd(today, Deadline); // Get the object
 // drawCountdown(countdownData);
 
 window.setInterval(() => {
-    IsClass = false; // Make sure to define IsClass somewhere in your code
+    let IsClass = false; // Make sure to define IsClass somewhere in your code
     if (!IsClass) {
         const today = new Date();
         const countdownData = ToEnd(today, Deadline); // Get the object
