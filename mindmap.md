@@ -42,11 +42,23 @@ markmap:
 ###### ruměnice
   - [pospolná](https://cs.wikipedia.org/wiki/Rum%C4%9Bnice_pospoln%C3%A1)
 
-### klepítkatci
-#### Pavoukovci
-##### pavouci
-###### cedivečkovití
+<!-- ### klepítkatci -->
+### pavoukovci
+#### pavouci
+##### cedivečkovití
   - [vodouch](https://cs.wikipedia.org/wiki/Vodouch_st%C5%99%C3%ADb%C5%99it%C3%BD)
+
+#### pavouci
+#### bičnatci
+#### bičovci
+#### krátkochvosti
+#### roztočovci
+#### roztoči
+#### sekáči
+#### solifugy
+#### štírci
+#### štírenky
+#### štíři
 
 
 ## [strunatci](https://cs.wikipedia.org/wiki/Strunatci)

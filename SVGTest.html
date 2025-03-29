@@ -44,6 +44,149 @@
     </head>
     <body>
 
+
+
+
+
+        <svg width="900" height="700" viewBox="0 0 900 700" xmlns="http://www.w3.org/2000/svg">
+            <rect width="100%" height="100%" fill="white"/>
+        
+            <!-- Grid of black squares -->
+            <g fill="black">
+                <!-- Generate a 5x7 grid -->
+                <!-- (x, y) positions are calculated based on spacing -->
+                <rect x="100" y="100" width="50" height="50"/>
+                <rect x="200" y="100" width="50" height="50"/>
+                <rect x="300" y="100" width="50" height="50"/>
+                <rect x="400" y="100" width="50" height="50"/>
+                <rect x="500" y="100" width="50" height="50"/>
+                <rect x="600" y="100" width="50" height="50"/>
+                <rect x="700" y="100" width="50" height="50"/>
+        
+                <rect x="100" y="200" width="50" height="50"/>
+                <rect x="200" y="200" width="50" height="50"/>
+                <rect x="300" y="200" width="50" height="50"/>
+                <rect x="400" y="200" width="50" height="50"/>
+                <rect x="500" y="200" width="50" height="50"/>
+                <rect x="600" y="200" width="50" height="50"/>
+                <rect x="700" y="200" width="50" height="50"/>
+        
+                <rect x="100" y="300" width="50" height="50"/>
+                <rect x="200" y="300" width="50" height="50"/>
+                <rect x="300" y="300" width="50" height="50"/>
+                <rect x="400" y="300" width="50" height="50"/>
+                <rect x="500" y="300" width="50" height="50"/>
+                <rect x="600" y="300" width="50" height="50"/>
+                <rect x="700" y="300" width="50" height="50"/>
+        
+                <rect x="100" y="400" width="50" height="50"/>
+                <rect x="200" y="400" width="50" height="50"/>
+                <rect x="300" y="400" width="50" height="50"/>
+                <rect x="400" y="400" width="50" height="50"/>
+                <rect x="500" y="400" width="50" height="50"/>
+                <rect x="600" y="400" width="50" height="50"/>
+                <rect x="700" y="400" width="50" height="50"/>
+        
+                <rect x="100" y="500" width="50" height="50"/>
+                <rect x="200" y="500" width="50" height="50"/>
+                <rect x="300" y="500" width="50" height="50"/>
+                <rect x="400" y="500" width="50" height="50"/>
+                <rect x="500" y="500" width="50" height="50"/>
+                <rect x="600" y="500" width="50" height="50"/>
+                <rect x="700" y="500" width="50" height="50"/>
+            </g>
+        
+            <!-- Middle square with a triangle cut -->
+            <polygon points="400,300 450,350 400,350" fill="white"/>
+            <rect x="402.5" y="302.5" width="45" height="45" stroke="black" stroke-width="5" fill="none"/>
+        
+            <!-- Function to draw small crosses -->
+            <g stroke="black" stroke-width="0.5">
+                <!-- Crosses around the middle square -->
+                <line id="cross1a" x1="373" y1="273" x2="377" y2="277"/>
+                <line id="cross1b" x1="373" y1="277" x2="377" y2="273"/>
+        
+                <line id="cross2a" x1="473" y1="273" x2="477" y2="277"/>
+                <line id="cross2b" x1="473" y1="277" x2="477" y2="273"/>
+
+                <line id="cross3a" x1="373" y1="373" x2="377" y2="377"/>
+                <line id="cross3b" x1="373" y1="377" x2="377" y2="373"/>
+
+                <line id="cross4a" x1="473" y1="373" x2="477" y2="377"/>
+                <line id="cross4b" x1="473" y1="377" x2="477" y2="373"/>
+                
+                <!-- Crosses around the top-right square -->
+                <line id="cross5a" x1="673" y1="73" x2="677" y2="77"/>
+                <line id="cross5b" x1="673" y1="77" x2="677" y2="73"/>
+                
+                <line id="cross6a" x1="773" y1="73" x2="777" y2="77"/>
+                <line id="cross6b" x1="773" y1="77" x2="777" y2="73"/>
+
+                <line id="cross7a" x1="673" y1="173" x2="677" y2="177"/>
+                <line id="cross7b" x1="673" y1="177" x2="677" y2="173"/>
+
+                <line id="cross8a" x1="773" y1="173" x2="777" y2="177"/>
+                <line id="cross8b" x1="773" y1="177" x2="777" y2="173"/>
+
+            <!-- Orange circles around the crosses -->
+            <g stroke="orange" stroke-width="0.5" fill="none">
+                <circle id="circle5" cx="675" cy="75" r="8"/>
+                <circle id="circle6" cx="775" cy="75" r="8"/>
+                <circle id="circle7" cx="675" cy="175" r="8"/>
+                <circle id="circle8" cx="775" cy="175" r="8"/>
+            </g>
+        </svg>
+        
+        
+        <button onclick="moveCrosses()">Move asd Crosses</button>
+
+        <script>
+            const offset = 5; // Amount to move the crosses
+
+
+            moveCrossToCenter('cross1a', 'cross1b', 1, 1);
+            moveCrossToCenter('cross2a', 'cross2b', -1, 1);
+            moveCrossToCenter('cross3a', 'cross3b', 1, -1);
+            moveCrossToCenter('cross4a', 'cross4b', -1, -1);
+
+            moveCrossToCenter('cross5a', 'cross5b', 1, 1);
+            moveCrossToCenter('cross6a', 'cross6b', -1, 1);
+            moveCrossToCenter('cross7a', 'cross7b', 1, -1);
+            moveCrossToCenter('cross8a', 'cross8b', -1, -1);
+
+            moveCircleToCenter('circle5', 1, 1);
+            moveCircleToCenter('circle6', -1, 1);
+            moveCircleToCenter('circle7', 1, -1);
+            moveCircleToCenter('circle8', -1, -1);
+            
+            
+            function moveCircleToCenter(id, dirX, dirY) {
+                const line = document.getElementById(id);
+
+                line.setAttribute('cx', parseInt(line.getAttribute('cx')) + offset*dirX);
+                line.setAttribute('cy', parseInt(line.getAttribute('cy')) + offset*dirY);
+
+            }
+    
+            function moveCrossToCenter(id1, id2, dirX, dirY) {
+                const line1 = document.getElementById(id1);
+                const line2 = document.getElementById(id2);
+
+                line1.setAttribute('x1', parseInt(line1.getAttribute('x1')) + offset*dirX);
+                line1.setAttribute('x2', parseInt(line1.getAttribute('x2')) + offset*dirX);
+                line1.setAttribute('y1', parseInt(line1.getAttribute('y1')) + offset*dirY);
+                line1.setAttribute('y2', parseInt(line1.getAttribute('y2')) + offset*dirY);
+
+                line2.setAttribute('x1', parseInt(line2.getAttribute('x1')) + offset*dirX);
+                line2.setAttribute('x2', parseInt(line2.getAttribute('x2')) + offset*dirX);
+                line2.setAttribute('y1', parseInt(line2.getAttribute('y1')) + offset*dirY);
+                line2.setAttribute('y2', parseInt(line2.getAttribute('y2')) + offset*dirY);
+            }
+
+        </script>
+
+
+
         <svg viewBox="0 0 200 200" width="200" height="200" xmlns="http://www.w3.org/2000/svg">
             <symbol id="Example" class="Example">
                 <circle class="outer" r="60" cx="80" cy="80" fill="none" stroke="black" stroke-width="10" />
