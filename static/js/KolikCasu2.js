@@ -1228,8 +1228,18 @@ window.setInterval(() => {
     let IsClass = false; // Make sure to define IsClass somewhere in your code
     if (!IsClass) {
         const today = new Date();
+
+        
+        const startDeadline = new Date(2025, 5, 9, 0, 0, 0, 0);
+        const endDeadline = new Date(2025, 5, 27, 23, 59, 59, 0);
+        // Pick a random time between startDeadline and endDeadline
+        const randomTime = startDeadline.getTime() + Math.random() * (endDeadline.getTime() - startDeadline.getTime());
+        Deadline = new Date(randomTime);
+
+
+
         const countdownData = ToEnd(today, Deadline); // Get the object
-        document.getElementById("ClasName").innerHTML = "Diplomka";
+        document.getElementById("ClasName").innerHTML = "Státnice";
         document.getElementById("Time").innerHTML =ToEnd(today, Deadline);
 
 
