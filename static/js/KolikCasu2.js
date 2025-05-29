@@ -1184,7 +1184,7 @@ objs.slice(0, FactIndex+1).reverse().forEach((obj, index) => {
     pastFunFacts.appendChild(row);
 });
 
-let Deadline = new Date(2025, 4, 23, 23, 59, 59, 0);
+let Deadline = new Date(2025, 5, 12, 9, 30, 0, 0);
 
 function drawCountdown(countdownData) {  // Receive the object
     ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -1230,11 +1230,11 @@ window.setInterval(() => {
         const today = new Date();
 
         
-        const startDeadline = new Date(2025, 5, 9, 0, 0, 0, 0);
-        const endDeadline = new Date(2025, 5, 27, 23, 59, 59, 0);
-        // Pick a random time between startDeadline and endDeadline
-        const randomTime = startDeadline.getTime() + Math.random() * (endDeadline.getTime() - startDeadline.getTime());
-        Deadline = new Date(randomTime);
+        // const startDeadline = new Date(2025, 5, 9, 0, 0, 0, 0);
+        // const endDeadline = new Date(2025, 5, 27, 23, 59, 59, 0);
+        // // Pick a random time between startDeadline and endDeadline
+        // const randomTime = startDeadline.getTime() + Math.random() * (endDeadline.getTime() - startDeadline.getTime());
+        // Deadline = new Date(randomTime);
 
 
 
