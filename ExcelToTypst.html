@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Excel to Typst Converter</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.5/xlsx.full.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body class="bg-gray-100 min-h-screen p-6">
+    <div class="max-w-4xl mx-auto bg-white shadow-lg rounded-lg p-8">
+      <h1 class="text-3xl font-bold text-center text-gray-800 mb-6">
+        Excel to Typst Converter
+      </h1>
+
+
+        <div class="bg-blue-50 border-l-4 border-blue-400 p-4 mb-6">
+            <p class="text-sm text-blue-700">
+                <strong>Attribution:</strong> This tool is based on code from 
+                <a href="https://github.com/hongjr03/excel-to-typst" class="underline hover:text-blue-900" target="_blank" rel="noopener noreferrer">
+                    hongjr03/excel-to-typst
+                </a> on GitHub.
+            </p>
+        </div>
+
+      <p class="text-gray-700 text-lg mb-6">
+        Select an Excel file and click the "Convert" button to generate Typst code. Jump to:
+        <a
+          href="ClipboardToTypst.html"
+          class="text-blue-500 font-semibold mb-6"
+        >
+          Clipboard to Typst Converter
+        </a>
+      </p>
+
+      <div class="flex items-center justify-center">
+        <label for="file-input" class="sr-only">Select Excel file</label>
+        <input
+          type="file"
+          id="file-input"
+          accept=".xlsx"
+          placeholder="Select Excel file"
+          class="block w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-violet-50 file:text-violet-700 hover:file:bg-violet-100"
+          onchange="if (this.files.length > 0) handleUpload()"
+        />
+        <select
+          id="sheet-select"
+          aria-label="Select Excel sheet"
+          class="ml-4 w-full text-sm text-slate-500 border border-gray-300 rounded-lg py-2 px-4"
+        ></select>
+      </div>
+
+      <button
+        onclick="handleConvert()"
+        class="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded transition duration-300 mt-4"
+      >
+        Convert
+      </button>
+      <div>
+        <label for="typst-code" class="block text-sm font-medium text-gray-700 mt-4">Generated Typst Code:</label>
+        <textarea
+          id="typst-code"
+          class="w-full h-[500px] p-4 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none resize-y mt-2"
+        ></textarea>
+      </div>
+    </div>
+
+    <script>
+      function handleUpload() {
+        const fileInput = document.getElementById("file-input");
+        const file = fileInput.files[0];
+
+        if (!file || !file.name.endsWith(".xlsx")) {
+          alert("Please select an Excel file");
+          return;
+        }
+
+        const reader = new FileReader();
+        reader.onload = function (e) {
+          const data = new Uint8Array(e.target.result);
+          const workbook = XLSX.read(data, { type: "array" });
+          const sheetNames = workbook.SheetNames;
+
+          const sheetSelect = document.getElementById("sheet-select");
+          sheetSelect.innerHTML = "";
+          sheetNames.forEach((sheetName) => {
+            const option = document.createElement("option");
+            option.value = sheetName;
+            option.text = sheetName;
+            sheetSelect.appendChild(option);
+          });
+        };
+        reader.readAsArrayBuffer(file);
+      }
+
+      function handleConvert() {
+        const fileInput = document.getElementById("file-input");
+        const file = fileInput.files[0];
+
+        if (!file || !file.name.endsWith(".xlsx")) {
+          alert("Please select an Excel file");
+          return;
+        }
+
+        const reader = new FileReader();
+        reader.onload = function (e) {
+          const data = new Uint8Array(e.target.result);
+          const workbook = XLSX.read(data, { type: "array" });
+          const sheetName = document.getElementById("sheet-select").value;
+          const worksheet = workbook.Sheets[sheetName];
+
+          const typstCode = convertToTypst(worksheet);
+          document.getElementById("typst-code").value = typstCode;
+        };
+        reader.readAsArrayBuffer(file);
+      }
+
+      function convertToTypst(worksheet) {
+        const range = XLSX.utils.decode_range(worksheet["!ref"]);
+        const columns = range.e.c - range.s.c + 1;
+        const merges = worksheet["!merges"] || [];
+
+        let typstCode = `#table(columns: ${columns},\n`;
+
+        for (let row = range.s.r; row <= range.e.r; row++) {
+          typstCode += "  ";
+          for (let col = range.s.c; col <= range.e.c; col++) {
+            const cellAddress = XLSX.utils.encode_cell({ r: row, c: col });
+            const mergeInfo = findMergeInfo(merges, row, col);
+
+            if (mergeInfo) {
+              if (mergeInfo.s.r === row && mergeInfo.s.c === col) {
+                const cell = worksheet[cellAddress];
+                const value = cell ? cell.v : "";
+                const rowspan = mergeInfo.e.r - mergeInfo.s.r + 1;
+                const colspan = mergeInfo.e.c - mergeInfo.s.c + 1;
+
+                typstCode += "table.cell(";
+                if (rowspan > 1) {
+                  typstCode += `rowspan: ${rowspan}, `;
+                }
+                if (colspan > 1) {
+                  typstCode += `colspan: ${colspan}, `;
+                }
+                typstCode = typstCode.replace(/,\s*$/, "");
+                typstCode += `)[${value}], `;
+              }
+            } else {
+              const cell = worksheet[cellAddress];
+              const value = cell ? cell.v : "";
+              typstCode += `[${value}], `;
+            }
+          }
+          typstCode += "\n";
+        }
+
+        typstCode += ")";
+        return typstCode;
+      }
+
+      function findMergeInfo(merges, row, col) {
+        return merges.find(
+          (merge) =>
+            row >= merge.s.r &&
+            row <= merge.e.r &&
+            col >= merge.s.c &&
+            col <= merge.e.c
+        );
+      }
+
+      document
+        .getElementById("typst-code")
+        .addEventListener("input", function () {
+          renderTypst(this.value);
+        });
+    </script>
+  </body>
+</html>
