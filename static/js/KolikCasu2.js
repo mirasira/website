@@ -1184,7 +1184,7 @@ objs.slice(0, FactIndex+1).reverse().forEach((obj, index) => {
     pastFunFacts.appendChild(row);
 });
 
-let Deadline = new Date(2025, 5, 12, 9, 30, 0, 0);
+let Deadline = new Date(2025, 5, 28, 9, 30, 0, 0);
 
 function drawCountdown(countdownData) {  // Receive the object
     ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -1239,7 +1239,7 @@ window.setInterval(() => {
 
 
         const countdownData = ToEnd(today, Deadline); // Get the object
-        document.getElementById("ClasName").innerHTML = "Státnice";
+        document.getElementById("ClasName").innerHTML = "Tábor";
         document.getElementById("Time").innerHTML =ToEnd(today, Deadline);
 
 
