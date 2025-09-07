@@ -1230,16 +1230,16 @@ window.setInterval(() => {
         const today = new Date();
 
         
-        // const startDeadline = new Date(2025, 5, 9, 0, 0, 0, 0);
-        // const endDeadline = new Date(2025, 5, 27, 23, 59, 59, 0);
-        // // Pick a random time between startDeadline and endDeadline
-        // const randomTime = startDeadline.getTime() + Math.random() * (endDeadline.getTime() - startDeadline.getTime());
-        // Deadline = new Date(randomTime);
+        const startDeadline = new Date(2025, 10, 1, 0, 0, 0, 0);
+        const endDeadline = new Date(2026, 10, 1, 0, 0, 0, 0);
+        // Pick a random time between startDeadline and endDeadline
+        const randomTime = startDeadline.getTime() + Math.random() * (endDeadline.getTime() - startDeadline.getTime());
+        Deadline = new Date(randomTime);
 
 
 
         const countdownData = ToEnd(today, Deadline); // Get the object
-        document.getElementById("ClasName").innerHTML = "PhD";
+        document.getElementById("ClasName").innerHTML = "";
         document.getElementById("Time").innerHTML =ToEnd(today, Deadline);
 
 
