@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>QR Code Generator</title>
+  <style>
+    :root{--bg:#0f172a;--card:#0b1220;--muted:#94a3b8;--ring:#38bdf8;--accent:#22c55e}
+    *{box-sizing:border-box}html,body{height:100%}
+    body{margin:0;font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;display:grid;place-items:center;background:radial-gradient(1000px 700px at 10% 10%,#1f2937 0%,var(--bg) 45%) fixed;color:#e5e7eb;padding:24px}
+    .app{width:min(880px,100%);background:linear-gradient(180deg,#0b1220,#0e1626);border:1px solid rgba(148,163,184,.18);border-radius:20px;box-shadow:0 20px 60px rgba(0,0,0,.35), inset 0 1px 0 rgba(255,255,255,.05);padding:22px}
+    header{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:18px}
+    h1{font-size:clamp(18px,2.2vw,22px);margin:0}
+    .hint{color:var(--muted);font-size:14px}
+
+    .grid{display:grid;grid-template-columns:1.2fr .8fr;gap:16px}
+    @media (max-width:800px){.grid{grid-template-columns:1fr}}
+
+    .panel{background:rgba(255,255,255,.02);border:1px solid rgba(148,163,184,.15);border-radius:14px;padding:14px}
+
+    label{display:block;font-size:13px;color:var(--muted);margin-bottom:6px}
+    textarea,input,select{width:100%;background:#0b1220;color:#e5e7eb;border:1px solid rgba(148,163,184,.25);border-radius:10px;padding:10px 12px;font-size:14px}
+    textarea{min-height:110px;resize:vertical}
+    .row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+
+    .actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:12px}
+    .btn{cursor:pointer;padding:10px 14px;border-radius:10px;border:1px solid rgba(148,163,184,.25);background:#0b1220;color:#e5e7eb;font-weight:600;font-size:14px;transition:transform .12s ease, box-shadow .15s ease, border-color .15s ease}
+    .btn:hover{transform:translateY(-1px)}
+    .btn:focus-visible{outline:none;box-shadow:0 0 0 3px rgba(56,189,248,.35);border-color:var(--ring)}
+    .btn.primary{background:linear-gradient(180deg,#27d36b,var(--accent));color:#071a0d;border-color:rgba(0,0,0,.25)}
+
+    .qrwrap{display:grid;place-items:center;min-height:300px}
+    .qrbox{padding:12px;border-radius:12px;background:linear-gradient(180deg,#0b1220,#0b1322);border:1px solid rgba(148,163,184,.2)}
+
+    .toast{color:var(--muted);font-size:13px;min-height:18px;margin-top:8px}
+    footer{margin-top:12px;color:var(--muted);font-size:12px;text-align:center}
+    kbd{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:11px;padding:2px 6px;border-radius:6px;border:1px solid rgba(148,163,184,.35);background:#0b1220}
+  </style>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js" referrerpolicy="no-referrer"></script>
+</head>
+<body>
+  <main class="app" aria-live="polite">
+    <header>
+      <h1>🧾 QR Code Generator</h1>
+      <div class="hint">Type text/URL → QR auto-updates</div>
+    </header>
+
+    <div class="grid">
+      <section class="panel">
+        <label for="text">Text or URL</label>
+        <textarea id="text" placeholder="https://example.com or any text..."></textarea>
+
+        <div class="row" style="margin-top:10px;">
+          <div>
+            <label for="size">Size (px)</label>
+            <input id="size" type="number" min="128" max="1024" step="16" value="320" />
+          </div>
+          <div>
+            <label for="margin">Margin</label>
+            <input id="margin" type="number" min="0" max="20" step="1" value="2" />
+          </div>
+        </div>
+
+        <div class="row" style="margin-top:10px;">
+          <div>
+            <label for="ec">Error correction</label>
+            <select id="ec">
+              <option value="L">L (7%)</option>
+              <option value="M" selected>M (15%)</option>
+              <option value="Q">Q (25%)</option>
+              <option value="H">H (30%)</option>
+            </select>
+          </div>
+          <div>
+            <label for="fg">Foreground</label>
+            <input id="fg" type="color" value="#111827" />
+          </div>
+        </div>
+
+        <div class="actions">
+          <button class="btn primary" id="generate">Generate</button>
+          <button class="btn" id="clear">Clear</button>
+          <button class="btn" id="downloadPng">Download PNG</button>
+          <button class="btn" id="copyPng">Copy PNG</button>
+        </div>
+
+        <div class="toast" id="toast" role="status" aria-live="polite"></div>
+      </section>
+
+      <section class="panel qrwrap">
+        <div class="qrbox" id="qrbox">
+          <div id="qrcanvas"></div>
+        </div>
+      </section>
+    </div>
+
+    <footer>Tip: QR updates live as you type. Download with <kbd>Ctrl</kbd>/<kbd>⌘</kbd>+<kbd>S</kbd>.</footer>
+  </main>
+
+  <script>
+    const el = id => document.getElementById(id);
+    const text = el('text');
+    const size = el('size');
+    const margin = el('margin');
+    const ec = el('ec');
+    const fg = el('fg');
+    const qrcanvas = el('qrcanvas');
+    const qrbox = el('qrbox');
+    const toast = el('toast');
+
+    function speak(msg){ toast.textContent = msg; clearTimeout(speak._t); speak._t=setTimeout(()=>toast.textContent='',2200);} 
+
+    function clamp(n, lo, hi){ return Math.max(lo, Math.min(hi,n)); }
+
+    function ensureContrast(color){
+      // Always ensure dark foreground vs white background
+      const hex=color.replace('#','');
+      const r=parseInt(hex.substr(0,2),16), g=parseInt(hex.substr(2,2),16), b=parseInt(hex.substr(4,2),16);
+      const luminance=(0.299*r+0.587*g+0.114*b)/255;
+      return luminance>0.6? '#000000':'#ffffff';
+    }
+
+    function makeQR(){
+      const value=text.value.trim();
+      if(!value){qrcanvas.innerHTML='';return;}
+      qrcanvas.innerHTML='';
+      const eccMap={L:QRCode.CorrectLevel.L,M:QRCode.CorrectLevel.M,Q:QRCode.CorrectLevel.Q,H:QRCode.CorrectLevel.H};
+      const sizeVal=clamp(+size.value||320,128,1024);
+      const fgColor=fg.value;
+      const finalFg=fgColor.toLowerCase()==='#ffffff'? '#000000':fgColor;
+      new QRCode(qrcanvas,{
+        text:value,
+        width:sizeVal,
+        height:sizeVal,
+        colorDark:finalFg,
+        colorLight:'#ffffff',
+        correctLevel:eccMap[ec.value]||QRCode.CorrectLevel.M,
+      });
+      qrbox.style.padding=clamp(+margin.value||2,0,20)+'px';
+    }
+
+    function getCanvas(){
+      const img=qrcanvas.querySelector('img');
+      if(img){const c=document.createElement('canvas');const w=img.naturalWidth||img.width;const h=img.naturalHeight||img.height;c.width=w;c.height=h;const ctx=c.getContext('2d');ctx.fillStyle='#fff';ctx.fillRect(0,0,w,h);ctx.drawImage(img,0,0,w,h);return c;}
+      return qrcanvas.querySelector('canvas');
+    }
+
+    function downloadPNG(){
+      const c=getCanvas();if(!c){speak('Generate a QR first.');return;}
+      const a=document.createElement('a');a.download='qr-code.png';a.href=c.toDataURL('image/png');a.click();
+    }
+
+    async function copyPNG(){
+      const c=getCanvas();if(!c){speak('Generate a QR first.');return;}
+      try{const blob=await new Promise(res=>c.toBlob(res,'image/png'));await navigator.clipboard.write([new ClipboardItem({'image/png':blob})]);speak('PNG copied.');}catch(e){speak('Clipboard image copy not supported.');}
+    }
+
+    function clearAll(){ text.value=''; qrcanvas.innerHTML=''; }
+
+    document.getElementById('generate').addEventListener('click',makeQR);
+    document.getElementById('clear').addEventListener('click',clearAll);
+    document.getElementById('downloadPng').addEventListener('click',downloadPNG);
+    document.getElementById('copyPng').addEventListener('click',copyPNG);
+
+    [text,size,margin,ec,fg].forEach(inp=> inp.addEventListener('input', makeQR));
+
+    text.value='https://example.com';
+    makeQR();
+  </script>
+</body>
+</html>

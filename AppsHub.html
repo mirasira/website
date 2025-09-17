@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Utility Toolbox</title>
+  <meta name="description" content="A tiny collection of no‑bloat tools." />
+  <style>
+    :root{--bg:#0f172a;--panel:#0b1220;--muted:#94a3b8;--ring:#38bdf8;--text:#e5e7eb;--card:#0d1424;--border:rgba(148,163,184,.22)}
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{margin:0;font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;background:radial-gradient(1200px 800px at 10% 10%,#1f2937 0%,var(--bg) 45%) fixed;color:var(--text);display:grid;grid-template-rows:auto 1fr auto;min-height:100dvh}
+    header,footer{padding:20px 24px}
+    main{padding:8px 24px 24px}
+    .wrap{max-width:1100px;margin:0 auto}
+    header .bar{display:flex;gap:14px;align-items:center;justify-content:space-between}
+    h1{margin:0;font-size:clamp(20px,3.2vw,28px)}
+    .muted{color:var(--muted)}
+    .panel{background:linear-gradient(180deg,#0b1220,#0d1628);border:1px solid var(--border);border-radius:18px;padding:14px}
+    .search{display:flex;gap:10px;align-items:center}
+    .search input{flex:1;min-width:200px;padding:12px 14px;border-radius:12px;border:1px solid var(--border);background:#0b1220;color:var(--text);font-size:14px}
+    .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:14px}
+    @media (max-width:980px){.grid{grid-template-columns:repeat(2,1fr)}}
+    @media (max-width:620px){.grid{grid-template-columns:1fr}}
+    .card{position:relative;display:flex;flex-direction:column;gap:10px;padding:16px;background:linear-gradient(180deg,var(--card),#0b1220);border:1px solid var(--border);border-radius:16px;box-shadow:0 20px 60px rgba(0,0,0,.35), inset 0 1px 0 rgba(255,255,255,.05)}
+    .card h3{margin:0;font-size:18px}
+    .card p{margin:0;color:var(--muted);font-size:14px}
+    .badge{font-size:12px;color:#a5b4fc;background:#11153a;border:1px solid #3844a7;border-radius:999px;padding:4px 8px}
+    .actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:6px}
+    .btn{cursor:pointer;display:inline-flex;align-items:center;gap:8px;padding:10px 12px;border-radius:10px;border:1px solid var(--border);background:#0b1220;color:var(--text);font-weight:600;font-size:14px;text-decoration:none}
+    .btn:focus-visible{outline:none;box-shadow:0 0 0 3px rgba(56,189,248,.35);border-color:var(--ring)}
+    .btn.primary{background:linear-gradient(180deg,#27d36b,#22c55e);color:#071a0d;border-color:rgba(0,0,0,.25)}
+    .kbd{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:12px;padding:2px 6px;border-radius:6px;border:1px solid var(--border);background:#0b1220;color:var(--muted)}
+    .hint{font-size:12px;color:var(--muted)}
+  </style>
+</head>
+<body>
+  <header>
+    <div class="wrap bar">
+      <div>
+        <h1>🧰 Utility Toolbox</h1>
+        <div class="muted">A tiny collection of distraction‑free tools.</div>
+      </div>
+      <div class="panel search" style="min-width:260px">
+        <input id="search" placeholder="Filter tools… (e.g., color, QR)" aria-label="Filter tools" />
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <div class="wrap">
+      <div id="grid" class="grid" role="list"></div>
+      <div class="hint" style="margin-top:10px">Tip: Bookmark this page. All tools are single‑file and super fast.</div>
+    </div>
+  </main>
+
+  <footer>
+    <div class="wrap muted">Built for you. Add or remove cards by editing the <span class="kbd">tools</span> array in the HTML.</div>
+  </footer>
+
+  <script>
+    // 🔧 Register your tools here. Update the hrefs to your filenames.
+    const tools = [
+      {
+        id: 'color',
+        emoji: '🎨',
+        title: 'Random Color Generator',
+        desc: 'Generate a random color, preview it, and copy the hex.',
+        href: 'ColorGenerator.html', // ← rename to your color file or adjust
+        tags: ['color','design','hex']
+      },
+      {
+        id: 'qr',
+        emoji: '🧾',
+        title: 'QR Code Generator',
+        desc: 'Create QR codes from text/URLs, download or copy PNG.',
+        href: 'GenerateQR.html', // ← rename to your QR file or adjust
+        tags: ['qr','code','link','image']
+      },
+      // Example placeholders for future mini‑apps:
+      // { id: 'ipsum', emoji: '📄', title: 'Lorem Ipsum', desc: 'Quick dummy text generator.', href: 'lorem-ipsum.html', tags: ['text'] },
+      // { id: 'timer', emoji: '⏱️', title: 'Pomodoro Timer', desc: 'Lightweight focus timer.', href: 'pomodoro.html', tags: ['time'] },
+    ];
+
+    const grid = document.getElementById('grid');
+    const q = document.getElementById('search');
+
+    function render(list){
+      grid.innerHTML = '';
+      list.forEach(t => {
+        const card = document.createElement('article');
+        card.className = 'card';
+        card.setAttribute('role','listitem');
+        card.innerHTML = `
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:10px">
+            <div class="badge">${t.emoji} Tool</div>
+          </div>
+          <h3>${t.title}</h3>
+          <p>${t.desc}</p>
+          <div class="actions">
+            <a class="btn primary" href="${t.href}">Open</a>
+            <a class="btn" href="${t.href}" download>Download</a>
+          </div>
+        `;
+        grid.appendChild(card);
+      });
+    }
+
+    function filter(){
+      const v = (q.value||'').toLowerCase().trim();
+      if(!v){ render(tools); return; }
+      const out = tools.filter(t => [t.title,...(t.tags||[]),t.desc].join(' ').toLowerCase().includes(v));
+      render(out);
+    }
+
+    q.addEventListener('input', filter);
+    render(tools);
+  </script>
+</body>
+</html>
