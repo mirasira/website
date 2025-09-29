@@ -1,73 +1,385 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Timeline</title>
-    <link rel="stylesheet" href="static/css/Timeline.css">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Earth History Zoomable Timeline</title>
+  <style>
+    :root {
+      --bg: #0b0f16;
+      --panel: #111827;
+      --text: #e5e7eb;
+      --muted: #9ca3af;
+      --accent: #60a5fa;
+      --grid: #1f2937;
+      --event: #fbbf24;
+    }
+    html, body { height: 100%; }
+    body {
+      margin: 0; font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji";
+      background: var(--bg); color: var(--text); display: flex; flex-direction: column;
+    }
+    header { padding: 16px 20px; background: linear-gradient(180deg, #0b1020, transparent); border-bottom: 1px solid #111827; }
+    header h1 { margin: 0; font-size: 20px; letter-spacing: .3px; }
+    header p { margin: 4px 0 0; color: var(--muted); }
+    .container { padding: 16px; display: grid; gap: 16px; grid-template-columns: 1fr; }
+    .card { background: var(--panel); border: 1px solid #1f2937; border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,.25); overflow: hidden; }
+    .toolbar { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; padding: 12px; border-bottom: 1px solid #1f2937; background: #0f1625; }
+    .toolbar button, .toolbar select { background: #0d1422; color: var(--text); border: 1px solid #243041; border-radius: 10px; padding: 8px 12px; cursor: pointer; font-size: 14px; }
+    .toolbar button:hover { border-color: var(--accent); }
+    .toolbar .spacer { flex: 1; }
+    .legend { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+    .legend .item { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; color: var(--muted); }
+    .legend .swatch { width: 12px; height: 12px; border-radius: 3px; display: inline-block; border: 1px solid rgba(255,255,255,.2); }
+
+    .plot { height: 520px; }
+    .overview { height: 120px; border-top: 1px dashed #1f2937; }
+
+    .tooltip {
+      position: fixed; pointer-events: none; background: rgba(15,23,42,.9);
+      color: #fff; padding: 8px 10px; font-size: 12px; border: 1px solid #334155;
+      border-radius: 8px; box-shadow: 0 5px 24px rgba(0,0,0,.35); opacity: 0; transition: opacity .12s ease;
+      max-width: min(360px, 90vw); line-height: 1.3;
+    }
+    .axis path, .axis line { stroke: var(--grid); }
+    .axis text { fill: var(--muted); font-size: 12px; }
+    .grid line { stroke: #172036; }
+    .eon-band { opacity: .24; }
+    .event { cursor: pointer; }
+    .event text { font-size: 11px; fill: #d1d5db; }
+  </style>
 </head>
 <body>
-    <div class="timeline">
-        <div class="container left">
-            <div class="date">15 Dec</div>
-            <i class="icon fa fa-home"></i>
-            <div class="content">
-                <h2>Lorem ipsum dolor sit amet</h2>
-                <p>
-                    Lorem ipsum dolor sit amet elit. Aliquam odio dolor, id luctus erat sagittis non. Ut blandit semper pretium.
-                </p>
-            </div>
-        </div>
-        <div class="container right">
-            <div class="date">22 Oct</div>
-            <i class="icon fa fa-gift"></i>
-            <div class="content">
-                <h2>Lorem ipsum dolor sit amet</h2>
-                <p>
-                    Lorem ipsum dolor sit amet elit. Aliquam odio dolor, id luctus erat sagittis non. Ut blandit semper pretium.
-                </p>
-            </div>
-        </div>
-        <div class="container left">
-            <div class="date">10 Jul</div>
-            <i class="icon fa fa-user"></i>
-            <div class="content">
-                <h2>Lorem ipsum dolor sit amet</h2>
-                <p>
-                    Lorem ipsum dolor sit amet elit. Aliquam odio dolor, id luctus erat sagittis non. Ut blandit semper pretium.
-                </p>
-            </div>
-        </div>
-        <div class="container right">
-            <div class="date">18 May</div>
-            <i class="icon fa fa-running"></i>
-            <div class="content">
-                <h2>Lorem ipsum dolor sit amet</h2>
-                <p>
-                    Lorem ipsum dolor sit amet elit. Aliquam odio dolor, id luctus erat sagittis non. Ut blandit semper pretium.
-                </p>
-            </div>
-        </div>
-        <div class="container left">
-            <div class="date">10 Feb</div>
-            <i class="icon fa fa-cog"></i>
-            <div class="content">
-                <h2>Lorem ipsum dolor sit amet</h2>
-                <p>
-                    Lorem ipsum dolor sit amet elit. Aliquam odio dolor, id luctus erat sagittis non. Ut blandit semper pretium.
-                </p>
-            </div>
-        </div>
-        <div class="container right">
-            <div class="date">01 Jan</div>
-            <i class="icon fa fa-certificate"></i>
-            <div class="content">
-                <h2>Lorem ipsum dolor sit amet</h2>
-                <p>
-                    Lorem ipsum dolor sit amet elit. Aliquam odio dolor, id luctus erat sagittis non. Ut blandit semper pretium.
-                </p>
-            </div>
-        </div>
+  <header>
+    <h1>Earth History Timeline</h1>
+    <p>Zoom & pan the main chart, or drag the selection on the overview. Ages are in million years ago (Ma), 0 = Present.</p>
+  </header>
+
+  <div class="container">
+    <div class="card">
+      <div class="toolbar">
+        <button id="zoomIn">＋ Zoom In</button>
+        <button id="zoomOut">－ Zoom Out</button>
+        <button id="reset">Reset View</button>
+        <div class="spacer"></div>
+        <label>Layers:</label>
+        <label><input type="checkbox" id="toggleEon" checked> Eons</label>
+        <label><input type="checkbox" id="toggleEra" checked> Eras</label>
+        <label><input type="checkbox" id="togglePeriod"> Periods</label>
+        <div class="spacer"></div>
+        <label>Jump to: </label>
+        <select id="jump" title="Jump to a specific time period">
+          <option value="all">All (4,540 Ma → 0)</option>
+          <option value="phanerozoic">Phanerozoic (541 → 0)</option>
+          <option value="mesozoic">Mesozoic (252 → 66)</option>
+          <option value="cenozoic">Cenozoic (66 → 0)</option>
+          <option value="quaternary">Quaternary (2.58 → 0)</option>
+        </select>
+        <div class="legend" id="legend"></div>
+      </div>
+      <svg id="plot" class="plot" viewBox="0 0 1200 520" preserveAspectRatio="xMidYMid meet"></svg>
+      <svg id="overview" class="overview" viewBox="0 0 1200 120" preserveAspectRatio="xMidYMid meet"></svg>
     </div>
+  </div>
+
+  <div class="tooltip" id="tooltip"></div>
+
+  <!-- D3.js CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+  <script>
+    /***********************
+   * 1) Data Definition  *
+   ***********************/
+  // Geologic bands (extend freely; Periods optional placeholder)
+  const bands = [
+    // EONS
+    { name: 'Hadean', start: 4567, end: 4000, color: '#7e22ce', level: 'Eon' },
+    { name: 'Archean', start: 4000, end: 2500, color: '#2563eb', level: 'Eon' },
+    { name: 'Proterozoic', start: 2500, end: 541, color: '#059669', level: 'Eon' },
+    { name: 'Phanerozoic', start: 541, end: 0, color: '#f97316', level: 'Eon' },
+    // ERAS within Phanerozoic
+    { name: 'Paleozoic', start: 541, end: 252.17, color: '#f59e0b', level: 'Era' },
+    { name: 'Mesozoic', start: 252.17, end: 66, color: '#ef4444', level: 'Era' },
+    { name: 'Cenozoic', start: 66, end: 0, color: '#22c55e', level: 'Era' },
+    // Example Periods (add more later)
+    { name: 'Triassic', start: 251.9, end: 201.4, color: '#ef4444', level: 'Period' },
+    { name: 'Jurassic', start: 201.4, end: 145, color: '#dc2626', level: 'Period' },
+    { name: 'Cretaceous', start: 145, end: 66, color: '#b91c1c', level: 'Period' },
+  ];
+
+  // Events now support points OR spans, plus descriptions & links
+  const events = [
+    { name: 'Earth forms', age: 4540, type: 'Formation', url: 'https://en.wikipedia.org/wiki/Formation_and_evolution_of_the_Solar_System' },
+    { name: 'Oldest zircons', age: 4400, type: 'Geology', url: 'https://en.wikipedia.org/wiki/Oldest_known_rocks' },
+    { name: 'Earliest life (debated)', age: 3800, type: 'Life', url: 'https://en.wikipedia.org/wiki/Earliest_known_life_forms' },
+    { name: 'Great Oxidation Event', start: 2450, end: 2300, type: 'Atmosphere', desc: 'Rise of atmospheric O₂; major biogeochemical shift.', url: 'https://en.wikipedia.org/wiki/Great_Oxidation_Event' },
+    { name: 'Snowball Earth (Cryogenian)', start: 720, end: 635, type: 'Climate', url: 'https://en.wikipedia.org/wiki/Snowball_Earth' },
+    { name: 'Cambrian Explosion', start: 541, end: 520, type: 'Life', url: 'https://en.wikipedia.org/wiki/Cambrian_explosion' },
+    { name: 'Great Dying (end-Permian)', age: 252.17, type: 'Extinction', url: 'https://en.wikipedia.org/wiki/Permian%E2%80%93Triassic_extinction_event' },
+    { name: 'End-Triassic extinction', age: 201.4, type: 'Extinction', url: 'https://en.wikipedia.org/wiki/Triassic%E2%80%93Jurassic_extinction_event' },
+    { name: 'Siberian Traps volcanism', start: 252.3, end: 251.1, type: 'Geology', desc: 'Large igneous province; linked to end-Permian crisis.', url: 'https://en.wikipedia.org/wiki/Siberian_Traps' },
+    { name: 'Chicxulub impact (K–Pg)', age: 66, type: 'Impact', url: 'https://en.wikipedia.org/wiki/Chicxulub_crater' },
+    { name: 'Boring Billion', start: 1800, end: 800, type: 'Geology', desc: 'Relatively stable tectonics/biology; oxygen low.', url: 'https://en.wikipedia.org/wiki/Boring_Billion' },
+    { name: 'Homo genus emerges', age: 2.8, type: 'Life', url: 'https://en.wikipedia.org/wiki/Homo' },
+    { name: 'Homo sapiens', age: 0.3, type: 'Life', url: 'https://en.wikipedia.org/wiki/Homo_sapiens' },
+    { name: 'Last Glacial Maximum', age: 0.021, type: 'Climate', url: 'https://en.wikipedia.org/wiki/Last_Glacial_Maximum' },
+    { name: 'Holocene begins', age: 0.0117, type: 'Epoch', url: 'https://en.wikipedia.org/wiki/Holocene' },
+  ];
+
+  const typeColor = new Map([
+    ['Formation', '#eab308'],
+    ['Geology', '#38bdf8'],
+    ['Life', '#a78bfa'],
+    ['Atmosphere', '#22d3ee'],
+    ['Climate', '#14b8a6'],
+    ['Extinction', '#f87171'],
+    ['Impact', '#fb7185'],
+    ['Epoch', '#34d399'],
+  ]);
+
+  /***********************
+   * 2) Chart Dimensions *
+   ***********************/
+  const plotSvg = d3.select('#plot');
+  const overviewSvg = d3.select('#overview');
+  const tooltip = d3.select('#tooltip');
+
+  const plotMargin = { top: 20, right: 28, bottom: 36, left: 54 };
+  const overviewMargin = { top: 8, right: 28, bottom: 24, left: 54 };
+
+  function getPlotSize() {
+    const { width, height } = plotSvg.node().getBoundingClientRect();
+    return { width, height, innerW: width - plotMargin.left - plotMargin.right, innerH: height - plotMargin.top - plotMargin.bottom };
+  }
+  function getOverviewSize() {
+    const { width, height } = overviewSvg.node().getBoundingClientRect();
+    return { width, height, innerW: width - overviewMargin.left - overviewMargin.right, innerH: height - overviewMargin.top - overviewMargin.bottom };
+  }
+
+  /***********************
+   * 3) Scales & Helpers  *
+   ***********************/
+  const MAX_MA = 4567, MIN_MA = 0;
+  let x = d3.scaleLinear().domain([MAX_MA, MIN_MA]);
+  let xOverview = d3.scaleLinear().domain([MAX_MA, MIN_MA]);
+  const LANES = 8;
+  const lane = d3.scalePoint().domain(d3.range(LANES)).padding(0.6);
+
+  function fmtMa(ma) {
+    if (ma >= 1000) return (ma / 1000).toFixed(ma % 1000 === 0 ? 0 : 2) + ' Ga';
+    if (ma >= 1) return d3.format('~s')(ma) + ' Ma';
+    return (ma * 1000).toFixed(ma * 1000 < 10 ? 2 : ma * 1000 < 100 ? 1 : 0) + ' ka';
+  }
+  function clampDomain([a, b]) { a = Math.max(Math.min(a, MAX_MA), MIN_MA); b = Math.max(Math.min(b, MAX_MA), MIN_MA); if (a === b) b += 0.0001; return [a, b]; }
+
+  // Label visibility helper to avoid overlaps: only draw if band is wide enough
+  function labelFits(scaleX, band, minPx=72) {
+    const w = Math.abs(scaleX(band.end) - scaleX(band.start));
+    return w >= minPx;
+  }
+
+  /***********************
+   * 4) Layout Containers *
+   ***********************/
+  const plotG = plotSvg.append('g').attr('transform', `translate(${plotMargin.left},${plotMargin.top})`);
+  const overviewG = overviewSvg.append('g').attr('transform', `translate(${overviewMargin.left},${overviewMargin.top})`);
+
+  const eonBandsG = plotG.append('g');
+  const gridG = plotG.append('g').attr('class', 'grid');
+  const axisG = plotG.append('g').attr('class', 'axis').attr('transform', 'translate(0,0)');
+  const eventSpansG = plotG.append('g');
+  const eventPointsG = plotG.append('g');
+
+  const ovBandsG = overviewG.append('g');
+  const ovAxisG = overviewG.append('g').attr('class', 'axis');
+  const brushG = overviewG.append('g');
+
+  /***********************
+   * 5) Render Functions  *
+   ***********************/
+  function renderLegend() {
+    const legend = d3.select('#legend');
+    const unique = Array.from(new Set(events.map(d => d.type)));
+    const items = legend.selectAll('.item').data(unique, d => d);
+    const enter = items.enter().append('span').attr('class', 'item');
+    enter.append('span').attr('class', 'swatch').style('background', d => typeColor.get(d) || 'white');
+    enter.append('span').text(d => d);
+    items.exit().remove();
+  }
+
+  function visibleLevels() {
+    return new Set([
+      document.getElementById('toggleEon').checked ? 'Eon' : null,
+      document.getElementById('toggleEra').checked ? 'Era' : null,
+      document.getElementById('togglePeriod').checked ? 'Period' : null,
+    ].filter(Boolean));
+  }
+
+  function renderBands(g, scaleX, size, opacity=1, filterLevels) {
+    const levels = filterLevels || visibleLevels();
+    const inView = bands.filter(b => b.end <= scaleX.domain()[0] && b.start >= scaleX.domain()[1] && levels.has(b.level));
+
+    const bandSel = g.selectAll('.eon-band').data(inView, d => d.name + d.level);
+    const enter = bandSel.enter().append('g').attr('class', 'eon-band');
+    enter.append('rect').attr('y', 0).attr('height', size.innerH).attr('fill', d => d.color).style('opacity', 0.2);
+    enter.append('text').attr('class', 'band-label').attr('y', 14).style('fill', '#cbd5e1').style('font-size', '12px').style('text-anchor', 'start');
+
+    const merged = bandSel.merge(enter);
+    merged.select('rect')
+      .attr('x', d => scaleX(d.start))
+      .attr('width', d => Math.max(1, scaleX(d.end) - scaleX(d.start)))
+      .style('opacity', opacity);
+
+    merged.select('text')
+      .attr('x', d => scaleX(d.start) + 6)
+      .text(d => labelFits(scaleX, d) ? `${d.name} (${fmtMa(d.start)} → ${fmtMa(d.end)})` : '')
+      .style('opacity', d => labelFits(scaleX, d) ? 0.9 : 0);
+
+    bandSel.exit().remove();
+  }
+
+  function renderAxis(g, scaleX, size) {
+    const ticks = scaleX.ticks(8);
+    g.selectAll('*').remove();
+    g.append('g').attr('transform', `translate(0,${size.innerH})`).call(d3.axisBottom(scaleX).tickValues(ticks).tickFormat(fmtMa));
+    gridG.selectAll('*').remove();
+    gridG.append('g').attr('transform', `translate(0,0)`).call(d3.axisBottom(scaleX).tickValues(ticks).tickSize(-size.innerH).tickFormat(''));
+  }
+
+  function renderEvents(scaleX, size) {
+    lane.range([size.innerH - 18, 24]);
+
+    const pointData = events.filter(d => d.age != null);
+    const spanData = events.filter(d => d.start != null && d.end != null);
+
+    // assign lanes deterministically to reduce overlap
+    const allForLanes = [...pointData, ...spanData].sort((a,b) => d3.ascending(a.start ?? a.age, b.start ?? b.age));
+    const laneIndex = new Map();
+    allForLanes.forEach((ev, i) => laneIndex.set(ev, i % LANES));
+
+    // SPANS
+    const spans = eventSpansG.selectAll('.event-span').data(spanData, d => d.name);
+    const spansEnter = spans.enter().append('g').attr('class', 'event-span event');
+    spansEnter.append('rect').attr('rx', 4).attr('ry', 4).attr('height', 14).attr('fill', d => (typeColor.get(d.type) || '#ddd')).attr('opacity', 0.8);
+    spansEnter.append('text').attr('dy', -6).attr('text-anchor', 'middle');
+
+    const spansMerged = spans.merge(spansEnter)
+      .attr('transform', d => `translate(${scaleX(d.start)},${lane(laneIndex.get(d))})`)
+      .on('mousemove', (event, d) => showTooltip(event, tooltipHTML(d)))
+      .on('mouseleave', hideTooltip)
+      .on('click', (event, d) => d.url && window.open(d.url, '_blank'));
+
+    spansMerged.select('rect')
+      .attr('width', d => Math.max(2, scaleX(d.end) - scaleX(d.start)));
+
+    spansMerged.select('text')
+      .attr('x', d => (scaleX(d.end) - scaleX(d.start)) / 2)
+      .text(d => d.name);
+
+    spans.exit().remove();
+
+    // POINTS
+    const pts = eventPointsG.selectAll('.event-point').data(pointData, d => d.name);
+    const ptsEnter = pts.enter().append('g').attr('class', 'event-point event');
+    ptsEnter.append('line').attr('y1', 8).attr('y2', -8).attr('stroke', '#334155').attr('stroke-width', 2).attr('opacity', 0.8);
+    ptsEnter.append('circle').attr('r', 5).attr('stroke', 'black').attr('stroke-width', 0.5).attr('fill', d => typeColor.get(d.type) || 'white');
+    ptsEnter.append('text').attr('dy', -8).attr('text-anchor', 'middle').text(d => d.name);
+
+    const ptsMerged = pts.merge(ptsEnter)
+      .attr('transform', d => `translate(${scaleX(d.age)},${lane(laneIndex.get(d))})`)
+      .on('mousemove', (event, d) => showTooltip(event, tooltipHTML(d)))
+      .on('mouseleave', hideTooltip)
+      .on('click', (event, d) => d.url && window.open(d.url, '_blank'));
+
+    pts.exit().remove();
+  }
+
+  function tooltipHTML(d) {
+    const when = d.age != null ? fmtMa(d.age) : `${fmtMa(d.start)} → ${fmtMa(d.end)}`;
+    const desc = d.desc ? `<div style="margin-top:4px;color:#cbd5e1">${d.desc}</div>` : '';
+    const link = d.url ? `<div style="margin-top:6px"><a href="${d.url}" target="_blank" rel="noopener" style="color:#60a5fa;text-decoration:none">Open reference ↗</a></div>` : '';
+    return `<div style="font-weight:600">${d.name}</div><div style="color:#9ca3af">${when}</div>${desc}${link}`;
+  }
+
+  function showTooltip(evt, html) { tooltip.html(html).style('left', (evt.clientX + 12) + 'px').style('top', (evt.clientY + 12) + 'px').style('opacity', 1); }
+  function hideTooltip() { tooltip.style('opacity', 0); }
+
+  /***********************
+   * 6) Overview & Brush  *
+   ***********************/
+  let brush;
+  function setupBrush(size) {
+    brush = d3.brushX().extent([[0, 0], [size.innerW, size.innerH]]).on('brush end', ({selection}) => {
+      if (!selection) return;
+      const [x0, x1] = selection.map(xOverview.invert);
+      updateDomain(clampDomain([x0, x1]));
+    });
+    brushG.selectAll('*').remove();
+    brushG.append('g').attr('class', 'x-brush').call(brush);
+  }
+  function moveBrushToDomain([d0, d1]) { const sel = [xOverview(d0), xOverview(d1)]; brushG.select('.x-brush').call(brush.move, sel); }
+
+  /***********************
+   * 7) Zoom & Controls   *
+   ***********************/
+  const zoom = d3.zoom().scaleExtent([1, 500]).translateExtent([[0, 0], [Infinity, Infinity]]).on('zoom', ({transform}) => {
+    const size = getPlotSize();
+    const zx = transform.rescaleX(xOverview.copy().range([0, size.innerW]));
+    x.range([0, size.innerW]).domain(zx.domain());
+    draw();
+    moveBrushToDomain(x.domain());
+  });
+  plotSvg.call(zoom);
+
+  function updateDomain([d0, d1]) { const size = getPlotSize(); x.range([0, size.innerW]).domain([d0, d1]); draw(); }
+  function jumpTo(key) {
+    const ranges = { all: [MAX_MA, MIN_MA], phanerozoic: [541, 0], mesozoic: [252.17, 66], cenozoic: [66, 0], quaternary: [2.58, 0] };
+    updateDomain(ranges[key] || ranges.all);
+  }
+
+  d3.select('#zoomIn').on('click', () => { plotSvg.transition().call(zoom.scaleBy, 1.6, [plotMargin.left + 40, 0]); });
+  d3.select('#zoomOut').on('click', () => { plotSvg.transition().call(zoom.scaleBy, 1/1.6, [plotMargin.left + 40, 0]); });
+  d3.select('#reset').on('click', () => { jumpTo('all'); plotSvg.transition().call(zoom.transform, d3.zoomIdentity); });
+  d3.select('#jump').on('change', (e) => jumpTo(e.target.value));
+  d3.select('#toggleEon').on('change', draw);
+  d3.select('#toggleEra').on('change', draw);
+  d3.select('#togglePeriod').on('change', draw);
+
+  /***********************
+   * 8) Resize Handling   *
+   ***********************/
+  window.addEventListener('resize', () => { init(); });
+
+  /***********************
+   * 9) Initialization    *
+   ***********************/
+  function init() {
+    renderLegend();
+    const pSize = getPlotSize();
+    const oSize = getOverviewSize();
+    x.range([0, pSize.innerW]);
+    xOverview.range([0, oSize.innerW]);
+    renderBands(ovBandsG, xOverview, oSize, 0.8, new Set(['Eon','Era']));
+    ovAxisG.attr('transform', `translate(0,${oSize.innerH})`).call(d3.axisBottom(xOverview).ticks(10).tickFormat(fmtMa));
+    setupBrush(oSize);
+    updateDomain([MAX_MA, MIN_MA]);
+    moveBrushToDomain([MAX_MA, MIN_MA]);
+  }
+
+  function draw() {
+    const pSize = getPlotSize();
+    renderBands(eonBandsG, x, pSize, 0.28);
+    renderAxis(axisG, x, pSize);
+    renderEvents(x, pSize);
+    plotG.attr('transform', `translate(${plotMargin.left},${plotMargin.top})`);
+    overviewG.attr('transform', `translate(${overviewMargin.left},${overviewMargin.top})`);
+    const clipId = 'clipPlot';
+    plotSvg.select('#' + clipId).remove();
+    plotSvg.append('clipPath').attr('id', clipId).append('rect').attr('x', plotMargin.left).attr('y', plotMargin.top).attr('width', pSize.innerW).attr('height', pSize.innerH);
+    plotG.attr('clip-path', `url(#${clipId})`);
+  }
+
+  init();
+  </script>
 </body>
 </html>

@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>NASA Astronomy Picture of the Day</title>
+  <style>
+    :root { --maxw: 960px; }
+    html, body { margin: 0; font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif; background: #0b1020; color: #e6e8ef; }
+    .container { max-width: var(--maxw); margin: 0 auto; padding: 24px; }
+    header { display: flex; gap: 12px; align-items: center; justify-content: space-between; flex-wrap: wrap; }
+    h1 { font-size: 1.6rem; margin: 0; letter-spacing: .3px; }
+    .controls { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+    input[type="date"] { background: #10162d; border: 1px solid #2a365a; color: #e6e8ef; padding: 8px 10px; border-radius: 8px; }
+    button { background: #2a6df4; border: 0; color: white; padding: 9px 14px; border-radius: 10px; cursor: pointer; font-weight: 600; }
+    button.secondary { background: #1a2444; }
+    button:disabled { opacity: .6; cursor: not-allowed; }
+    .card { background: #0f1530; border: 1px solid #2a365a; border-radius: 14px; overflow: hidden; box-shadow: 0 8px 30px rgba(0,0,0,.35); margin-top: 18px; }
+    .media { background: #050816; display: grid; place-items: center; }
+    .media img { width: 100%; height: auto; display: block; }
+    .media iframe { width: 100%; aspect-ratio: 16/9; border: 0; }
+    .content { padding: 16px; }
+    .title { font-size: 1.25rem; margin: 0 0 6px; }
+    .meta { color: #a9b1d6; font-size: .95rem; margin-bottom: 12px; }
+    .explanation { line-height: 1.6; color: #d5daf0; }
+    .copyright { margin-top: 10px; color: #b7bfdd; font-size: .9rem; }
+    .footer { display: flex; gap: 10px; align-items: center; justify-content: space-between; padding: 14px 16px; border-top: 1px solid #2a365a; background: #0e142d; }
+    .notice { font-size: .9rem; color: #9fb0e0; }
+    .notice a { color: #c4d1ff; }
+    .spacer { flex: 1; }
+    .hidden { display: none !important; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>NASA Astronomy Picture of the Day</h1>
+      <div class="controls">
+        <input id="datePicker" type="date" aria-label="Pick a date" />
+        <button id="loadBtn" title="Load by date">Load</button>
+        <button id="prevBtn" class="secondary" title="Previous day">◀ Prev</button>
+        <button id="nextBtn" class="secondary" title="Next day">Next ▶</button>
+        <button id="randomBtn" title="Random APOD">Random</button>
+      </div>
+    </header>
+
+    <article id="apod" class="card">
+      <div id="media" class="media"></div>
+      <div class="content">
+        <h2 id="title" class="title">Loading…</h2>
+        <div class="meta"><span id="dateLabel"></span></div>
+        <p id="explanation" class="explanation"></p>
+        <div id="copyright" class="copyright hidden"></div>
+      </div>
+      <div class="footer">
+        <div class="notice">Data from NASA APOD API. <a href="https://apod.nasa.gov/apod/astropix.html" target="_blank" rel="noreferrer noopener">Learn more</a>.</div>
+        <div class="spacer"></div>
+        <button id="openOriginal" class="secondary">Open original</button>
+      </div>
+    </article>
+  </div>
+
+  <script>
+    // 🔑 Replace with your API key from https://api.nasa.gov/
+    const API_KEY = "ixsdvUn6zl8IXKK491NsvuWUODiwEXUwfgClxtCy"; // ← replace this!
+    const ENDPOINT = "https://api.nasa.gov/planetary/apod";
+
+    const els = {
+      datePicker: document.getElementById('datePicker'),
+      loadBtn: document.getElementById('loadBtn'),
+      prevBtn: document.getElementById('prevBtn'),
+      nextBtn: document.getElementById('nextBtn'),
+      randomBtn: document.getElementById('randomBtn'),
+      media: document.getElementById('media'),
+      title: document.getElementById('title'),
+      dateLabel: document.getElementById('dateLabel'),
+      explanation: document.getElementById('explanation'),
+      copyright: document.getElementById('copyright'),
+      openOriginal: document.getElementById('openOriginal')
+    };
+
+    // Initialize date picker limits (APOD starts 1995-06-16)
+    (function initDatePicker() {
+      const today = new Date();
+      const tz = new Date(today.getTime() - today.getTimezoneOffset()*60000).toISOString().slice(0,10);
+      els.datePicker.max = tz;
+      els.datePicker.min = '1995-06-16';
+      els.datePicker.value = tz;
+    })();
+
+    // Simple cache to reduce API calls within a session
+    const cache = new Map();
+
+    async function fetchAPOD({ date = null, random = false } = {}) {
+      const url = new URL(ENDPOINT);
+      url.searchParams.set('api_key', API_KEY);
+      url.searchParams.set('thumbs', 'true');
+
+      if (random) {
+        url.searchParams.set('count', '1');
+      } else if (date) {
+        url.searchParams.set('date', date);
+      }
+
+      // Use cache if available
+      const key = url.toString();
+      if (cache.has(key)) return cache.get(key);
+
+      const res = await fetch(url);
+      if (!res.ok) {
+        const msg = `Request failed (${res.status})`;
+        throw new Error(msg);
+      }
+      const data = await res.json();
+      const apod = Array.isArray(data) ? data[0] : data; // handle count=1
+      cache.set(key, apod);
+      return apod;
+    }
+
+    function renderAPOD(apod) {
+      const { title, date, explanation, media_type, url, hdurl, thumbnail_url, copyright } = apod;
+
+      els.title.textContent = title || 'Astronomy Picture of the Day';
+      els.dateLabel.textContent = date || '';
+      els.explanation.textContent = explanation || '';
+
+      // Copyright (optional)
+      if (copyright) {
+        els.copyright.classList.remove('hidden');
+        els.copyright.textContent = `© ${copyright}`;
+      } else {
+        els.copyright.classList.add('hidden');
+        els.copyright.textContent = '';
+      }
+
+      // Media rendering
+      els.media.innerHTML = '';
+
+      if (media_type === 'image') {
+        const img = document.createElement('img');
+        img.loading = 'lazy';
+        img.src = hdurl || url; // prefer HD when available
+        img.alt = title || 'APOD image';
+        els.media.appendChild(img);
+        els.openOriginal.onclick = () => window.open(hdurl || url, '_blank', 'noopener');
+      } else if (media_type === 'video') {
+        // If it's YouTube/Vimeo, try to embed; otherwise show a thumbnail link
+        if (/youtube|vimeo/.test(url)) {
+          const iframe = document.createElement('iframe');
+          iframe.src = url;
+          iframe.allowFullscreen = true;
+          iframe.referrerPolicy = 'no-referrer';
+          els.media.appendChild(iframe);
+        } else {
+          const img = document.createElement('img');
+          img.loading = 'lazy';
+          img.src = thumbnail_url || url; // API provides thumbnail_url when thumbs=true
+          img.alt = title || 'APOD video thumbnail';
+          els.media.appendChild(img);
+        }
+        els.openOriginal.onclick = () => window.open(url, '_blank', 'noopener');
+      } else {
+        els.media.textContent = 'Unsupported media type.';
+        els.openOriginal.onclick = () => {};
+      }
+
+      // Update date picker to this APOD's date (for prev/next to work after Random)
+      if (date) {
+        els.datePicker.value = date;
+      }
+    }
+
+    function shiftDate(current, deltaDays) {
+      const d = new Date(current);
+      d.setDate(d.getDate() + deltaDays);
+      // clamp to [1995-06-16, today]
+      const min = new Date('1995-06-16');
+      const today = new Date();
+      const clamp = (x, a, b) => x < a ? a : (x > b ? b : x);
+      const cd = clamp(d, min, today);
+      return new Date(cd.getTime() - cd.getTimezoneOffset()*60000).toISOString().slice(0,10);
+    }
+
+    async function loadByDate(dateStr) {
+      try {
+        setLoading(true);
+        const apod = await fetchAPOD({ date: dateStr });
+        renderAPOD(apod);
+      } catch (err) {
+        showError(err);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    async function loadRandom() {
+      try {
+        setLoading(true);
+        const apod = await fetchAPOD({ random: true });
+        renderAPOD(apod);
+      } catch (err) {
+        showError(err);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    function showError(err) {
+      els.media.innerHTML = '';
+      els.title.textContent = 'Error loading APOD';
+      els.dateLabel.textContent = '';
+      els.explanation.textContent = (err && err.message) ? err.message : 'Something went wrong. Try again later.';
+      els.copyright.classList.add('hidden');
+      els.openOriginal.onclick = () => {};
+    }
+
+    function setLoading(isLoading) {
+      for (const btn of [els.loadBtn, els.prevBtn, els.nextBtn, els.randomBtn]) {
+        btn.disabled = isLoading;
+      }
+      els.title.textContent = isLoading ? 'Loading…' : els.title.textContent;
+    }
+
+    // UI Events
+    els.loadBtn.addEventListener('click', () => loadByDate(els.datePicker.value));
+    els.randomBtn.addEventListener('click', loadRandom);
+    els.prevBtn.addEventListener('click', () => {
+      const prev = shiftDate(els.datePicker.value, -1);
+      els.datePicker.value = prev;
+      loadByDate(prev);
+    });
+    els.nextBtn.addEventListener('click', () => {
+      const next = shiftDate(els.datePicker.value, 1);
+      els.datePicker.value = next;
+      loadByDate(next);
+    });
+
+    // Load today's APOD on first visit
+    loadByDate(els.datePicker.value);
+  </script>
+</body>
+</html>
