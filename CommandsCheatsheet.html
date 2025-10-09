@@ -191,147 +191,141 @@ CMD ["/print-message.sh"]
         <h1>Karolina</h1>
     </div>
 
+    <!-- Resources and Links -->
     <div class="section">
-        <h2>Login to Karolina</h2>
-        <p class="note">Login to Karolina</p>
-        <pre>karolina</pre>
-        <pre>ssh -i /home/pickplace/KarolinaAccess/id_rsa davidm15@karolina.it4i.cz</pre>
-        <p class="note">Login to Karolina with X11 forwarding</p>
-        <pre>ssh -i /home/pickplace/KarolinaAccess/id_rsa -X davidm15@karolina.it4i.cz </pre>
+        <h2>Useful Links</h2>
+        <ul>
+            <li><a href="https://extranet.it4i.cz/rsweb/karolina" target="_blank" rel="noopener">Cluster usage statistics (Karolina)</a></li>
+            <li><a href="https://profile.e-infra.cz/profile" target="_blank" rel="noopener">Manage your e-INFRA account & add SSH keys</a></li>
+            <li><a href="https://docs.it4i.cz/en/docs/introduction" target="_blank" rel="noopener">Karolina Documentation</a></li>
+            <li><a href="https://scs.it4i.cz/projects" target="_blank" rel="noopener">Project Information</a></li>
+        </ul>
     </div>
 
+    <!-- Login -->
     <div class="section">
-        <h2>Job Management</h2>
-        <p class="note">My jobs</p>
-        <pre>squeue -u $USER <br>squeue --me</pre>
-        <p class="note">Get job info with time limit</p>
-        <pre>squeue --me -l</pre>
-        <p class="note">Cancel job</p>
-        <pre>scancel &lt;job_id&gt;</pre>
-        <p class="note">Submit batch with job</p>
-        <pre>sbatch script.sh</pre>
-        <p class="note">Modify job's time limit</p>
-        <pre>scontrol update JobId=JOBID timelimit=4:00:00</pre>
-
+    <h2>Login to Karolina</h2>
+    <p class="note">Standard SSH login</p>
+    <pre>ssh -i /home/pickplace/KarolinaAccess/id_rsa davidm15@karolina.it4i.cz</pre>
     </div>
 
+    <!-- Job Management -->
     <div class="section">
-        <h2>Allocate Interactive Job</h2>
-        <p class="note">Run interactive job with cpu, one hour:</p>
-        <pre>salloc -A OPEN-29-7 -p qcpu_exp</pre>
-        <p class="note">Run interactive job with gpu, one hour:</p>
-        <pre>salloc -A OPEN-29-7 -p qgpu_exp</pre>
-        <p class="note">For 24 hours</p>
-        <pre>salloc -A OPEN-29-7 -p qgpu</pre>
-        <p class="note">For more GPUs</p>
-        <pre>salloc -A OPEN-29-7 -p qgpu --gpus 8</pre>
-        <p class="note">Set time</p>
-        <pre>salloc -A OPEN-29-7 -p qgpu --gpus 8 --time 24:00:00</pre>
-        <pre>gpus NUM_OF_GPUS TIME</pre>
-        <pre>cpus TIME</pre>
-
-        <a href="https://docs.it4i.cz/general/karolina-partitions/">Karolina partitions</a>
-        <table>
-            <tr>
-              <th><b>Partition</b></th>
-              <th><b>Max Time</b></th>
-            </tr>
-            <tr>
-              <td>qcpu</td>
-              <td>24h</td>
-            </tr>
-            <tr>
-              <td>qcpu_exp</td>
-              <td>1h</td>
-            </tr>
-            <tr>
-              <td>qcpu_free</td>
-              <td>18h</td>
-            </tr>
-          </table>
+    <h2>Job Management</h2>
+    <p class="note">My jobs</p>
+    <pre>squeue -u $USER <br>squeue --me</pre>
+    <p class="note">Get job info with time limit</p>
+    <pre>squeue --me -l</pre>
+    <p class="note">Cancel job</p>
+    <pre>scancel &lt;job_id&gt;</pre>
+    <p class="note">Submit batch job</p>
+    <pre>sbatch script.sh</pre>
+    <p class="note">Modify job time limit</p>
+    <pre>scontrol update JobId=JOBID timelimit=4:00:00</pre>
     </div>
 
+    <!-- Interactive Jobs -->
     <div class="section">
-        <h2>File and Directory Operations</h2>
-        <p class="note">Working directory</p>
-        <pre id="myInput">zeroshot </pre> 
-        <pre id="myInput">/mnt/proj3/open-29-7/mira_ws/Projects/ZeroShotPicking/utils </pre> 
-        <p class="note">Cache directory</p>
-        <pre>cd /scratch/project/open-29-7/.cache</pre>
-        <p class="note">Link to cache directory</p>
-        <pre>ls -l /home/davidm15/.cache</pre>
-        <p class="note">Create link to cache directory</p>
-        <pre>ln -s /scratch/project/open-29-7/.cache /home/davidm15/.cache</pre>
-        <p class="note">Folder path on cluster</p>
-        <pre>/mnt/Karolina/mira_ws/Projects/ZeroShotPicking</pre>
-        <p class="note">nvcc folder example</p>
-        <pre>/mnt/proj3/open-29-7/.conda/envs/GLIP/lib/python3.10/site-packages/nvidia</pre>
+    <h2>Allocate Interactive Job</h2>
+    <p class="note">Interactive CPU job (1 hour)</p>
+    <pre>salloc -A fta-25-64 -p qcpu_exp</pre>
+    <p class="note">Interactive GPU job (1 hour)</p>
+    <pre>salloc -A fta-25-64 -p qgpu_exp</pre>
+    <p class="note">GPU job (24 hours)</p>
+    <pre>salloc -A fta-25-64 -p qgpu</pre>
+    <p class="note">Multiple GPUs</p>
+    <pre>salloc -A fta-25-64 -p qgpu --gpus 8</pre>
+    <p class="note">Custom time allocation</p>
+    <pre>salloc -A fta-25-64 -p qgpu --gpus 8 --time 24:00:00</pre>
+    <p class="note">Using helper functions</p>
+    <pre>gpus NUM_OF_GPUS TIME<br>cpus TIME</pre>
+
+    <a href="https://code.it4i.cz/sccs/docs.it4i.cz/-/blob/79b09ffa4626b9811fd6b938e64882aec83efa2e/docs.it4i/general/karolina-partitions.md" target="_blank">Karolina partitions documentation</a>
+
+    <table>
+        <tr>
+        <th><b>Partition</b></th>
+        <th><b>Max Time</b></th>
+        </tr>
+        <tr><td>qcpu</td><td>24h</td></tr>
+        <tr><td>qcpu_exp</td><td>1h</td></tr>
+        <tr><td>qcpu_free</td><td>18h</td></tr>
+    </table>
     </div>
 
+    <!-- File and Directory Operations -->
     <div class="section">
-        <h2>Mount Network Directory</h2>
-        <pre>mountKarolina</pre>
-        <pre style="font-size: 0.9em; white-space: pre-wrap; word-wrap: break-word;">sshfs -o IdentityFile=/home/pickplace/KarolinaAccess/id_rsa -o ssh_command="ssh -v" davidm15@karolina.it4i.cz:/mnt/proj3/open-29-7 /mnt/Karolina/</pre>
+    <h2>File and Directory Operations</h2>
+    <p class="note">Working directory</p>
+    <pre>zeroshot</pre>
+    <pre>/mnt/proj3/fta-25-64/mira_ws/Projects/ZeroShotPicking/utils</pre>
+    <p class="note">Cache directory</p>
+    <pre>cd /scratch/project/fta-25-64/.cache</pre>
+    <p class="note">Link to cache directory</p>
+    <pre>ls -l /home/davidm15/.cache</pre>
+    <p class="note">Create link to cache directory</p>
+    <pre>ln -s /scratch/project/fta-25-64/.cache /home/davidm15/.cache</pre>
+    <p class="note">Cluster project path</p>
+    <pre>/mnt/proj3/fta-25-64/mira_ws/Projects/ZeroShotPicking</pre>
+    <p class="note">Example nvcc folder</p>
+    <pre>/mnt/proj3/fta-25-64/.conda/envs/GLIP/lib/python3.10/site-packages/nvidia</pre>
     </div>
 
+    <!-- Mounting Network Directory -->
     <div class="section">
-        <h2>Attach to Running Job</h2>
-        <p class="note">NODELIST is the last column when running <code>squeue -u $USER</code></p>
-        <pre>ssh NODELIST</pre>
+    <h2>Mount Network Directory</h2>
+    <pre>mountKarolina</pre>
+    <pre style="font-size: 0.9em; white-space: pre-wrap; word-wrap: break-word;">sshfs -o IdentityFile=/home/pickplace/KarolinaAccess/id_rsa -o ssh_command="ssh -v" davidm15@karolina.it4i.cz:/mnt/proj3/fta-25-64 /mnt/Karolina/</pre>
     </div>
 
+    <!-- Attach to Running Job -->
     <div class="section">
-        <h2>File Size Information</h2>
-        <p class="note">List file sizes in current directory</p>
-        <pre>du -hs * | sort -h</pre>
-        <p class="note">Available space on current system</p>
-        <pre>df -h</pre>
+    <h2>Attach to Running Job</h2>
+    <p class="note">NODELIST is the last column from <code>squeue -u $USER</code></p>
+    <pre>ssh NODELIST</pre>
     </div>
 
+    <!-- Disk Space Info -->
     <div class="section">
-        <h2>Conda Environment</h2>
-        <p class="note">Activate environment</p>
-        <pre>conda activate ZeroShotPicking</pre>
-        <p class="note">Change Python version</p>
-        <pre>ml Python/3.11.5-GCCcore-13.2.0</pre>
+    <h2>File Size Information</h2>
+    <p class="note">List file sizes in current directory</p>
+    <pre>du -hs * | sort -h</pre>
+    <p class="note">Available space on current system</p>
+    <pre>df -h</pre>
     </div>
 
+    <!-- Conda -->
     <div class="section">
-        <h2>X server</h2>
-        <p class="note">Start X server</p>
-        <pre>module load Xvfb <br>Xvfb :99 -screen 0 1024x768x16 & <br>export DISPLAY=:99 </pre>
+    <h2>Conda Environment</h2>
+    <p class="note">Activate environment</p>
+    <pre>conda activate ZeroShotPicking</pre>
+    <p class="note">Change Python version (via module)</p>
+    <pre>ml Python/3.11.5-GCCcore-13.2.0</pre>
     </div>
 
+    <!-- Modules -->
     <div class="section">
-        <h2>Other commands</h2>
-        <p class="note">load GCC model</p>
-        <pre>module load GCC/9.3.0</pre>
+    <h2>Modules</h2>
+    <p class="note">Search available modules</p>
+    <pre>module spider MODULE_NAME</pre>
+    <p class="note">Load a module</p>
+    <pre>module load GCC/9.3.0</pre>
+    <p class="note">Quit spider search</p>
+    <pre>q</pre>
+    <a href="https://docs.it4i.cz/en/docs/software/modules/modules-karolina" target="_blank">Karolina available modules</a>
     </div>
 
+    <!-- Port Forwarding -->
     <div class="section">
-        <h2>Blender</h2>
-        <p class="note">Load blender</p>
-        <pre>ml load Blender/4.0.2-GCCcore-12.2.0</pre>
-        <p class="note">Run headless</p>
-        <pre style="font-size: 0.9em; white-space: pre-wrap; word-wrap: break-word;">blender --background /mnt/proj3/open-29-7/mira_ws/Projects/ZeroShotPicking/utils/Blender/untitled.blend -P /mnt/proj3/open-29-7/mira_ws/Projects/ZeroShotPicking/utils/Blender/script.py</pre>
+    <h2>Port Forwarding</h2>
+    <p class="note">Forward port to Karolina</p>
+    <pre>ssh -i C:\Users\siram\.ssh\it4i -L 5000:localhost:5000 davidm15@karolina.it4i.cz</pre>
+    <p class="note">Forward to specific node</p>
+    <pre>ssh -L 5000:localhost:5000 acn01</pre>
     </div>
 
-    <div class="section">
-        <h2>module</h2>
-        <p class="note">Search modules</p>
-        <pre>module spider MODULE_NAME</pre>
-        <p class="note">Quitting from spider</p>
-        <pre>q</pre>
-    </div>
 
-    <div class="section">
-        <h2>Port forwarding</h2>
-        <p class="note">Forward port to Karolina</p>
-        <pre>ssh -i C:\Users\siram\.ssh\it4i -L 5000:localhost:5000 davidm15@karolina.it4i.cz</pre>
-        <p class="note">Forward to a specific node</p>
-        <pre>ssh -L 5000:localhost:5000 acn01 </pre>
-
-    </div>    
+   
 
     <div class="header" id="tmux">
         <h1>tmux</h1>

@@ -1,0 +1,288 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Text Metrics Counter</title>
+  <style>
+    :root {
+      --bg: #0f172a;       /* slate-900 */
+      --card: #111827;     /* gray-900 */
+      --muted: #94a3b8;    /* slate-400 */
+      --ring: #38bdf8;     /* sky-400 */
+      --btn: #22c55e;      /* green-500 */
+    }
+
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji";
+      background: radial-gradient(1200px 800px at 10% 10%, #1f2937 0%, var(--bg) 45%) no-repeat fixed;
+      color: #e5e7eb; /* gray-200 */
+      display: grid;
+      place-items: center;
+      padding: 24px;
+    }
+
+    .app {
+      width: min(920px, 100%);
+      background: linear-gradient(180deg, #0b1220, var(--card));
+      border: 1px solid rgba(148,163,184,.15);
+      border-radius: 20px;
+      box-shadow: 0 20px 60px rgba(0,0,0,.35), inset 0 1px 0 rgba(255,255,255,.05);
+      padding: 22px;
+    }
+
+    header { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 18px; }
+    h1 { font-size: clamp(18px, 2.2vw, 22px); margin: 0; letter-spacing: .2px; }
+    .hint { color: var(--muted); font-size: 14px; }
+
+    .editor {
+      position: relative;
+      border-radius: 16px;
+      border: 1px solid rgba(255,255,255,.18);
+      overflow: hidden;
+      box-shadow: inset 0 0 0 1px rgba(0,0,0,.2);
+      background: #0b1220;
+    }
+
+    textarea {
+      width: 100%;
+      min-height: clamp(220px, 40vh, 420px);
+      padding: 18px 18px 22px 18px;
+      background: transparent;
+      color: #e5e7eb;
+      border: 0;
+      resize: vertical;
+      font-size: 16px;
+      line-height: 1.6;
+      outline: none;
+    }
+
+    .metrics {
+      display: grid;
+      grid-template-columns: repeat(6, minmax(110px, 1fr));
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .metric {
+      padding: 12px;
+      border-radius: 12px;
+      border: 1px solid rgba(148,163,184,.25);
+      background: #0b1220;
+      display: grid;
+      gap: 6px;
+    }
+    .metric .label { color: var(--muted); font-size: 12px; letter-spacing: .2px; }
+    .metric .value { font-variant-numeric: tabular-nums; font-weight: 700; font-size: 18px; }
+
+    .controls { display: flex; gap: 10px; margin-top: 16px; flex-wrap: wrap; }
+    button { cursor: pointer; }
+
+    .btn {
+      padding: 10px 14px; border-radius: 10px; border: 1px solid rgba(148,163,184,.25);
+      background: #0b1220; color: #e5e7eb; font-weight: 600; font-size: 14px;
+      transition: transform .12s ease, box-shadow .15s ease, border-color .15s ease;
+    }
+    .btn[disabled] { opacity: .5; cursor: not-allowed; }
+    .btn:focus-visible { outline: none; box-shadow: 0 0 0 3px rgba(56,189,248,.35); border-color: var(--ring); }
+    .btn.primary { background: linear-gradient(180deg, #27d36b, var(--btn)); color: #071a0d; border-color: rgba(0,0,0,.25); }
+    .btn.primary:hover { filter: brightness(1.05); }
+    .btn:hover { transform: translateY(-1px); }
+
+    .status-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 10px; }
+    .toast { color: var(--muted); font-size: 13px; min-height: 18px; }
+    .right-hint { color: var(--muted); font-size: 12px; }
+
+    footer { margin-top: 14px; color: var(--muted); font-size: 12px; text-align: center; }
+    kbd { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono"; font-size: 11px; padding: 2px 6px; border-radius: 6px; border: 1px solid rgba(148,163,184,.35); background: #0b1220; }
+
+    /* Responsive tweak: stack metrics on small screens */
+    @media (max-width: 800px) {
+      .metrics { grid-template-columns: repeat(3, minmax(110px, 1fr)); }
+    }
+    @media (max-width: 520px) {
+      .metrics { grid-template-columns: repeat(2, minmax(110px, 1fr)); }
+    }
+  </style>
+</head>
+<body>
+  <main class="app" aria-live="polite">
+    <header>
+      <h1>🧮 Text Metrics Counter</h1>
+      <div class="hint">Type, paste, or drop a file. Press <kbd>Ctrl</kbd> + <kbd>B</kbd> to copy metrics.</div>
+    </header>
+
+    <section class="editor" aria-label="Text editor">
+      <textarea id="input" placeholder="Start typing here..."></textarea>
+    </section>
+
+    <div class="metrics" aria-live="polite">
+      <div class="metric"><div class="label">Characters</div><div class="value" id="chars">0</div></div>
+      <div class="metric"><div class="label">Chars (no spaces)</div><div class="value" id="charsNoSpaces">0</div></div>
+      <div class="metric"><div class="label">Words</div><div class="value" id="words">0</div></div>
+      <div class="metric"><div class="label">Sentences</div><div class="value" id="sentences">0</div></div>
+      <div class="metric"><div class="label">Lines</div><div class="value" id="lines">1</div></div>
+      <div class="metric"><div class="label">Reading time</div><div class="value" id="reading">0s</div></div>
+    </div>
+
+    <div class="controls">
+      <button class="btn primary" id="copyText">Copy text</button>
+      <button class="btn" id="copyMetrics">Copy metrics</button>
+      <button class="btn" id="clear">Clear</button>
+      <button class="btn" id="sample">Insert sample</button>
+      <input type="file" id="file" accept=".txt" hidden />
+      <button class="btn" id="loadFile">Load .txt</button>
+    </div>
+
+    <div class="status-row">
+      <div class="toast" id="toast" role="status" aria-live="polite"></div>
+      <div class="right-hint">Tip: Drop a .txt file on the editor.</div>
+    </div>
+
+    <footer>
+      Keyboard: <kbd>Ctrl</kbd> + <kbd>B</kbd> copy metrics • <kbd>Ctrl</kbd> + <kbd>L</kbd> clear
+    </footer>
+  </main>
+
+  <script>
+    const input = document.getElementById('input');
+    const ids = id => document.getElementById(id);
+    const el = {
+      chars: ids('chars'),
+      charsNoSpaces: ids('charsNoSpaces'),
+      words: ids('words'),
+      sentences: ids('sentences'),
+      lines: ids('lines'),
+      reading: ids('reading'),
+      toast: ids('toast'),
+      fileBtn: ids('loadFile'),
+      fileInput: ids('file'),
+      copyText: ids('copyText'),
+      copyMetrics: ids('copyMetrics'),
+      clear: ids('clear'),
+      sample: ids('sample')
+    };
+
+    function speak(msg, ttl = 2000) {
+      el.toast.textContent = msg;
+      clearTimeout(speak._t);
+      speak._t = setTimeout(() => (el.toast.textContent = ''), ttl);
+    }
+
+    function countMetrics(text) {
+      const chars = text.length;
+      const charsNoSpaces = text.replace(/\s+/g, '').length;
+
+      // Words: groups of letters/numbers/apostrophes between boundaries
+      const wordMatches = text.trim().match(/[A-Za-zÀ-ÖØ-öø-ÿ0-9']+/g);
+      const words = wordMatches ? wordMatches.length : 0;
+
+      // Sentences: split on ., !, ? followed by space/newline or end, while keeping edge cases light
+      const sentenceMatches = text
+        .replace(/\n+/g, ' ')
+        .match(/[^.!?]+[.!?]+(\s|$)|[^.!?]+$/g);
+      const sentences = sentenceMatches ? sentenceMatches.filter(s => s.trim().length > 0).length : 0;
+
+      // Lines: count newline breaks (at least 1 line even if empty)
+      const lines = text.length ? text.split(/\r\n|\r|\n/).length : 1;
+
+      // Reading time: 200 wpm baseline
+      const minutes = words / 200;
+      const reading =
+        minutes < 0.5
+          ? `${Math.max(5, Math.round(minutes * 60))}s`
+          : `${Math.max(1, Math.round(minutes))} min`;
+
+      return { chars, charsNoSpaces, words, sentences, lines, reading };
+    }
+
+    function renderMetrics() {
+      const t = input.value;
+      const m = countMetrics(t);
+      el.chars.textContent = m.chars.toLocaleString();
+      el.charsNoSpaces.textContent = m.charsNoSpaces.toLocaleString();
+      el.words.textContent = m.words.toLocaleString();
+      el.sentences.textContent = m.sentences.toLocaleString();
+      el.lines.textContent = m.lines.toLocaleString();
+      el.reading.textContent = m.reading;
+      document.title = `${m.words} words · Text Metrics Counter`;
+    }
+
+    async function copy(text) {
+      try { await navigator.clipboard.writeText(text); return true; }
+      catch { return false; }
+    }
+
+    function metricsToString() {
+      return [
+        `Characters: ${el.chars.textContent}`,
+        `Characters (no spaces): ${el.charsNoSpaces.textContent}`,
+        `Words: ${el.words.textContent}`,
+        `Sentences: ${el.sentences.textContent}`,
+        `Lines: ${el.lines.textContent}`,
+        `Reading time: ${el.reading.textContent}`
+      ].join('\n');
+    }
+
+    // Events
+    input.addEventListener('input', renderMetrics);
+
+    // Drag & drop file
+    input.addEventListener('dragover', e => { e.preventDefault(); });
+    input.addEventListener('drop', async e => {
+      e.preventDefault();
+      const file = e.dataTransfer.files?.[0];
+      if (!file) return;
+      if (!file.type && !file.name.endsWith('.txt')) {
+        speak('Please drop a .txt file');
+        return;
+      }
+      const text = await file.text();
+      input.value = text;
+      renderMetrics();
+      speak(`Loaded ${file.name}`);
+    });
+
+    // Buttons
+    el.copyText.addEventListener('click', async () => {
+      const ok = await copy(input.value);
+      speak(ok ? 'Text copied' : 'Copy failed');
+    });
+    el.copyMetrics.addEventListener('click', async () => {
+      const ok = await copy(metricsToString());
+      speak(ok ? 'Metrics copied' : 'Copy failed');
+    });
+    el.clear.addEventListener('click', () => { input.value = ''; renderMetrics(); speak('Cleared'); });
+    el.sample.addEventListener('click', () => {
+      input.value = `The quick brown fox jumps over the lazy dog.
+This is a second line — with punctuation! Does it count as sentences? Yes.
+Numbers 123 and symbols #, $, % shouldn’t break counts.`;
+      renderMetrics();
+      speak('Sample inserted');
+    });
+    el.fileBtn.addEventListener('click', () => el.fileInput.click());
+    el.fileInput.addEventListener('change', async () => {
+      const file = el.fileInput.files?.[0];
+      if (!file) return;
+      const text = await file.text();
+      input.value = text;
+      renderMetrics();
+      speak(`Loaded ${file.name}`);
+      el.fileInput.value = '';
+    });
+
+    // Keyboard shortcuts
+    document.addEventListener('keydown', (e) => {
+      const meta = e.ctrlKey || e.metaKey;
+      if (meta && e.key.toLowerCase() === 'b') { e.preventDefault(); el.copyMetrics.click(); }
+      if (meta && e.key.toLowerCase() === 'l') { e.preventDefault(); el.clear.click(); }
+    });
+
+    // Initial render
+    renderMetrics();
+  </script>
+</body>
+</html>
