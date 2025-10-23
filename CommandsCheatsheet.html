@@ -240,7 +240,7 @@ CMD ["/print-message.sh"]
     <p class="note">Using helper functions</p>
     <pre>gpus NUM_OF_GPUS TIME<br>cpus TIME</pre>
 
-    <a href="https://code.it4i.cz/sccs/docs.it4i.cz/-/blob/79b09ffa4626b9811fd6b938e64882aec83efa2e/docs.it4i/general/karolina-partitions.md" target="_blank">Karolina partitions documentation</a>
+    <a href="https://code.it4i.cz/sccs/docs.it4i.cz/-/blob/79b09ffa4626b9811fd6b938e64882aec83efa2e/docs.it4i/general/karolina-partitions.md" target="_blank" rel="noopener">Karolina partitions documentation</a>
 
     <table>
         <tr>
@@ -292,16 +292,11 @@ CMD ["/print-message.sh"]
     <pre>du -hs * | sort -h</pre>
     <p class="note">Available space on current system</p>
     <pre>df -h</pre>
+    <p class="note">Available space in main folders</p>
+    <pre>df -h /scratch/project/fta-25-64</pre>
+    <pre>df -h /mnt/proj3/fta-25-64</pre>
     </div>
 
-    <!-- Conda -->
-    <div class="section">
-    <h2>Conda Environment</h2>
-    <p class="note">Activate environment</p>
-    <pre>conda activate ZeroShotPicking</pre>
-    <p class="note">Change Python version (via module)</p>
-    <pre>ml Python/3.11.5-GCCcore-13.2.0</pre>
-    </div>
 
     <!-- Modules -->
     <div class="section">
@@ -312,7 +307,7 @@ CMD ["/print-message.sh"]
     <pre>module load GCC/9.3.0</pre>
     <p class="note">Quit spider search</p>
     <pre>q</pre>
-    <a href="https://docs.it4i.cz/en/docs/software/modules/modules-karolina" target="_blank">Karolina available modules</a>
+    <a href="https://docs.it4i.cz/en/docs/software/modules/modules-karolina" target="_blank" rel="noopener">Karolina available modules</a>
     </div>
 
     <!-- Port Forwarding -->
