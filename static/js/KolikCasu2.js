@@ -634,7 +634,7 @@ const jsonString = `[
     {
         "name": "Spanish Armada",
         "url": "https://en.wikipedia.org/wiki/Spanish_Armada#:~:text=William%20Adams%20served%20on%20the%20Richarde%20Dyffylde%2C%20a%20resupply%20ship%20during%20the%20campaign.%20In%201600%2C%20he%20was%20the%20first%20Englishman%20to%20reach%20(and%20settle%20in)%20Japan%20via%20the%20Dutch%20United%20East%20India%20Company%20(VOC)%20becoming%20one%20of%20the%20first%20of%20few%20Western%20samurai.%5B165%5D",
-        "Why interesting": "",
+        "Why interesting": "William Adams is a main protagonist of a novel Shōgun by James Clalavell (named John Blackthorne in the book). He is the first englishman to reach japan and he became samurai here. He fought against spanish armada when young.",
         "additional URLs": [
             {
                 "name": "",
