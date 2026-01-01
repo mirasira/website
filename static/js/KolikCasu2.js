@@ -1098,8 +1098,9 @@ const jsonString = `[
 
 
 function ToEnd(today, EndDate) {
-    const Diff = Math.abs(EndDate - today); // Get difference in milliseconds
-    const minus = Diff < 0;
+    const rawDiff = EndDate - today;
+    const minus = rawDiff < 0;
+    const Diff = Math.abs(rawDiff);
 
     // Convert to exact days (avoiding daylight saving issues)
     let totalSeconds = Math.floor(Diff / 1000);
@@ -1120,6 +1121,19 @@ function ToEnd(today, EndDate) {
 let YearZero = 2024;
 let WeekZero = 19;
 const objs = JSON.parse(jsonString);
+
+function getISOWeekAndYear(date = new Date()) {
+  const d = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()));
+  // ISO: Monday=1..Sunday=7 (convert Sunday=0 to 7)
+  const dayNum = d.getUTCDay() || 7;
+  // shift date to Thursday in current week
+  d.setUTCDate(d.getUTCDate() + 4 - dayNum);
+  const isoYear = d.getUTCFullYear();
+  const yearStart = new Date(Date.UTC(isoYear, 0, 1));
+  const isoWeek = Math.ceil((((d - yearStart) / 86400000) + 1) / 7);
+  return { isoYear, isoWeek };
+}
+
 
 
 function getDateWeek(date) {
@@ -1142,7 +1156,8 @@ function getDateWeek(date) {
 const today1 = new Date();
 const weekNumber = getDateWeek(today1);
 const year = today1.getFullYear();
-let FactIndex = (year - YearZero) * 52 + weekNumber - 8;
+const { isoYear, isoWeek } = getISOWeekAndYear(new Date());
+let FactIndex = (isoYear - YearZero) * 52 + isoWeek - 8;
 
 
 document.getElementById("FunFact").innerHTML = "<a href='"+objs[FactIndex]["url"]+"'>"+objs[FactIndex]["name"]+"</a>";
