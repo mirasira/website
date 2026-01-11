@@ -1392,13 +1392,7 @@ const jsonString = `[
     {
         "name": "Cecotrope",
         "url": "https://en.wikipedia.org/wiki/Cecotrope",
-        "Why interesting": "Some animals like rabbits, guinea pigs... produce two types of feces. Cecetrope is feces they eat for more nutrients.",
-        "additional URLs": [
-            {
-                "name": "\t",
-                "url": ";"
-            }
-        ]
+        "Why interesting": "Some animals like rabbits, guinea pigs... produce two types of feces. Cecetrope is feces they eat for more nutrients."
     },
     {
         "name": "Užovka tygří",
@@ -1509,7 +1503,7 @@ const jsonString = `[
     {
         "name": "PG5 (molecule)",
         "url": "https://en.wikipedia.org/wiki/PG5_(molecule)#:~:text=PG5%20has%20a%20molecular%20mass,MDa%20or%20200%2C000%2C000%20g%2Fmol.",
-        "Why interesting": "\fargest stable synthetic molecule ever made",
+        "Why interesting": "largest stable synthetic molecule ever made",
         "additional URLs": []
     },
     {
@@ -1550,7 +1544,7 @@ const jsonString = `[
     {
         "name": "Harry Jelínek",
         "url": "https://cs.wikipedia.org/wiki/Harry_Jel%C3%ADnek",
-        "Why interesting": "Czech scammer which \"sold\" Karlštejn.",
+        "Why interesting": "Czech scammer which \'sold\' Karlštejn.",
         "additional URLs": []
     },
     {
@@ -1690,7 +1684,7 @@ const jsonString = `[
     {
         "name": "Sea toad",
         "url": "https://en.wikipedia.org/wiki/Sea_toad",
-        "Why interesting": "Deep sea fish with \"legs\"",
+        "Why interesting": "Deep sea fish with \'legs\'",
         "additional URLs": [
             {
                 "name": "video",
