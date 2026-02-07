@@ -123,6 +123,34 @@
 
 
 
+
+    <div class="header" id="onedrive">
+    <h1>OneDrive (Linux)</h1>
+</div>
+
+<div class="section">
+    <h2>Setup (Manual Mode)</h2>
+    <p class="note">Stop and permanently disable background sync (run once)</p>
+    <pre>systemctl --user stop onedrive
+systemctl --user mask onedrive</pre>
+</div>
+
+<div class="section">
+    <h2>Workflow</h2>
+    <p class="note"><strong>Pull:</strong> Download changes from Cloud to Linux</p>
+    <pre>onedrive --sync --download-only --verbose</pre>
+
+    <p class="note"><strong>Push:</strong> Upload Linux changes to Cloud (Safe Mode)</p>
+    <pre># --no-remote-delete prevents deleting files on cloud that are missing locally
+onedrive --sync --upload-only --no-remote-delete --verbose</pre>
+
+    <p class="note"><strong>Dry Run:</strong> See what would happen without doing it</p>
+    <pre>onedrive --sync --dry-run --verbose</pre>
+    
+    <p class="note"><strong>Force Resync:</strong> If database gets confused</p>
+    <pre>onedrive --sync --resync --verbose</pre>
+</div>
+
         
     <div class="header" id="docker">
         <h1>Docker</h1>

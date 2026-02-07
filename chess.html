@@ -1,0 +1,968 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chess Visualization & Opening Trainer</title>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- jQuery (required for Chessboard.js) -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <!-- Chess.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/chess.js/0.10.3/chess.min.js"></script>
+
+    <!-- Chessboard.js CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/@chrisoakman/chessboardjs@1.0.0/dist/chessboard-1.0.0.min.css">
+
+    <!-- Chessboard.js -->
+    <script src="https://unpkg.com/@chrisoakman/chessboardjs@1.0.0/dist/chessboard-1.0.0.min.js"></script>
+
+    <style>
+        @keyframes shake {
+
+            0%,
+            100% {
+                transform: translateX(0);
+            }
+
+            25% {
+                transform: translateX(-10px);
+            }
+
+            75% {
+                transform: translateX(10px);
+            }
+        }
+
+        .shake {
+            animation: shake 0.3s ease-in-out;
+        }
+
+        @keyframes pulse-green {
+
+            0%,
+            100% {
+                background-color: rgb(34 197 94);
+            }
+
+            50% {
+                background-color: rgb(22 163 74);
+            }
+        }
+
+        @keyframes pulse-red {
+
+            0%,
+            100% {
+                background-color: rgb(239 68 68);
+            }
+
+            50% {
+                background-color: rgb(220 38 38);
+            }
+        }
+
+        .pulse-green {
+            animation: pulse-green 0.5s ease-in-out;
+        }
+
+        .pulse-red {
+            animation: pulse-red 0.5s ease-in-out;
+        }
+
+        .highlight-square {
+            box-shadow: inset 0 0 20px 5px rgba(250, 204, 21, 0.8);
+        }
+
+        /* Hide chessboard coordinates */
+        .hide-notation .notation {
+            display: none !important;
+        }
+
+        /* Opening list styles */
+        .opening-item {
+            transition: all 0.2s ease;
+        }
+
+        .opening-item:hover {
+            background-color: rgba(59, 130, 246, 0.1);
+        }
+
+        /* Selected piece highlight for click-to-move */
+        .square-selected {
+            box-shadow: inset 0 0 20px 5px rgba(59, 130, 246, 0.9) !important;
+        }
+    </style>
+</head>
+
+<body class="bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 text-gray-100 min-h-screen">
+
+    <!-- Main Menu -->
+    <div id="mainMenu" class="flex flex-col items-center justify-center min-h-screen p-4">
+        <div class="text-center mb-12">
+            <h1
+                class="text-5xl md:text-6xl font-bold bg-gradient-to-r from-blue-400 via-purple-500 to-pink-500 bg-clip-text text-transparent mb-4">
+                Chess Trainer
+            </h1>
+            <p class="text-gray-400 text-lg">Master visualization and openings</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-6xl w-full">
+            <!-- Mode 1: Square Color Trainer -->
+            <button onclick="startMode1()"
+                class="group relative overflow-hidden bg-gradient-to-br from-blue-600 to-blue-800 hover:from-blue-500 hover:to-blue-700 p-8 rounded-2xl shadow-2xl transition-all duration-300 transform hover:scale-105 hover:shadow-blue-500/50">
+                <div
+                    class="absolute inset-0 bg-gradient-to-br from-white/0 to-white/10 opacity-0 group-hover:opacity-100 transition-opacity">
+                </div>
+                <div class="relative">
+                    <div class="text-6xl mb-4">🎯</div>
+                    <h2 class="text-2xl font-bold mb-2">Square Color</h2>
+                    <p class="text-blue-200 text-sm">Identify square colors instantly</p>
+                </div>
+            </button>
+
+            <!-- Mode 2: Notation Trainer -->
+            <button onclick="startMode2()"
+                class="group relative overflow-hidden bg-gradient-to-br from-purple-600 to-purple-800 hover:from-purple-500 hover:to-purple-700 p-8 rounded-2xl shadow-2xl transition-all duration-300 transform hover:scale-105 hover:shadow-purple-500/50">
+                <div
+                    class="absolute inset-0 bg-gradient-to-br from-white/0 to-white/10 opacity-0 group-hover:opacity-100 transition-opacity">
+                </div>
+                <div class="relative">
+                    <div class="text-6xl mb-4">📍</div>
+                    <h2 class="text-2xl font-bold mb-2">Notation Trainer</h2>
+                    <p class="text-purple-200 text-sm">Find squares on the board</p>
+                </div>
+            </button>
+
+            <!-- Mode 3: Opening Repetition -->
+            <button onclick="startMode3()"
+                class="group relative overflow-hidden bg-gradient-to-br from-pink-600 to-pink-800 hover:from-pink-500 hover:to-pink-700 p-8 rounded-2xl shadow-2xl transition-all duration-300 transform hover:scale-105 hover:shadow-pink-500/50">
+                <div
+                    class="absolute inset-0 bg-gradient-to-br from-white/0 to-white/10 opacity-0 group-hover:opacity-100 transition-opacity">
+                </div>
+                <div class="relative">
+                    <div class="text-6xl mb-4">♟️</div>
+                    <h2 class="text-2xl font-bold mb-2">Opening Drill</h2>
+                    <p class="text-pink-200 text-sm">Practice opening sequences</p>
+                </div>
+            </button>
+        </div>
+    </div>
+
+    <!-- Mode 1: Square Color Trainer -->
+    <div id="mode1" class="hidden min-h-screen flex flex-col items-center justify-center p-4">
+        <button onclick="returnToMenu()"
+            class="absolute top-4 left-4 bg-gray-700 hover:bg-gray-600 px-6 py-3 rounded-lg transition-all duration-200 shadow-lg">
+            ← Back to Menu
+        </button>
+
+        <div class="text-center max-w-2xl w-full">
+            <h2
+                class="text-3xl font-bold mb-8 bg-gradient-to-r from-blue-400 to-blue-600 bg-clip-text text-transparent">
+                Square Color Trainer
+            </h2>
+
+            <div class="bg-gray-800 rounded-2xl p-8 shadow-2xl mb-8">
+                <div class="mb-6">
+                    <div class="text-gray-400 text-sm mb-2">Score</div>
+                    <div class="text-4xl font-bold text-blue-400" id="mode1Score">0</div>
+                </div>
+
+                <div id="mode1Coordinate"
+                    class="text-8xl md:text-9xl font-bold mb-8 py-8 bg-gradient-to-r from-blue-500 to-purple-500 bg-clip-text text-transparent">
+                    e4
+                </div>
+
+                <div class="grid grid-cols-2 gap-4">
+                    <button id="lightBtn" onclick="checkSquareColor('light')"
+                        class="bg-amber-100 hover:bg-amber-200 text-gray-900 text-2xl font-bold py-8 rounded-xl transition-all duration-200 shadow-lg transform hover:scale-105">
+                        ⬜ Light Square
+                    </button>
+                    <button id="darkBtn" onclick="checkSquareColor('dark')"
+                        class="bg-amber-900 hover:bg-amber-800 text-white text-2xl font-bold py-8 rounded-xl transition-all duration-200 shadow-lg transform hover:scale-105">
+                        ⬛ Dark Square
+                    </button>
+                </div>
+
+                <div id="mode1Feedback" class="mt-6 text-2xl font-bold h-8"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mode 2: Notation Trainer -->
+    <div id="mode2" class="hidden min-h-screen flex flex-col items-center justify-center p-4">
+        <button onclick="returnToMenu()"
+            class="absolute top-4 left-4 bg-gray-700 hover:bg-gray-600 px-6 py-3 rounded-lg transition-all duration-200 shadow-lg">
+            ← Back to Menu
+        </button>
+
+        <div class="text-center max-w-3xl w-full">
+            <h2
+                class="text-3xl font-bold mb-6 bg-gradient-to-r from-purple-400 to-purple-600 bg-clip-text text-transparent">
+                Notation Trainer
+            </h2>
+
+            <!-- Mode Selection -->
+            <div class="mb-6 flex gap-3 justify-center flex-wrap">
+                <button id="clickModeBtn" onclick="setMode2Type('click')"
+                    class="bg-purple-600 hover:bg-purple-500 px-6 py-3 rounded-lg transition-all duration-200">
+                    🖱️ Click Mode
+                </button>
+                <button id="typeModeBtn" onclick="setMode2Type('type')"
+                    class="bg-gray-700 hover:bg-gray-600 px-6 py-3 rounded-lg transition-all duration-200">
+                    ⌨️ Type Mode
+                </button>
+            </div>
+
+            <!-- Orientation Selection -->
+            <div class="mb-6 flex gap-3 justify-center flex-wrap">
+                <button id="whiteOrientBtn" onclick="setMode2Orientation('white')"
+                    class="bg-gray-700 hover:bg-gray-600 px-4 py-2 rounded-lg text-sm transition-all duration-200">
+                    ⬜ White
+                </button>
+                <button id="blackOrientBtn" onclick="setMode2Orientation('black')"
+                    class="bg-gray-700 hover:bg-gray-600 px-4 py-2 rounded-lg text-sm transition-all duration-200">
+                    ⬛ Black
+                </button>
+                <button id="randomOrientBtn" onclick="setMode2Orientation('random')"
+                    class="bg-blue-600 hover:bg-blue-500 px-4 py-2 rounded-lg text-sm transition-all duration-200">
+                    🎲 Random
+                </button>
+            </div>
+
+            <div class="mb-4">
+                <div class="text-gray-400 text-sm mb-2">Score</div>
+                <div class="text-4xl font-bold text-purple-400" id="mode2Score">0</div>
+            </div>
+
+            <!-- Click Mode: Show coordinate, click board -->
+            <div id="clickModeUI" class="hidden">
+                <div id="mode2ClickCoordinate"
+                    class="text-6xl font-bold mb-6 py-4 bg-gradient-to-r from-purple-500 to-pink-500 bg-clip-text text-transparent">
+                    e4
+                </div>
+                <p class="text-gray-400 mb-4 text-sm">Click on this square on the board</p>
+            </div>
+
+            <!-- Type Mode: Show highlighted square, type answer -->
+            <div id="typeModeUI" class="hidden mb-4">
+                <p class="text-gray-400 mb-4 text-sm">Type the coordinate of the highlighted square</p>
+            </div>
+
+            <div id="board2" class="mx-auto mb-6 hide-notation" style="width: 90vw; max-width: 400px;"></div>
+
+            <!-- Type Mode Input -->
+            <div id="typeModeInput" class="hidden mb-6">
+                <input type="text" id="notationInput"
+                    class="bg-gray-700 text-white text-center text-2xl px-4 py-3 rounded-lg w-32 mx-auto focus:outline-none focus:ring-2 focus:ring-purple-500"
+                    placeholder="e.g. e4" maxlength="2" onkeypress="handleNotationKeyPress(event)" />
+                <button onclick="submitNotation()"
+                    class="ml-3 bg-purple-600 hover:bg-purple-500 px-6 py-3 rounded-lg transition-all duration-200">
+                    Submit
+                </button>
+            </div>
+
+            <div id="mode2Feedback" class="text-2xl font-bold h-8"></div>
+        </div>
+    </div>
+
+    <!-- Mode 3: Opening Repetition Trainer -->
+    <div id="mode3" class="hidden min-h-screen flex flex-col items-center justify-center p-4 py-16">
+        <button onclick="returnToMenu()"
+            class="absolute top-4 left-4 bg-gray-700 hover:bg-gray-600 px-6 py-3 rounded-lg transition-all duration-200 shadow-lg z-10">
+            ← Back to Menu
+        </button>
+
+        <div class="text-center max-w-4xl w-full">
+            <h2
+                class="text-3xl font-bold mb-8 bg-gradient-to-r from-pink-400 to-pink-600 bg-clip-text text-transparent">
+                Opening Repetition Trainer
+            </h2>
+
+            <!-- Opening Database Management -->
+            <div id="mode3Database" class="bg-gray-800 rounded-2xl p-6 shadow-2xl mb-6">
+                <h3 class="text-xl font-bold mb-4 text-gray-300">Opening Database</h3>
+
+                <!-- Openings List -->
+                <div id="openingsList" class="max-h-64 overflow-y-auto space-y-2 mb-6">
+                    <!-- Openings will be listed here -->
+                </div>
+
+                <div id="databaseError" class="mt-3 text-red-400 text-sm"></div>
+
+                <!-- Start Random Button -->
+                <div class="mt-6 pt-6 border-t border-gray-600">
+                    <div class="mb-4">
+                        <label class="text-gray-400 mb-2 block text-sm">Play as:</label>
+                        <div class="flex gap-3 justify-center">
+                            <button id="playWhiteBtn" onclick="selectSide('white')"
+                                class="bg-blue-600 hover:bg-blue-500 px-6 py-2 rounded-lg text-sm transition-all duration-200">
+                                ⬜ White
+                            </button>
+                            <button id="playBlackBtn" onclick="selectSide('black')"
+                                class="bg-gray-600 hover:bg-gray-500 px-6 py-2 rounded-lg text-sm transition-all duration-200">
+                                ⬛ Black
+                            </button>
+                        </div>
+                    </div>
+
+                    <button onclick="startRandomOpening()"
+                        class="bg-gradient-to-r from-pink-600 to-pink-700 hover:from-pink-500 hover:to-pink-600 px-8 py-3 rounded-lg text-white font-bold transition-all duration-200 shadow-lg transform hover:scale-105">
+                        🎲 Start Random Opening
+                    </button>
+                </div>
+            </div>
+
+            <!-- Drill Phase -->
+            <div id="mode3Drill" class="hidden">
+                <div class="mb-4 bg-gray-800 rounded-lg p-4">
+                    <h3 id="currentOpeningName" class="text-lg font-bold text-pink-400 mb-3"></h3>
+                    <div class="text-gray-400 text-sm mb-2">Progress</div>
+                    <div class="bg-gray-700 rounded-full h-3 overflow-hidden">
+                        <div id="mode3Progress"
+                            class="bg-gradient-to-r from-pink-500 to-pink-600 h-full transition-all duration-300"
+                            style="width: 0%"></div>
+                    </div>
+                    <div class="text-sm text-gray-400 mt-2">
+                        <span id="mode3MoveCount">0</span> / <span id="mode3TotalMoves">0</span> moves
+                    </div>
+                </div>
+
+                <div id="board3" class="mx-auto mb-6" style="width: 90vw; max-width: 400px;"></div>
+
+                <div id="mode3Feedback" class="text-xl font-bold mb-4 h-8"></div>
+
+                <button onclick="backToDatabase()"
+                    class="bg-gray-700 hover:bg-gray-600 px-6 py-3 rounded-lg transition-all duration-200">
+                    ← Back to Database
+                </button>
+            </div>
+
+            <!-- Success Message -->
+            <div id="mode3Success"
+                class="hidden bg-gradient-to-r from-green-600 to-green-700 rounded-2xl p-8 shadow-2xl">
+                <div class="text-6xl mb-4">🎉</div>
+                <h3 class="text-3xl font-bold mb-4">Success!</h3>
+                <p class="text-green-100 mb-6">You've completed the opening sequence!</p>
+                <div class="flex gap-3 justify-center">
+                    <button onclick="startRandomOpening()"
+                        class="bg-white text-green-700 hover:bg-green-50 px-8 py-4 rounded-lg font-bold transition-all duration-200 shadow-lg transform hover:scale-105">
+                        🎲 Next Random
+                    </button>
+                    <button onclick="resetOpening()"
+                        class="bg-green-800 text-white hover:bg-green-900 px-8 py-4 rounded-lg font-bold transition-all duration-200">
+                        🔄 Retry
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Global state
+        let mode1Score = 0;
+        let mode2Score = 0;
+        let mode2Type = 'click'; // 'click' or 'type'
+        let mode2Orientation = 'random'; // 'white', 'black', or 'random'
+        let currentSquare = '';
+        let correctAnswer = '';
+        let board2, board3;
+        let game3;
+        let openingMoves = [];
+        let currentMoveIndex = 0;
+        let playerSide = 'white';
+        let openingsDatabase = [];
+        let currentOpening = null;
+        let selectedSquare = null; // For click-to-move in Mode 3
+
+        // Load openings database - now hardcoded
+        function loadOpeningsDatabase() {
+            // Hardcoded openings - user cannot add/delete via UI
+            openingsDatabase = [
+                { name: 'Sicilian Najdorf', moves: 'e4 c5 Nf3 d6 d4 cxd4 Nxd4 Nf6 Nc3 a6' },
+                { name: 'Ruy Lopez', moves: 'e4 e5 Nf3 Nc6 Bb5' },
+                { name: "Queen's Gambit", moves: 'd4 d5 c4' },
+                { name: 'Italian Game', moves: 'e4 e5 Nf3 Nc6 Bc4' },
+                { name: 'French Defense', moves: 'e4 e6 d4 d5' },
+                { name: 'Caro-Kann Defense', moves: 'e4 c6 d4 d5' },
+                { name: 'Scandinavian Defense', moves: 'e4 d5' },
+                { name: 'Kings Indian Defense', moves: 'd4 Nf6 c4 g6 Nc3 Bg7' },
+                { name: 'English Opening', moves: 'c4 e5' },
+                { name: 'London System', moves: 'd4 Nf6 Bf4 e6 e3 c5' },
+                { name: 'Sicilian Defense: Dragon Variation', moves: 'e4 c5 Nf3 d6 d4 cxd4 Nxd4 Nf6 Nc3 g6' },
+                { name: "King's Gambit", moves: 'e4 e5 f4' },
+                { name: 'Scotch Game', moves: 'e4 e5 Nf3 Nc6 d4' },
+                { name: 'Vienna Game', moves: 'e4 e5 Nc3' },
+                { name: "Petrov's Defense", moves: 'e4 e5 Nf3 Nf6' },
+                { name: "Alekhine's Defense", moves: 'e4 Nf6' },
+                { name: 'Pirc Defense', moves: 'e4 d6 d4 Nf6 Nc3 g6' },
+
+                // 1. d4 Openings (Queen's Pawn)
+                { name: 'Slav Defense', moves: 'd4 d5 c4 c6' },
+                { name: 'Nimzo-Indian Defense', moves: 'd4 Nf6 c4 e6 Nc3 Bb4' },
+                { name: "Queen's Indian Defense", moves: 'd4 Nf6 c4 e6 Nf3 b6' },
+                { name: 'Grünfeld Defense', moves: 'd4 Nf6 c4 g6 Nc3 d5' },
+                { name: 'Dutch Defense', moves: 'd4 f5' },
+                { name: 'Benoni Defense', moves: 'd4 Nf6 c4 c5 d5' },
+
+                // Flank Openings
+                { name: 'Réti Opening', moves: 'Nf3 d5 c4' },
+                { name: "Bird's Opening", moves: 'f4' },
+                { name: "King's Indian Attack", moves: 'Nf3 d5 g3' }
+            ];
+        }
+
+
+        // Removed - no longer saving to localStorage since openings are hardcoded
+
+        function renderOpeningsList() {
+            const list = document.getElementById('openingsList');
+            if (openingsDatabase.length === 0) {
+                list.innerHTML = '<p class="text-gray-400 text-sm py-4">No openings available.</p>';
+                return;
+            }
+
+            list.innerHTML = openingsDatabase.map((opening, index) => `
+                <div class="opening-item bg-gray-700 rounded-lg p-3">
+                    <div class="text-left">
+                        <div class="font-bold text-white text-sm">${opening.name}</div>
+                        <div class="text-gray-400 text-xs font-mono truncate">${opening.moves}</div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Removed addOpening and deleteOpening functions - openings are now hardcoded
+
+        // Utility: Get square color
+        function getSquareColor(square) {
+            const file = square.charCodeAt(0) - 'a'.charCodeAt(0);
+            const rank = parseInt(square[1]) - 1;
+            return (file + rank) % 2 === 0 ? 'dark' : 'light';
+        }
+
+        // Utility: Generate random square
+        function randomSquare() {
+            const files = 'abcdefgh';
+            const ranks = '12345678';
+            return files[Math.floor(Math.random() * 8)] + ranks[Math.floor(Math.random() * 8)];
+        }
+
+        // Navigation
+        function returnToMenu() {
+            document.getElementById('mainMenu').classList.remove('hidden');
+            document.getElementById('mode1').classList.add('hidden');
+            document.getElementById('mode2').classList.add('hidden');
+            document.getElementById('mode3').classList.add('hidden');
+        }
+
+        // MODE 1: Square Color Trainer
+        function startMode1() {
+            mode1Score = 0;
+            document.getElementById('mode1Score').textContent = mode1Score;
+            document.getElementById('mainMenu').classList.add('hidden');
+            document.getElementById('mode1').classList.remove('hidden');
+            nextSquareMode1();
+        }
+
+        function nextSquareMode1() {
+            currentSquare = randomSquare();
+            document.getElementById('mode1Coordinate').textContent = currentSquare;
+            document.getElementById('mode1Feedback').textContent = '';
+            document.getElementById('lightBtn').classList.remove('pulse-green', 'pulse-red');
+            document.getElementById('darkBtn').classList.remove('pulse-green', 'pulse-red');
+        }
+
+        function checkSquareColor(choice) {
+            const correctColor = getSquareColor(currentSquare);
+            const feedback = document.getElementById('mode1Feedback');
+
+            if (choice === correctColor) {
+                mode1Score++;
+                document.getElementById('mode1Score').textContent = mode1Score;
+                feedback.textContent = '✓ Correct!';
+                feedback.className = 'mt-6 text-2xl font-bold h-8 text-green-400';
+
+                const btn = choice === 'light' ? document.getElementById('lightBtn') : document.getElementById('darkBtn');
+                btn.classList.add('pulse-green');
+
+                setTimeout(nextSquareMode1, 600);
+            } else {
+                mode1Score = Math.max(0, mode1Score - 1);
+                document.getElementById('mode1Score').textContent = mode1Score;
+                feedback.textContent = '✗ Wrong!';
+                feedback.className = 'mt-6 text-2xl font-bold h-8 text-red-400';
+
+                const btn = choice === 'light' ? document.getElementById('lightBtn') : document.getElementById('darkBtn');
+                btn.classList.add('pulse-red');
+
+                setTimeout(nextSquareMode1, 600);
+            }
+        }
+
+        // MODE 2: Notation Trainer
+        function startMode2() {
+            mode2Score = 0;
+            document.getElementById('mode2Score').textContent = mode2Score;
+            document.getElementById('mainMenu').classList.add('hidden');
+            document.getElementById('mode2').classList.remove('hidden');
+
+            updateMode2Buttons();
+
+            // Initialize board based on current orientation
+            const orientation = mode2Orientation === 'random' ? (Math.random() > 0.5 ? 'white' : 'black') : mode2Orientation;
+            board2 = Chessboard('board2', {
+                position: 'start',
+                draggable: false,
+                showNotation: false,
+                orientation: orientation,
+                pieceTheme: 'https://chessboardjs.com/img/chesspieces/wikipedia/{piece}.png'
+            });
+
+            // Attach click handler using jQuery for Mode 2
+            if (mode2Type === 'click') {
+                // Remove any existing handlers first
+                $('#board2').off('click', '.square-55d63');
+                // Add new click handler to all squares
+                $('#board2').on('click', '.square-55d63', function (e) {
+                    const square = $(this).attr('class').match(/square-([a-h][1-8])/)[1];
+                    handleSquareClick(square);
+                });
+            }
+
+            setTimeout(nextSquareMode2, 500);
+        }
+
+        function setMode2Type(type) {
+            mode2Type = type;
+            updateMode2Buttons();
+
+            // Reinitialize
+            if (document.getElementById('mode2').classList.contains('hidden') === false) {
+                startMode2();
+            }
+        }
+
+        function setMode2Orientation(orient) {
+            mode2Orientation = orient;
+            updateMode2Buttons();
+
+            // Reinitialize board if mode is active
+            if (document.getElementById('mode2').classList.contains('hidden') === false) {
+                const orientation = orient === 'random' ? (Math.random() > 0.5 ? 'white' : 'black') : orient;
+                board2.orientation(orientation);
+            }
+        }
+
+        function updateMode2Buttons() {
+            // Update mode type buttons
+            const clickBtn = document.getElementById('clickModeBtn');
+            const typeBtn = document.getElementById('typeModeBtn');
+
+            if (mode2Type === 'click') {
+                clickBtn.classList.add('bg-purple-600', 'hover:bg-purple-500');
+                clickBtn.classList.remove('bg-gray-700', 'hover:bg-gray-600');
+                typeBtn.classList.add('bg-gray-700', 'hover:bg-gray-600');
+                typeBtn.classList.remove('bg-purple-600', 'hover:bg-purple-500');
+
+                document.getElementById('clickModeUI').classList.remove('hidden');
+                document.getElementById('typeModeUI').classList.add('hidden');
+                document.getElementById('typeModeInput').classList.add('hidden');
+            } else {
+                typeBtn.classList.add('bg-purple-600', 'hover:bg-purple-500');
+                typeBtn.classList.remove('bg-gray-700', 'hover:bg-gray-600');
+                clickBtn.classList.add('bg-gray-700', 'hover:bg-gray-600');
+                clickBtn.classList.remove('bg-purple-600', 'hover:bg-purple-500');
+
+                document.getElementById('clickModeUI').classList.add('hidden');
+                document.getElementById('typeModeUI').classList.remove('hidden');
+                document.getElementById('typeModeInput').classList.remove('hidden');
+            }
+
+            // Update orientation buttons
+            const whiteBtn = document.getElementById('whiteOrientBtn');
+            const blackBtn = document.getElementById('blackOrientBtn');
+            const randomBtn = document.getElementById('randomOrientBtn');
+
+            [whiteBtn, blackBtn, randomBtn].forEach(btn => {
+                btn.classList.remove('bg-blue-600', 'hover:bg-blue-500');
+                btn.classList.add('bg-gray-700', 'hover:bg-gray-600');
+            });
+
+            if (mode2Orientation === 'white') {
+                whiteBtn.classList.add('bg-blue-600', 'hover:bg-blue-500');
+                whiteBtn.classList.remove('bg-gray-700', 'hover:bg-gray-600');
+            } else if (mode2Orientation === 'black') {
+                blackBtn.classList.add('bg-blue-600', 'hover:bg-blue-500');
+                blackBtn.classList.remove('bg-gray-700', 'hover:bg-gray-600');
+            } else {
+                randomBtn.classList.add('bg-blue-600', 'hover:bg-blue-500');
+                randomBtn.classList.remove('bg-gray-700', 'hover:bg-gray-600');
+            }
+        }
+
+        function nextSquareMode2() {
+            correctAnswer = randomSquare();
+
+            // Clear input
+            document.getElementById('notationInput').value = '';
+            document.getElementById('mode2Feedback').textContent = '';
+
+            if (mode2Type === 'click') {
+                // Show coordinate, user clicks board
+                document.getElementById('mode2ClickCoordinate').textContent = correctAnswer;
+                $('#board2 .square-55d63').removeClass('highlight-square');
+            } else {
+                // Highlight square, user types answer
+                $('#board2 .square-55d63').removeClass('highlight-square');
+                $('#board2 .square-' + correctAnswer).addClass('highlight-square');
+            }
+        }
+
+        function handleSquareClick(square) {
+            if (mode2Type !== 'click') return;
+
+            const feedback = document.getElementById('mode2Feedback');
+
+            if (square === correctAnswer) {
+                mode2Score++;
+                document.getElementById('mode2Score').textContent = mode2Score;
+                feedback.textContent = '✓ Correct!';
+                feedback.className = 'text-2xl font-bold h-8 text-green-400';
+
+                // Briefly highlight clicked square
+                $('#board2 .square-' + square).addClass('highlight-square');
+
+                setTimeout(() => {
+                    $('#board2 .square-55d63').removeClass('highlight-square');
+                    nextSquareMode2();
+                }, 800);
+            } else {
+                mode2Score = Math.max(0, mode2Score - 1);
+                document.getElementById('mode2Score').textContent = mode2Score;
+                feedback.textContent = '✗ Wrong! It was ' + correctAnswer;
+                feedback.className = 'text-2xl font-bold h-8 text-red-400';
+
+                setTimeout(() => {
+                    nextSquareMode2();
+                }, 1200);
+            }
+        }
+
+        function handleNotationKeyPress(event) {
+            if (event.key === 'Enter') {
+                submitNotation();
+            }
+        }
+
+        function submitNotation() {
+            if (mode2Type !== 'type') return;
+
+            const input = document.getElementById('notationInput').value.trim().toLowerCase();
+            const feedback = document.getElementById('mode2Feedback');
+
+            if (input === correctAnswer) {
+                mode2Score++;
+                document.getElementById('mode2Score').textContent = mode2Score;
+                feedback.textContent = '✓ Correct!';
+                feedback.className = 'text-2xl font-bold h-8 text-green-400';
+
+                setTimeout(() => {
+                    nextSquareMode2();
+                }, 800);
+            } else {
+                mode2Score = Math.max(0, mode2Score - 1);
+                document.getElementById('mode2Score').textContent = mode2Score;
+                feedback.textContent = '✗ Wrong! It was ' + correctAnswer;
+                feedback.className = 'text-2xl font-bold h-8 text-red-400';
+
+                setTimeout(() => {
+                    nextSquareMode2();
+                }, 1200);
+            }
+        }
+
+        // MODE 3: Opening Repetition Trainer
+        function startMode3() {
+            loadOpeningsDatabase();
+            renderOpeningsList();
+
+            document.getElementById('mainMenu').classList.add('hidden');
+            document.getElementById('mode3').classList.remove('hidden');
+            document.getElementById('mode3Database').classList.remove('hidden');
+            document.getElementById('mode3Drill').classList.add('hidden');
+            document.getElementById('mode3Success').classList.add('hidden');
+            document.getElementById('databaseError').textContent = '';
+
+            updateSideButtons();
+        }
+
+        function selectSide(side) {
+            playerSide = side;
+            updateSideButtons();
+        }
+
+        function updateSideButtons() {
+            const whiteBtn = document.getElementById('playWhiteBtn');
+            const blackBtn = document.getElementById('playBlackBtn');
+
+            if (playerSide === 'white') {
+                whiteBtn.classList.add('bg-blue-600', 'hover:bg-blue-500');
+                whiteBtn.classList.remove('bg-gray-600', 'hover:bg-gray-500');
+                blackBtn.classList.remove('bg-blue-600', 'hover:bg-blue-500');
+                blackBtn.classList.add('bg-gray-600', 'hover:bg-gray-500');
+            } else {
+                blackBtn.classList.add('bg-blue-600', 'hover:bg-blue-500');
+                blackBtn.classList.remove('bg-gray-600', 'hover:bg-gray-500');
+                whiteBtn.classList.remove('bg-blue-600', 'hover:bg-blue-500');
+                whiteBtn.classList.add('bg-gray-600', 'hover:bg-gray-500');
+            }
+        }
+
+        function startRandomOpening() {
+            const error = document.getElementById('databaseError');
+
+            if (openingsDatabase.length === 0) {
+                error.textContent = 'No openings in database. Add one first!';
+                return;
+            }
+
+            // Select random opening
+            const randomIndex = Math.floor(Math.random() * openingsDatabase.length);
+            currentOpening = openingsDatabase[randomIndex];
+
+            // Parse moves
+            try {
+                game3 = new Chess();
+                openingMoves = [];
+
+                const moves = currentOpening.moves.split(/\s+/).filter(m => m && !m.match(/^\d+\.$/));
+
+                for (let move of moves) {
+                    const result = game3.move(move, { sloppy: true });
+                    if (!result) {
+                        throw new Error('Invalid move: ' + move);
+                    }
+                    openingMoves.push(result);
+                }
+
+                if (openingMoves.length === 0) {
+                    throw new Error('No valid moves found');
+                }
+
+                // Start drill
+                startDrill();
+
+            } catch (e) {
+                error.textContent = 'Error loading opening: ' + e.message;
+            }
+        }
+
+        function startDrill() {
+            document.getElementById('mode3Database').classList.add('hidden');
+            document.getElementById('mode3Drill').classList.remove('hidden');
+            document.getElementById('mode3Success').classList.add('hidden');
+
+            // Show opening name
+            document.getElementById('currentOpeningName').textContent = currentOpening.name;
+
+            // Reset game
+            game3 = new Chess();
+            currentMoveIndex = 0;
+
+            // Update UI
+            document.getElementById('mode3TotalMoves').textContent = openingMoves.length;
+            updateProgress();
+
+            // Initialize board (Chessboard.js handles touch automatically when draggable is true)
+            const config = {
+                position: 'start',
+                draggable: true,
+                onDrop: handleMove,
+                orientation: playerSide,
+                pieceTheme: 'https://chessboardjs.com/img/chesspieces/wikipedia/{piece}.png'
+            };
+
+            board3 = Chessboard('board3', config);
+
+            // Reset selected square for click-to-move
+            selectedSquare = null;
+
+            // Add click-to-move functionality (as fallback, won't interfere with drag)
+            // Using mousedown instead of click to better distinguish from drag attempts
+            let isDragging = false;
+
+            $('#board3').off('mousedown touchstart', '.square-55d63');
+            $('#board3').on('mousedown touchstart', '.square-55d63', function (e) {
+                isDragging = false;
+            });
+
+            $('#board3').off('mousemove touchmove');
+            $('#board3').on('mousemove touchmove', function (e) {
+                isDragging = true;
+            });
+
+            $('#board3').off('mouseup touchend', '.square-55d63');
+            $('#board3').on('mouseup touchend', '.square-55d63', function (e) {
+                // Only trigger click-to-move if user didn't drag
+                if (!isDragging) {
+                    const clickedSquare = $(this).attr('class').match(/square-([a-h][1-8])/);
+                    if (clickedSquare) {
+                        handleSquareClickMode3(clickedSquare[1]);
+                    }
+                }
+                isDragging = false;
+            });
+
+            // If playing as black, make white's first move
+            if (playerSide === 'black' && currentMoveIndex < openingMoves.length) {
+                setTimeout(() => {
+                    makeOpponentMove();
+                }, 500);
+            }
+
+            document.getElementById('mode3Feedback').textContent = '';
+        }
+
+        function handleSquareClickMode3(square) {
+            const currentTurn = game3.turn();
+            const isPlayerTurn = (playerSide === 'white' && currentTurn === 'w') ||
+                (playerSide === 'black' && currentTurn === 'b');
+
+            if (!isPlayerTurn) {
+                return;
+            }
+
+            const piece = game3.get(square);
+
+            // First click: select a piece
+            if (!selectedSquare) {
+                if (piece && piece.color === currentTurn) {
+                    selectedSquare = square;
+                    // Remove previous highlights
+                    $('#board3 .square-55d63').removeClass('square-selected');
+                    // Highlight selected square
+                    $('#board3 .square-' + square).addClass('square-selected');
+                }
+            }
+            // Second click: try to move or deselect
+            else {
+                // Clear highlight
+                $('#board3 .square-55d63').removeClass('square-selected');
+
+                if (square === selectedSquare) {
+                    // Clicked same square - deselect
+                    selectedSquare = null;
+                } else if (piece && piece.color === currentTurn) {
+                    // Clicked another piece of same color - select it instead
+                    selectedSquare = square;
+                    $('#board3 .square-' + square).addClass('square-selected');
+                } else {
+                    // Try to make a move
+                    const result = handleMove(selectedSquare, square);
+                    if (result !== 'snapback') {
+                        board3.position(game3.fen());
+                    }
+                    selectedSquare = null;
+                }
+            }
+        }
+
+        function handleMove(source, target) {
+            const currentTurn = game3.turn();
+            const isPlayerTurn = (playerSide === 'white' && currentTurn === 'w') ||
+                (playerSide === 'black' && currentTurn === 'b');
+
+            if (!isPlayerTurn) {
+                return 'snapback';
+            }
+
+            if (currentMoveIndex >= openingMoves.length) {
+                return 'snapback';
+            }
+
+            const expectedMove = openingMoves[currentMoveIndex];
+
+            const move = game3.move({
+                from: source,
+                to: target,
+                promotion: 'q'
+            });
+
+            if (!move) {
+                return 'snapback';
+            }
+
+            if (move.from === expectedMove.from && move.to === expectedMove.to) {
+                currentMoveIndex++;
+                updateProgress();
+                document.getElementById('mode3Feedback').textContent = '✓ Correct!';
+                document.getElementById('mode3Feedback').className = 'text-xl font-bold mb-4 h-8 text-green-400';
+
+                if (currentMoveIndex >= openingMoves.length) {
+                    setTimeout(showSuccess, 500);
+                } else {
+                    setTimeout(() => {
+                        makeOpponentMove();
+                    }, 500);
+                }
+            } else {
+                game3.undo();
+                document.getElementById('mode3Feedback').textContent = '✗ Wrong move!';
+                document.getElementById('mode3Feedback').className = 'text-xl font-bold mb-4 h-8 text-red-400';
+                document.getElementById('board3').classList.add('shake');
+                setTimeout(() => {
+                    document.getElementById('board3').classList.remove('shake');
+                    document.getElementById('mode3Feedback').textContent = '';
+                }, 500);
+                return 'snapback';
+            }
+        }
+
+        function makeOpponentMove() {
+            if (currentMoveIndex >= openingMoves.length) {
+                return;
+            }
+
+            const expectedMove = openingMoves[currentMoveIndex];
+            game3.move(expectedMove);
+            board3.position(game3.fen());
+            currentMoveIndex++;
+            updateProgress();
+
+            if (currentMoveIndex >= openingMoves.length) {
+                setTimeout(showSuccess, 500);
+            } else {
+                document.getElementById('mode3Feedback').textContent = 'Your turn';
+                document.getElementById('mode3Feedback').className = 'text-xl font-bold mb-4 h-8 text-blue-400';
+            }
+        }
+
+        function updateProgress() {
+            const progress = (currentMoveIndex / openingMoves.length) * 100;
+            document.getElementById('mode3Progress').style.width = progress + '%';
+            document.getElementById('mode3MoveCount').textContent = currentMoveIndex;
+        }
+
+        function showSuccess() {
+            document.getElementById('mode3Drill').classList.add('hidden');
+            document.getElementById('mode3Success').classList.remove('hidden');
+        }
+
+        function resetOpening() {
+            startDrill();
+        }
+
+        function backToDatabase() {
+            document.getElementById('mode3Database').classList.remove('hidden');
+            document.getElementById('mode3Drill').classList.add('hidden');
+            document.getElementById('mode3Success').classList.add('hidden');
+        }
+    </script>
+</body>
+
+</html>
