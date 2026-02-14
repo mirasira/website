@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="cs">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ÚSTÍ GUIDE</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Space+Grotesk:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="static/css/usti_style.css">
+</head>
+
+<body>
+    <!-- Hero -->
+    <section class="hero">
+        <div class="hero-content">
+            <div class="logo-container">
+                <img src="static/images/others/usti.svg" class="logo-svg" alt="ÚSTÍ">
+                <div class="guide-text">GUIDE</div>
+            </div>
+        </div>
+    </section>
+
+    <div class="section-divider"></div>
+
+    <!-- MHD Section -->
+    <section class="grid-section">
+        <div class="grid-2">
+            <div class="content-block inverse">
+                <h2>MHD</h2>
+                <p>Dopravu zajišťuje <strong>Dopravní Podnik Města Ústí nad Labem (DPMÚL)</strong>. Jízdenky je nejlepší
+                    koupit v aplikaci pro iOS/Android. Jsou i papírové jízdenky, ale v aplikaci to je levnější.</p>
+                <p><strong>ÚSTÍ JE ZÓNA 101.</strong></p>
+
+                <h3>CENÍK V APLIKACI</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>JÍZDENKA</th>
+                            <th>DOSPĚLÝ</th>
+                            <th>DÍTĚ/STUDENT</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>45 MINUT</td>
+                            <td>18,00 KČ</td>
+                            <td>9,00 KČ</td>
+                        </tr>
+                        <tr>
+                            <td>60 MINUT</td>
+                            <td>21,60 KČ</td>
+                            <td>10,80 KČ</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="content-block">
+                <h3>ODKAZY</h3>
+                <div class="btn-grid">
+                    <a href="https://www.dpmul.cz/" class="btn" target="_blank" rel="noopener">DPMÚL WEB</a>
+                    <a href="https://apps.apple.com/cz/app/dpm%C3%BAl/id1533780890" class="btn" target="_blank" rel="noopener">iOS
+                        APLIKACE</a>
+                    <a href="https://play.google.com/store/apps/details?id=cz.globdata.dpmulinfo_a&hl=cs" class="btn"
+                        target="_blank" rel="noopener">ANDROID APLIKACE</a>
+                    <a href="https://dpmul.cz/uploads/elfinder/cestovani-mhd/cen%C3%ADk/WEB_1_1_2026_1.pdf" class="btn"
+                        target="_blank" rel="noopener">CENÍK JÍZDNÉHO</a>
+                </div>
+
+                <h3>ODPAD</h3>
+                <div class="info-box">
+                    <p>Kovy patří do popelnice na plasty.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <div class="section-divider"></div>
+
+    <!-- Map Caption Section -->
+    <section class="grid-section">
+        <div class="content-block blue">
+            <h2>ZAJÍMAVÁ MÍSTA</h2>
+        </div>
+    </section>
+
+    <!-- Map Section -->
+    <section class="grid-section map-container">
+        <div id="map"></div>
+    </section>
+
+    <div class="section-divider"></div>
+
+    <!-- Places Grid Section -->
+    <section class="grid-section">
+        <div class="places-grid" id="placesList"></div>
+    </section>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script>
+        const map = L.map('map').setView([50.6607, 14.0421], 13);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap',
+            maxZoom: 19
+        }).addTo(map);
+
+        const places = [
+            { number: 1, name: "Benešův most", lat: 50.6592494, lon: 14.0470275, info: "Most je momentálně v rekonstrukci, vedle vede <i>provizorní</i> lávka za 100 milionů Kč. Most byl postavený za první republiky.", mapyCzLink: "https://mapy.cz/zakladni?x=14.0470275&y=50.6592494&z=17" },
+            { number: 2, name: "Šikmý kostel", lat: 50.6589964, lon: 14.0398883, info: "Kostelu Nanebevzetí Panny Marie se v Ústí neřekne jinak než Šikmý kostel. Během 2. sv. války vedle něj spadla letecká puma a od té doby je nakřivo. S vychýlením věže o 2 metry je to nejšikmější věž ve střední Evropě.", mapyCzLink: "https://mapy.cz/zakladni?x=14.0398883&y=50.6589964&z=17" },
+            { number: 3, name: "Větruše", lat: 50.6550683, lon: 14.0398883, info: "Z Větruše je pěkný výhled na město. Vede sem lanovka z centra města (Ale dostat se tam dá v pohodě i pěšky).", mapyCzLink: "https://mapy.cz/zakladni?x=14.0398883&y=50.6550683&z=17" },
+            { number: 4, name: "Přírodní bludiště", lat: 50.6545786, lon: 14.0383433, info: "Vstup je zdarma. Vedle je ještě zrcadlové bludiště za který se platí a je to celkem scam.", mapyCzLink: "https://mapy.cz/zakladni?x=14.0383433&y=50.6545786&z=17" },
+            { number: 5, name: "Vaňovský vodopád", lat: 50.6304544, lon: 14.0415406, info: "Vede sem pěkná cesta z Větruše.", mapyCzLink: "https://mapy.cz/zakladni?x=14.0415406&y=50.6304544&z=17" },
+            { number: 6, name: "Vyhlídka Vrkoč", lat: 50.6308708, lon: 14.0451392, info: "Kousek od Vaňovského vodopádu je tahle pěkná vyhlídka.", mapyCzLink: "https://mapy.cz/zakladni?x=14.0451392&y=50.6308708&z=17" },
+            { number: 7, name: "Masarykovo zdymadlo", lat: 50.6387511, lon: 14.0478814, info: "Je to cool stavba, je průchozí pro pěší.", mapyCzLink: "https://mapy.cz/zakladni?x=14.0478814&y=50.6387511&z=17" },
+            { number: 8, name: "Hrad Střekov", lat: 50.6395911, lon: 14.0509778, info: "Hrad.", mapyCzLink: "https://mapy.cz/zakladni?x=14.0509778&y=50.6395911&z=17" },
+            { number: 9, name: "Střekovská vyhlídka", lat: 50.6525983, lon: 14.0604692, info: "Další vyhlídka na město.", mapyCzLink: "https://mapy.cz/zakladni?x=14.0604692&y=50.6525983&z=17" },
+            { number: 10, name: "Vyhlídka na Mariánské skále", lat: 50.6618700, lon: 14.0518008, info: "Výhled hlavně na Střekov.", mapyCzLink: "https://mapy.cz/zakladni?x=14.0518008&y=50.6618700&z=17" },
+            { number: 11, name: "Erbenova vyhlídka", lat: 50.6786325, lon: 14.0509194, info: "Výhled na město a okolí.", mapyCzLink: "https://mapy.cz/zakladni?x=14.0509194&y=50.6786325&z=17" },
+            { number: 12, name: "Pekelský vodopád", lat: 50.6786086, lon: 14.0750806, info: "Pěknej vodopád.", mapyCzLink: "https://mapy.cz/zakladni?x=14.0750806&y=50.6786086&z=17" },
+            { number: 13, name: "Kozí vrh", lat: 50.6760206, lon: 14.1369308, info: "Pěknej výhled ale je to celkem daleko.", mapyCzLink: "https://mapy.cz/zakladni?x=14.1369308&y=50.6760206&z=17" }
+        ];
+
+        places.forEach(place => {
+            // Brutalist marker style
+            const marker = L.marker([place.lat, place.lon], {
+                icon: L.divIcon({
+                    className: 'custom-div-icon',
+                    html: `<div style="background: #0055ff; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; color: white; font-weight: 900; font-size: 1.2rem; border: 4px solid #000; font-family: Arial Black;">${place.number}</div>`,
+                    iconSize: [20, 20],
+                    iconAnchor: [10, 10]
+                })
+            }).addTo(map);
+
+            marker.bindPopup(`<strong>${place.number}. ${place.name}</strong><br>${place.info}<br><a href="${place.mapyCzLink}" target="_blank">Zobrazit na Mapy.cz</a>`);
+
+            const card = document.createElement('div');
+            card.className = 'place-card';
+            card.innerHTML = `
+                <div class="place-number">${place.number}</div>
+                <div class="place-name">${place.name}</div>
+                <div class="place-info">📍 ${place.lat.toFixed(4)}, ${place.lon.toFixed(4)}</div>
+                <div class="place-info">${place.info}</div>
+                <a href="${place.mapyCzLink}" class="place-link" target="_blank">ZOBRAZIT NA MAPĚ →</a>
+            `;
+
+            card.addEventListener('click', e => {
+                if (!e.target.classList.contains('place-link')) {
+                    map.setView([place.lat, place.lon], 16);
+                }
+            });
+
+            placesList.appendChild(card);
+        });
+    </script>
+
+
+
+
+    <div class="section-divider"></div>
+
+    <!-- Trip Tips Section -->
+    <section class="grid-section">
+        <div class="content-block inverse">
+            <h2>TIPY NA VÝLETY</h2>
+            <div class="section-divider" style="margin: 30px 0; background: var(--white);"></div>
+
+            <div class="trip-tip">
+                <p>Větruše ➔ Vaňovský vodopád ➔ Vyhlídka Vrkoč - 7,8 km</p>
+                Tahle trasa hodně variabilní a dá se podle potřeby zkrátit nebo prodloužit. V základní verzi se jde z
+                klubovny na Větruši. Nelepší 2x přejít Labe. Další možnost je dojet na větruši lanovkou, ale moc se to
+                nezkrátí a jestli chcete vám jde o levnější výpravu tak to asi není worth. Z větruše je pěkný výhled na
+                město. U větruše je taky přírodní bludiště (pro malý děti super). Dál se jde cestou na Vaňovský podopád,
+                po cestě je pár vyhlídek a naučné tabule o okolí. Z Vaňovského vodopádu se dá jít krátkou odbočkou na
+                vyhlídku na vrkoč. Z vrkoče se dá sejít na autobusovou zastávku U vodopádu a odtud s přestupem přes
+                město zpět na klubovnu. (Nebo se to dá jít opačně, nejdřív autobusem a potom se vracet na klubovnu).
+                <br>
+                Trasa se dá dál prodloužit cestou přes střekovská zdymadla a po střekovské straně až na klubovnu.
+                <div class="btn-grid">
+                    <a href="https://mapy.cz/s/nenazeguna" class="btn" target="_blank" rel="noopener">ZOBRAZIT TRASU</a>
+                </div>
+            </div>
+
+            <div class="section-divider" style="margin: 30px 0; background: var(--white);"></div>
+
+            <div class="trip-tip">
+                <p>Erbenova vyhlídka - 6,4 km</p>
+                Cesta celou dobu do kopečka ale nahoře je moc pěkný výhled do okolí.
+                <div class="btn-grid">
+                    <a href="https://mapy.com/s/halurekero" class="btn" rel="noopener" target="_blank">ZOBRAZIT TRASU</a>
+                </div>
+            </div>
+
+            <div class="section-divider" style="margin: 30px 0; background: var(--white);"></div>
+
+            <div class="trip-tip">
+                <p>Mariánská skála - 4,4 km</p>
+                Pěkný výhled na střekov a okolí. Není to moc daleko
+                <div class="btn-grid">
+                    <a href="https://mapy.com/s/haburovaku" class="btn" rel="noopener" target="_blank">ZOBRAZIT TRASU</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+</body>
+
+</html>
