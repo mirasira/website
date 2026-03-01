@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="cs">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Erbenova vyhlídka - ÚSTÍ GUIDE</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Space+Grotesk:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="../static/css/usti_style.css">
+    <style>
+        .panorama-placeholder {
+            width: 100%;
+            height: 400px;
+            background: #e0e0e0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #666;
+            margin: 20px 0;
+            border: 2px dashed #999;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Hero -->
+    <section class="hero" style="min-height: 40vh;">
+        <div class="hero-content">
+            <div class="logo-container">
+                <img src="../static/images/others/usti.svg" class="logo-svg" alt="ÚSTÍ">
+                <div class="guide-text">ERBENOVA VYHLÍDKA</div>
+            </div>
+        </div>
+    </section>
+
+    <div class="section-divider"></div>
+
+    <section class="grid-section">
+        <div class="content-block">
+            <a href="../usti_guide.html" class="btn" style="display: inline-block; margin-bottom: 20px;">← ZPĚT NA
+                HLAVNÍ STRÁNKU</a>
+            <p><strong>Erbenova vyhlídka</strong> je kamenná rozhledna na vrcholu kopce Erbenova vyhlídka nad městskou
+                částí Dobětice v Ústí nad Labem.</p>
+            <p>Poskytuje jedinečný kruhový rozhled, který pokrývá celé město a jeho široké okolí včetně Českého
+                středohoří a Krušných hor.</p>
+        </div>
+    </section>
+
+    <div class="section-divider"></div>
+
+    <!-- Map Section -->
+    <section class="grid-section map-container">
+        <div id="map" style="height: 400px;"></div>
+    </section>
+
+    <div class="section-divider"></div>
+
+    <!-- Panorama Section -->
+    <section class="grid-section">
+        <div class="content-block inverse" style="width: 100%;">
+            <h2>PANORAMATICKÝ VÝHLED</h2>
+            <div class="panorama-placeholder">
+                [ MÍSTO PRO PANORAMATICKOU FOTOGRAFII ]
+            </div>
+
+            <h3 style="margin-top: 40px;">VIDITELNÁ ZAJÍMAVÁ MÍSTA:</h3>
+            <div class="places-grid" id="visiblePlacesList" style="margin-top: 20px;">
+                <!-- Places will be loaded here via JS -->
+            </div>
+        </div>
+    </section>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="places.js"></script>
+    <script>
+        // Coordinates for Erbenova vyhlidka
+        const placeLat = 50.6786325;
+        const placeLon = 14.0509194;
+
+        const map = L.map('map').setView([placeLat, placeLon], 15);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap',
+            maxZoom: 19
+        }).addTo(map);
+
+        // Add marker for Erbenova vyhlídka
+        L.marker([placeLat, placeLon], {
+            icon: L.divIcon({
+                className: 'custom-div-icon',
+                html: `<div style="background: #000; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; color: white; font-weight: 900; font-size: 1.2rem; border: 4px solid #fff; font-family: Arial Black;">11</div>`,
+                iconSize: [20, 20],
+                iconAnchor: [10, 10]
+            })
+        }).addTo(map).bindPopup('<strong>Erbenova vyhlídka</strong>').openPopup();
+
+        // Populate visible places list drawn from the unified database
+        const visiblePlacesList = document.getElementById('visiblePlacesList');
+
+        // Define some places visible from Erbenova vyhlídka
+        // e.g., 2: Šikmý kostel, 3: Větruše, 8: Hrad Střekov, 10: Mariánská skála
+        const visiblePlaceIds = [2, 3, 8, 10];
+        const visiblePlaces = places.filter(p => visiblePlaceIds.includes(p.number));
+
+        visiblePlaces.forEach(place => {
+            const card = document.createElement('div');
+            card.className = 'place-card';
+
+            const markerColor = place.visitable ? '#0055ff' : '#00aa00';
+            let visitableHtml = '';
+            let cardStyle = '';
+
+            if (!place.visitable) {
+                visitableHtml = `<div class="place-info" style="color: #00aa00; font-weight: bold; margin-bottom: 5px;">⚠️ ZAVŘENO / NEPŘÍSTUPNÉ</div>`;
+                cardStyle = 'border-left: 4px solid #00aa00;';
+            } else {
+                cardStyle = 'border-left: 4px solid #0055ff;';
+            }
+
+            // Apply styling specifically to override any inherited inverse section styles
+            card.style.cssText = cardStyle + ' background-color: var(--white); color: var(--black);';
+            card.innerHTML = `
+                <div class="place-number" style="background: ${markerColor}; color: #ffffff;">${place.number}</div>
+                <div class="place-name" style="color: var(--black);">${place.name}</div>
+                ${visitableHtml}
+                <div class="place-info" style="color: var(--dark-gray);">📍 ${place.lat.toFixed(4)}, ${place.lon.toFixed(4)}</div>
+                <div class="place-info" style="color: var(--dark-gray);">${place.info}</div>
+                <a href="${place.mapyCzLink}" class="place-link" target="_blank" style="margin-top: 10px; color: var(--blue);">ZOBRAZIT NA MAPĚ →</a>
+            `;
+
+            visiblePlacesList.appendChild(card);
+        });
+    </script>
+</body>
+
+</html>

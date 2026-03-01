@@ -62,7 +62,8 @@
                 <h3>ODKAZY</h3>
                 <div class="btn-grid">
                     <a href="https://www.dpmul.cz/" class="btn" target="_blank" rel="noopener">DPMÚL WEB</a>
-                    <a href="https://apps.apple.com/cz/app/dpm%C3%BAl/id1533780890" class="btn" target="_blank" rel="noopener">iOS
+                    <a href="https://apps.apple.com/cz/app/dpm%C3%BAl/id1533780890" class="btn" target="_blank"
+                        rel="noopener">iOS
                         APLIKACE</a>
                     <a href="https://play.google.com/store/apps/details?id=cz.globdata.dpmulinfo_a&hl=cs" class="btn"
                         target="_blank" rel="noopener">ANDROID APLIKACE</a>
@@ -101,6 +102,7 @@
     </section>
 
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="usti_guide/places.js"></script>
     <script>
         const map = L.map('map').setView([50.6607, 14.0421], 13);
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -108,28 +110,14 @@
             maxZoom: 19
         }).addTo(map);
 
-        const places = [
-            { number: 1, name: "Benešův most", lat: 50.6592494, lon: 14.0470275, info: "Most je momentálně v rekonstrukci, vedle vede <i>provizorní</i> lávka za 100 milionů Kč. Most byl postavený za první republiky.", mapyCzLink: "https://mapy.cz/zakladni?x=14.0470275&y=50.6592494&z=17" },
-            { number: 2, name: "Šikmý kostel", lat: 50.6589964, lon: 14.0398883, info: "Kostelu Nanebevzetí Panny Marie se v Ústí neřekne jinak než Šikmý kostel. Během 2. sv. války vedle něj spadla letecká puma a od té doby je nakřivo. S vychýlením věže o 2 metry je to nejšikmější věž ve střední Evropě.", mapyCzLink: "https://mapy.cz/zakladni?x=14.0398883&y=50.6589964&z=17" },
-            { number: 3, name: "Větruše", lat: 50.6550683, lon: 14.0398883, info: "Z Větruše je pěkný výhled na město. Vede sem lanovka z centra města (Ale dostat se tam dá v pohodě i pěšky).", mapyCzLink: "https://mapy.cz/zakladni?x=14.0398883&y=50.6550683&z=17" },
-            { number: 4, name: "Přírodní bludiště", lat: 50.6545786, lon: 14.0383433, info: "Vstup je zdarma. Vedle je ještě zrcadlové bludiště za který se platí a je to celkem scam.", mapyCzLink: "https://mapy.cz/zakladni?x=14.0383433&y=50.6545786&z=17" },
-            { number: 5, name: "Vaňovský vodopád", lat: 50.6304544, lon: 14.0415406, info: "Vede sem pěkná cesta z Větruše.", mapyCzLink: "https://mapy.cz/zakladni?x=14.0415406&y=50.6304544&z=17" },
-            { number: 6, name: "Vyhlídka Vrkoč", lat: 50.6308708, lon: 14.0451392, info: "Kousek od Vaňovského vodopádu je tahle pěkná vyhlídka.", mapyCzLink: "https://mapy.cz/zakladni?x=14.0451392&y=50.6308708&z=17" },
-            { number: 7, name: "Masarykovo zdymadlo", lat: 50.6387511, lon: 14.0478814, info: "Je to cool stavba, je průchozí pro pěší.", mapyCzLink: "https://mapy.cz/zakladni?x=14.0478814&y=50.6387511&z=17" },
-            { number: 8, name: "Hrad Střekov", lat: 50.6395911, lon: 14.0509778, info: "Hrad.", mapyCzLink: "https://mapy.cz/zakladni?x=14.0509778&y=50.6395911&z=17" },
-            { number: 9, name: "Střekovská vyhlídka", lat: 50.6525983, lon: 14.0604692, info: "Další vyhlídka na město.", mapyCzLink: "https://mapy.cz/zakladni?x=14.0604692&y=50.6525983&z=17" },
-            { number: 10, name: "Vyhlídka na Mariánské skále", lat: 50.6618700, lon: 14.0518008, info: "Výhled hlavně na Střekov.", mapyCzLink: "https://mapy.cz/zakladni?x=14.0518008&y=50.6618700&z=17" },
-            { number: 11, name: "Erbenova vyhlídka", lat: 50.6786325, lon: 14.0509194, info: "Výhled na město a okolí.", mapyCzLink: "https://mapy.cz/zakladni?x=14.0509194&y=50.6786325&z=17" },
-            { number: 12, name: "Pekelský vodopád", lat: 50.6786086, lon: 14.0750806, info: "Pěknej vodopád.", mapyCzLink: "https://mapy.cz/zakladni?x=14.0750806&y=50.6786086&z=17" },
-            { number: 13, name: "Kozí vrh", lat: 50.6760206, lon: 14.1369308, info: "Pěknej výhled ale je to celkem daleko.", mapyCzLink: "https://mapy.cz/zakladni?x=14.1369308&y=50.6760206&z=17" }
-        ];
-
         places.forEach(place => {
-            // Brutalist marker style
+            // Brutalist marker style with conditional color
+            const markerColor = place.visitable ? '#0055ff' : '#00aa00';
+
             const marker = L.marker([place.lat, place.lon], {
                 icon: L.divIcon({
                     className: 'custom-div-icon',
-                    html: `<div style="background: #0055ff; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; color: white; font-weight: 900; font-size: 1.2rem; border: 4px solid #000; font-family: Arial Black;">${place.number}</div>`,
+                    html: `<div style="background: ${markerColor}; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; color: white; font-weight: 900; font-size: 1.2rem; border: 4px solid #000; font-family: Arial Black;">${place.number}</div>`,
                     iconSize: [20, 20],
                     iconAnchor: [10, 10]
                 })
@@ -139,12 +127,34 @@
 
             const card = document.createElement('div');
             card.className = 'place-card';
+
+            // Add non-visitable badge if applicable
+            let visitableHtml = '';
+            let cardStyle = '';
+            if (!place.visitable) {
+                visitableHtml = `<div class="place-info" style="color: #00aa00; font-weight: bold; margin-bottom: 5px;">⚠️ ZAVŘENO / NEPŘÍSTUPNÉ</div>`;
+                cardStyle = 'border-left: 4px solid #00aa00;';
+            } else {
+                cardStyle = 'border-left: 4px solid #0055ff;';
+            }
+
+            // More info link for specific places
+            let moreInfoLink = '';
+            if (place.name === "Erbenova vyhlídka") {
+                moreInfoLink = `<a href="usti_guide/Erbenova_vyhlidka.html" class="place-link" style="margin-top: 10px; background: #000; color: #fff;">VÍC INFORMACÍ →</a>`;
+            }
+
+            card.style.cssText = cardStyle;
             card.innerHTML = `
-                <div class="place-number">${place.number}</div>
+                <div class="place-number" style="background: ${markerColor}; color: #ffffff;">${place.number}</div>
                 <div class="place-name">${place.name}</div>
+                ${visitableHtml}
                 <div class="place-info">📍 ${place.lat.toFixed(4)}, ${place.lon.toFixed(4)}</div>
                 <div class="place-info">${place.info}</div>
-                <a href="${place.mapyCzLink}" class="place-link" target="_blank">ZOBRAZIT NA MAPĚ →</a>
+                <div style="display: flex; flex-direction: column; gap: 5px;">
+                    <a href="${place.mapyCzLink}" class="place-link" target="_blank">ZOBRAZIT NA MAPĚ →</a>
+                    ${moreInfoLink}
+                </div>
             `;
 
             card.addEventListener('click', e => {
@@ -190,7 +200,8 @@
                 <p>Erbenova vyhlídka - 6,4 km</p>
                 Cesta celou dobu do kopečka ale nahoře je moc pěkný výhled do okolí.
                 <div class="btn-grid">
-                    <a href="https://mapy.com/s/halurekero" class="btn" rel="noopener" target="_blank">ZOBRAZIT TRASU</a>
+                    <a href="https://mapy.com/s/halurekero" class="btn" rel="noopener" target="_blank">ZOBRAZIT
+                        TRASU</a>
                 </div>
             </div>
 
@@ -200,7 +211,8 @@
                 <p>Mariánská skála - 4,4 km</p>
                 Pěkný výhled na střekov a okolí. Není to moc daleko
                 <div class="btn-grid">
-                    <a href="https://mapy.com/s/haburovaku" class="btn" rel="noopener" target="_blank">ZOBRAZIT TRASU</a>
+                    <a href="https://mapy.com/s/haburovaku" class="btn" rel="noopener" target="_blank">ZOBRAZIT
+                        TRASU</a>
                 </div>
             </div>
         </div>
