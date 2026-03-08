@@ -4,27 +4,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Erbenova vyhlídka - ÚSTÍ GUIDE</title>
+    <title>Větruše - ÚSTÍ GUIDE</title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <link
         href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Space+Grotesk:wght@400;500;600;700&display=swap"
         rel="stylesheet">
     <link rel="stylesheet" href="../static/css/usti_style.css">
-    <style>
-        .panorama-placeholder {
-            width: 100%;
-            height: 400px;
-            background: #e0e0e0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.5rem;
-            font-weight: bold;
-            color: #666;
-            margin: 20px 0;
-            border: 2px dashed #999;
-        }
-    </style>
 </head>
 
 <body>
@@ -33,7 +18,7 @@
         <div class="hero-content">
             <div class="logo-container">
                 <img src="../static/images/others/usti.svg" class="logo-svg" alt="ÚSTÍ">
-                <div class="guide-text">ERBENOVA VYHLÍDKA</div>
+                <div class="guide-text" style="font-size: clamp(2rem, 5vw, 4rem);">VĚTRUŠE</div>
             </div>
         </div>
     </section>
@@ -51,32 +36,29 @@
 
     <!-- Map Section -->
     <section class="grid-section map-container">
-        <div id="map" style="height: 400px;"></div>
+        <div id="map" style="height: 400px; width: 100%;"></div>
     </section>
 
     <div class="section-divider"></div>
 
-    <!-- Panorama Section -->
+    <!-- Views Section -->
     <section class="grid-section">
         <div class="content-block inverse" style="width: 100%;">
-            <h2>VÝHLEDY</h2>
+            <h2>VÝHLED</h2>
             <div style="display: flex; flex-direction: column; gap: 20px; margin: 20px 0;">
-                <img src="vyhled_erbenka_1.png" alt="Výhled z Erbenovy vyhlídky 1"
-                    style="width: 100%; border-radius: 8px;">
-                <img src="vyhled_erbenka_2.png" alt="Výhled z Erbenovy vyhlídky 2"
-                    style="width: 100%; border-radius: 8px;">
-                <img src="vyhled_erbenka_3.png" alt="Výhled z Erbenovy vyhlídky 3"
-                    style="width: 100%; border-radius: 8px;">
+                <img src="vyhled_vetruse.png" alt="Výhled z Větruše" style="width: 100%; border-radius: 8px;">
             </div>
+
+        </div>
         </div>
     </section>
 
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script src="places.js"></script>
     <script>
-        // Coordinates for Erbenova vyhlidka
-        const placeLat = 50.6786325;
-        const placeLon = 14.0509194;
+        // Coordinates for Větruše
+        const placeLat = 50.6550683;
+        const placeLon = 14.0398883;
 
         const map = L.map('map').setView([placeLat, placeLon], 15);
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -84,15 +66,15 @@
             maxZoom: 19
         }).addTo(map);
 
-        // Add marker for Erbenova vyhlídka
+        // Add marker for Větruše
         L.marker([placeLat, placeLon], {
             icon: L.divIcon({
                 className: 'custom-div-icon',
-                html: `<div style="background: #000; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; color: white; font-weight: 900; font-size: 1.2rem; border: 4px solid #fff; font-family: Arial Black;">11</div>`,
+                html: `<div style="background: #0055ff; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; color: white; font-weight: 900; font-size: 1.2rem; border: 4px solid #fff; font-family: Arial Black;">3</div>`,
                 iconSize: [20, 20],
                 iconAnchor: [10, 10]
             })
-        }).addTo(map).bindPopup('<strong>Erbenova vyhlídka</strong>').openPopup();
+        }).addTo(map).bindPopup('<strong>Větruše</strong>').openPopup();
 
     </script>
 </body>

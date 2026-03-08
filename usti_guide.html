@@ -101,6 +101,20 @@
         <div class="places-grid" id="placesList"></div>
     </section>
 
+    <div class="section-divider"></div>
+
+    <!-- Map Caption Section for Other Places -->
+    <section class="grid-section">
+        <div class="content-block blue" style="background-color: var(--green); color: var(--black);">
+            <h2>OSTATNÍ ZAJÍMAVÁ MÍSTA</h2>
+        </div>
+    </section>
+
+    <!-- Other Places Grid Section -->
+    <section class="grid-section">
+        <div class="places-grid" id="otherPlacesList"></div>
+    </section>
+
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script src="usti_guide/places.js"></script>
     <script>
@@ -128,11 +142,9 @@
             const card = document.createElement('div');
             card.className = 'place-card';
 
-            // Add non-visitable badge if applicable
-            let visitableHtml = '';
+            // Add respective stylings
             let cardStyle = '';
             if (!place.visitable) {
-                visitableHtml = `<div class="place-info" style="color: #00aa00; font-weight: bold; margin-bottom: 5px;">⚠️ ZAVŘENO / NEPŘÍSTUPNÉ</div>`;
                 cardStyle = 'border-left: 4px solid #00aa00;';
             } else {
                 cardStyle = 'border-left: 4px solid #0055ff;';
@@ -142,13 +154,18 @@
             let moreInfoLink = '';
             if (place.name === "Erbenova vyhlídka") {
                 moreInfoLink = `<a href="usti_guide/Erbenova_vyhlidka.html" class="place-link" style="margin-top: 10px; background: #000; color: #fff;">VÍC INFORMACÍ →</a>`;
+            } else if (place.name === "Vysílač Buková hora") {
+                moreInfoLink = `<a href="usti_guide/Bukova_hora.html" class="place-link" style="margin-top: 10px; background: #000; color: #fff;">VÍC INFORMACÍ →</a>`;
+            } else if (place.name === "Vyhlídka na Mariánské skále") {
+                moreInfoLink = `<a href="usti_guide/marianska_skala.html" class="place-link" style="margin-top: 10px; background: #000; color: #fff;">VÍC INFORMACÍ →</a>`;
+            } else if (place.name === "Větruše") {
+                moreInfoLink = `<a href="usti_guide/vetruse.html" class="place-link" style="margin-top: 10px; background: #000; color: #fff;">VÍC INFORMACÍ →</a>`;
             }
 
             card.style.cssText = cardStyle;
             card.innerHTML = `
                 <div class="place-number" style="background: ${markerColor}; color: #ffffff;">${place.number}</div>
                 <div class="place-name">${place.name}</div>
-                ${visitableHtml}
                 <div class="place-info">📍 ${place.lat.toFixed(4)}, ${place.lon.toFixed(4)}</div>
                 <div class="place-info">${place.info}</div>
                 <div style="display: flex; flex-direction: column; gap: 5px;">
@@ -163,7 +180,12 @@
                 }
             });
 
-            placesList.appendChild(card);
+            // Append to the correct list based on visitable status
+            if (place.visitable) {
+                document.getElementById('placesList').appendChild(card);
+            } else {
+                document.getElementById('otherPlacesList').appendChild(card);
+            }
         });
     </script>
 

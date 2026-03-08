@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="cs">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vysílač Buková hora - ÚSTÍ GUIDE</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Space+Grotesk:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="../static/css/usti_style.css">
+    <style>
+        .info-paragraph {
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+            font-size: 1.1rem;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Hero -->
+    <section class="hero" style="min-height: 40vh;">
+        <div class="hero-content">
+            <div class="logo-container">
+                <img src="../static/images/others/usti.svg" class="logo-svg" alt="ÚSTÍ">
+                <div class="guide-text" style="font-size: clamp(2rem, 5vw, 4rem);">VYSÍLAČ BUKOVÁ HORA</div>
+            </div>
+        </div>
+    </section>
+
+    <div class="section-divider"></div>
+
+    <!-- Info Section -->
+    <section class="grid-section">
+        <div class="content-block">
+            <a href="../usti_guide.html" class="btn" style="display: inline-block; margin-bottom: 20px;">← ZPĚT NA
+                HLAVNÍ STRÁNKU</a>
+
+            <p class="info-paragraph">
+                Vysílač na Bukové hoře je se svými 223 m jednou z nejvyšších staveb v Česku a je vidět ze širokého
+                okolí.
+                Nachází se zde také nejvyšší bod Českého středohoří. Nejvyšší horou Českého středohoří je sice
+                Milešovka (837 m n. m.), ale vysílač na Bukové hoře stojí ve výšce 662 m n. m., takže,
+                662 + 223 = 885 m n. m. je výše než 837 + 15 = 852 m n. m. (Milešovka + její rozhledna).
+                Je to podobné jako s nejvyšším bodem České republiky, který se nachází na vrcholu vysílače
+                na Pradědu, a nikoliv na Sněžce.
+            </p>
+
+        </div>
+    </section>
+
+    <div class="section-divider"></div>
+
+    <!-- Map Section -->
+    <section class="grid-section map-container">
+        <div id="map" style="height: 400px; width: 100%;"></div>
+    </section>
+
+    <div class="section-divider"></div>
+
+    <!-- Note: User requested NO panorama on this page -->
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="places.js"></script>
+    <script>
+        // Coordinates for Buková hora from places.js
+        const placeLat = 50.6717183;
+        const placeLon = 14.2289064;
+
+        const map = L.map('map').setView([placeLat, placeLon], 14);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap',
+            maxZoom: 19
+        }).addTo(map);
+
+        // Add marker for Vysílač Buková hora (green, number 16)
+        L.marker([placeLat, placeLon], {
+            icon: L.divIcon({
+                className: 'custom-div-icon',
+                html: `<div style="background: #00aa00; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; color: white; font-weight: 900; font-size: 1.2rem; border: 4px solid #fff; font-family: Arial Black;">16</div>`,
+                iconSize: [20, 20],
+                iconAnchor: [10, 10]
+            })
+        }).addTo(map).bindPopup('<strong>Vysílač Buková hora</strong><br>Ostatní zajímavá místa').openPopup();
+
+    </script>
+</body>
+
+</html>
