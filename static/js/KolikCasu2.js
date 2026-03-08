@@ -1927,7 +1927,7 @@ objs.slice(0, FactIndex+1).reverse().forEach((obj, index) => {
     pastFunFacts.appendChild(row);
 });
 
-let Deadline = new Date(2025, 8, 1, 0, 0, 0, 0);
+let Deadline = new Date(2026, 3, 15, 23, 59, 59, 0);
 
 function drawCountdown(countdownData) {  // Receive the object
     ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -1977,12 +1977,12 @@ window.setInterval(() => {
         const endDeadline = new Date(2026, 10, 1, 0, 0, 0, 0);
         // Pick a random time between startDeadline and endDeadline
         const randomTime = startDeadline.getTime() + Math.random() * (endDeadline.getTime() - startDeadline.getTime());
-        Deadline = new Date(randomTime);
+        // Deadline = new Date(randomTime);
 
 
 
         const countdownData = ToEnd(today, Deadline); // Get the object
-        document.getElementById("ClasName").innerHTML = "";
+        document.getElementById("ClasName").innerHTML = "ICRA workshop deadline";
         document.getElementById("Time").innerHTML =ToEnd(today, Deadline);
 
 
