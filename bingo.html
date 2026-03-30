@@ -1,0 +1,760 @@
+
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <title>Skautské Bingo</title>
+    <style>
+        body { font-family: Arial, sans-serif; display: flex; flex-wrap: wrap; justify-content: center; }
+        .karticka { 
+            width: 45%; 
+            margin: 2%; 
+            border: 2px solid #333; 
+            padding: 10px; 
+            box-sizing: border-box; 
+            text-align: center;
+            page-break-inside: avoid; /* Zabrání roztržení kartičky na dvě stránky při tisku */
+        }
+        h2 { margin-top: 0; font-size: 20px; color: #2c3e50; }
+        table { width: 100%; border-collapse: collapse; }
+        td { 
+            border: 1px solid #000; 
+            width: 20%; 
+            height: 70px; 
+            font-size: 11px; 
+            padding: 2px;
+            vertical-align: middle;
+            word-wrap: break-word;
+        }
+        .instrukce { font-size: 12px; margin-bottom: 10px; font-style: italic; }
+        /* Skrytí okrajů a zbytečností při samotném tisku */
+        @media print {
+            body { margin: 0; }
+            .karticka { width: 48%; margin: 1%; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="karticka">
+        <h2>SKAUTSKÉ BINGO</h2>
+        <div class="instrukce">Najdi někoho, na koho platí tvrzení v políčku, a nech ho se tam podepsat! Každý se může podepsat jen jednou.</div>
+        <table>
+    <tr><td>Chodí do 3. třídy</td><td>Má doma psa</td><td>Má hnědé oči</td><td>Umí postavit stan</td><td>Umí ambulantní uzel</td></tr><tr><td>Zná hlavní město Slovenska</td><td>Rád/a kreslí</td><td>Už někdy ztratil/a klíče</td><td>Byl/a letos na skautském táboře</td><td>Má na sobě něco červeného</td></tr><tr><td>Těší se do školy</td><td>Miluje pizzu</td><td>Baví ho/ji matematika</td><td>Nosí brýle</td><td>Mluví anglicky</td></tr><tr><td>Chová rybičky</td><td>Umí složit vlaštovku z papíru</td><td>Nesnáší koprovku</td><td>Umí rozdělat oheň</td><td>Spal/a už pod širákem</td></tr><tr><td>Zná skautskou hymnu</td><td>Hraje Minecraft</td><td>Narodil/a se v létě</td><td>Vyhrál/a nějakou medaili</td><td>Má rád/a rajskou omáčku</td></tr>
+        </table>
+    </div>
+    
+    <div class="karticka">
+        <h2>SKAUTSKÉ BINGO</h2>
+        <div class="instrukce">Najdi někoho, na koho platí tvrzení v políčku, a nech ho se tam podepsat! Každý se může podepsat jen jednou.</div>
+        <table>
+    <tr><td>Baví ho/ji matematika</td><td>Zná hlavní město Slovenska</td><td>Bojí se pavouků</td><td>Zná skautskou hymnu</td><td>Chová rybičky</td></tr><tr><td>Má na sobě něco zeleného</td><td>Spal/a už pod širákem</td><td>Je levák</td><td>Chodí na florbal</td><td>Umí lyžovat</td></tr><tr><td>Má doma kočku</td><td>Chodí do 4. třídy</td><td>Hraje Roblox</td><td>Má modré oči</td><td>Mluví anglicky</td></tr><tr><td>Má na kroji víc než 3 odborky/vlčky</td><td>Nesnáší koprovku</td><td>Umí udělat dřep na jedné noze</td><td>Jel/a někdy na vodě v lodi</td><td>Umí pískat na prsty</td></tr><tr><td>Miluje pizzu</td><td>Už někdy ztratil/a klíče</td><td>Má rád/a deskovky</td><td>Zná morseovku</td><td>Chodí na fotbal</td></tr>
+        </table>
+    </div>
+    
+    <div class="karticka">
+        <h2>SKAUTSKÉ BINGO</h2>
+        <div class="instrukce">Najdi někoho, na koho platí tvrzení v políčku, a nech ho se tam podepsat! Každý se může podepsat jen jednou.</div>
+        <table>
+    <tr><td>Má modré oči</td><td>Chodí do 5. třídy</td><td>Pije nejradši čistou vodu</td><td>Umí postavit stan</td><td>Ví, kdo byl Baden-Powell</td></tr><tr><td>Pozná dub od buku</td><td>Miluje zmrzlinu</td><td>Má rovnátka</td><td>Má doma křečka nebo morče</td><td>Má rád/a deskovky</td></tr><tr><td>Rád/a tancuje</td><td>Sbírá pokémony</td><td>Má staršího bratra</td><td>Chodí do 4. třídy</td><td>Cestoval/a někdy letadlem</td></tr><tr><td>Baví ho/ji dějepis</td><td>Má rád/a Star Wars</td><td>Chodí na fotbal</td><td>Má více než 2 sourozence</td><td>Má na sobě něco zeleného</td></tr><tr><td>Baví ho/ji matematika</td><td>Spal/a už pod širákem</td><td>Narodil/a se v zimě</td><td>Umí upéct buchtu</td><td>Vyhrál/a nějakou medaili</td></tr>
+        </table>
+    </div>
+    
+    <div class="karticka">
+        <h2>SKAUTSKÉ BINGO</h2>
+        <div class="instrukce">Najdi někoho, na koho platí tvrzení v políčku, a nech ho se tam podepsat! Každý se může podepsat jen jednou.</div>
+        <table>
+    <tr><td>Chodí do skautu déle než 2 roky</td><td>Má více než 2 sourozence</td><td>Má na sobě něco červeného</td><td>Umí uvázat dračí smyčku</td><td>Hraje závodně nějaký sport</td></tr><tr><td>Má doma křečka nebo morče</td><td>Umí pískat na prsty</td><td>Má rád/a rajskou omáčku</td><td>Chodí do 3. třídy</td><td>Ví, kdo byl Baden-Powell</td></tr><tr><td>Narodil/a se v zimě</td><td>Nebojí se tmy</td><td>Má rovnátka</td><td>Má u sebe KPZ</td><td>Umí lyžovat</td></tr><tr><td>Umí upéct buchtu</td><td>Rád/a kreslí</td><td>Byl/a letos na skautském táboře</td><td>Zná jméno svého starosty</td><td>Umí jezdit na snowboardu</td></tr><tr><td>Už někdy ztratil/a klíče</td><td>Umí udělat hvězdu</td><td>Hraje Minecraft</td><td>Pozná dub od buku</td><td>Umí udělat kotrmelec vzad</td></tr>
+        </table>
+    </div>
+    
+    <div class="karticka">
+        <h2>SKAUTSKÉ BINGO</h2>
+        <div class="instrukce">Najdi někoho, na koho platí tvrzení v políčku, a nech ho se tam podepsat! Každý se může podepsat jen jednou.</div>
+        <table>
+    <tr><td>Chodí do 4. třídy</td><td>Má rád/a rajskou omáčku</td><td>Vyhrál/a nějakou medaili</td><td>Umí uvařit čaj</td><td>Zná morseovku</td></tr><tr><td>Spal/a už pod širákem</td><td>Umí pískat na stéblo trávy</td><td>Nosí brýle</td><td>Těší se do školy</td><td>Umí rozdělat oheň</td></tr><tr><td>Rád/a kreslí</td><td>Pije nejradši čistou vodu</td><td>Umí lyžovat</td><td>Má u sebe KPZ</td><td>Jel/a někdy na vodě v lodi</td></tr><tr><td>Má doma psa</td><td>Měl/a někdy zlomenou ruku nebo nohu</td><td>Umí udělat hvězdu</td><td>Hraje Minecraft</td><td>Má rovnátka</td></tr><tr><td>Miluje pizzu</td><td>Chodí na fotbal</td><td>Má staršího bratra</td><td>Zná skautskou hymnu</td><td>Rád/a čte knížky</td></tr>
+        </table>
+    </div>
+    
+    <div class="karticka">
+        <h2>SKAUTSKÉ BINGO</h2>
+        <div class="instrukce">Najdi někoho, na koho platí tvrzení v políčku, a nech ho se tam podepsat! Každý se může podepsat jen jednou.</div>
+        <table>
+    <tr><td>Má rád/a Star Wars</td><td>Má rovnátka</td><td>Má na sobě něco červeného</td><td>Zná názvy alespoň 5 souhvězdí</td><td>Baví ho/ji matematika</td></tr><tr><td>Hraje Roblox</td><td>Miluje zmrzlinu</td><td>Zná skautskou hymnu</td><td>Nosí u sebe nožík (rybičku)</td><td>Bojí se pavouků</td></tr><tr><td>Nejí houby</td><td>Nebojí se tmy</td><td>Umí rozdělat oheň</td><td>Je jedináček</td><td>Umí ambulantní uzel</td></tr><tr><td>Sleduje Marvel filmy</td><td>Hraje na hudební nástroj</td><td>Rád/a čte knížky</td><td>Má rád/a deskovky</td><td>Zná hlavní město Slovenska</td></tr><tr><td>Hraje závodně nějaký sport</td><td>Baví ho/ji dějepis</td><td>Umí jezdit na snowboardu</td><td>Narodil/a se v zimě</td><td>Má modré oči</td></tr>
+        </table>
+    </div>
+    
+    <div class="karticka">
+        <h2>SKAUTSKÉ BINGO</h2>
+        <div class="instrukce">Najdi někoho, na koho platí tvrzení v políčku, a nech ho se tam podepsat! Každý se může podepsat jen jednou.</div>
+        <table>
+    <tr><td>Ví, kdo byl Baden-Powell</td><td>Umí udělat dřep na jedné noze</td><td>Má na kroji víc než 3 odborky/vlčky</td><td>Má rád/a rajskou omáčku</td><td>Umí jezdit na snowboardu</td></tr><tr><td>Umí udělat kotrmelec vzad</td><td>Umí uvázat dračí smyčku</td><td>Zná morseovku</td><td>Nejí houby</td><td>Rád/a kreslí</td></tr><tr><td>Umí pískat na prsty</td><td>Má doma křečka nebo morče</td><td>Zná skautskou hymnu</td><td>Má rád/a sushi</td><td>Má doma psa</td></tr><tr><td>Mluví anglicky</td><td>Má modré oči</td><td>Umí udělat hvězdu</td><td>Má tento měsíc narozeniny nebo svátek</td><td>Rád/a tancuje</td></tr><tr><td>Má doma kočku</td><td>Narodil/a se v létě</td><td>Těší se do školy</td><td>Chová rybičky</td><td>Pozná dub od buku</td></tr>
+        </table>
+    </div>
+    
+    <div class="karticka">
+        <h2>SKAUTSKÉ BINGO</h2>
+        <div class="instrukce">Najdi někoho, na koho platí tvrzení v políčku, a nech ho se tam podepsat! Každý se může podepsat jen jednou.</div>
+        <table>
+    <tr><td>Má modré oči</td><td>Umí lyžovat</td><td>Umí jezdit na koni</td><td>Je levák</td><td>Ví, kdo byl Baden-Powell</td></tr><tr><td>Má na sobě něco zeleného</td><td>Má mladší sestru</td><td>Těší se do školy</td><td>Jel/a někdy na vodě v lodi</td><td>Bojí se pavouků</td></tr><tr><td>Má hnědé oči</td><td>Byl/a někdy u moře</td><td>Má rád/a Star Wars</td><td>Zná názvy alespoň 5 souhvězdí</td><td>Chodí do 4. třídy</td></tr><tr><td>Hraje závodně nějaký sport</td><td>Dosáhne si jazykem na nos</td><td>Nosí brýle</td><td>Má doma křečka nebo morče</td><td>Chodí do 3. třídy</td></tr><tr><td>Chodí do 5. třídy</td><td>Hraje Roblox</td><td>Umí udělat dřep na jedné noze</td><td>Sbírá pokémony</td><td>Má staršího bratra</td></tr>
+        </table>
+    </div>
+    
+    <div class="karticka">
+        <h2>SKAUTSKÉ BINGO</h2>
+        <div class="instrukce">Najdi někoho, na koho platí tvrzení v políčku, a nech ho se tam podepsat! Každý se může podepsat jen jednou.</div>
+        <table>
+    <tr><td>Těší se do školy</td><td>Narodil/a se v zimě</td><td>Umí pískat na prsty</td><td>Rád/a kreslí</td><td>Má hnědé oči</td></tr><tr><td>Má rovnátka</td><td>Bojí se pavouků</td><td>Chová rybičky</td><td>Nebojí se tmy</td><td>Má více než 2 sourozence</td></tr><tr><td>Má mladší sestru</td><td>Umí plavat kraula</td><td>Chodí do skautu déle než 2 roky</td><td>Hraje Roblox</td><td>Cestoval/a někdy letadlem</td></tr><tr><td>Miluje pizzu</td><td>Umí jezdit na koni</td><td>Zná hlavní město Slovenska</td><td>Umí pískat na stéblo trávy</td><td>Je levák</td></tr><tr><td>Umí složit vlaštovku z papíru</td><td>Má na kroji víc než 3 odborky/vlčky</td><td>Má rád/a Star Wars</td><td>Umí rozdělat oheň</td><td>Nosí u sebe nožík (rybičku)</td></tr>
+        </table>
+    </div>
+    
+    <div class="karticka">
+        <h2>SKAUTSKÉ BINGO</h2>
+        <div class="instrukce">Najdi někoho, na koho platí tvrzení v políčku, a nech ho se tam podepsat! Každý se může podepsat jen jednou.</div>
+        <table>
+    <tr><td>Bojí se pavouků</td><td>Mluví anglicky</td><td>Umí lyžovat</td><td>Hraje závodně nějaký sport</td><td>Sleduje Marvel filmy</td></tr><tr><td>Nejí houby</td><td>Pije nejradši čistou vodu</td><td>Miluje pizzu</td><td>Nosí u sebe nožík (rybičku)</td><td>Nesnáší koprovku</td></tr><tr><td>Hraje Roblox</td><td>Má rád/a Star Wars</td><td>Má rád/a sushi</td><td>Má hnědé oči</td><td>Má rád/a rajskou omáčku</td></tr><tr><td>Baví ho/ji dějepis</td><td>Má na sobě něco červeného</td><td>Dosáhne si jazykem na nos</td><td>Vyhrál/a nějakou medaili</td><td>Umí plavat kraula</td></tr><tr><td>Hraje Minecraft</td><td>Nosí brýle</td><td>Cestoval/a někdy letadlem</td><td>Zná hlavní město Slovenska</td><td>Narodil/a se v zimě</td></tr>
+        </table>
+    </div>
+    
+    <div class="karticka">
+        <h2>SKAUTSKÉ BINGO</h2>
+        <div class="instrukce">Najdi někoho, na koho platí tvrzení v políčku, a nech ho se tam podepsat! Každý se může podepsat jen jednou.</div>
+        <table>
+    <tr><td>Miluje pizzu</td><td>Má u sebe KPZ</td><td>Chodí do 5. třídy</td><td>Má doma křečka nebo morče</td><td>Umí ambulantní uzel</td></tr><tr><td>Umí pískat na stéblo trávy</td><td>Sleduje Marvel filmy</td><td>Hraje na hudební nástroj</td><td>Umí udělat hvězdu</td><td>Umí udělat dřep na jedné noze</td></tr><tr><td>Umí plavat kraula</td><td>Baví ho/ji dějepis</td><td>Má hnědé oči</td><td>Jel/a někdy na vodě v lodi</td><td>Má na sobě něco červeného</td></tr><tr><td>Hraje Minecraft</td><td>Umí složit vlaštovku z papíru</td><td>Chodí do skautu déle než 2 roky</td><td>Má tento měsíc narozeniny nebo svátek</td><td>Má doma psa</td></tr><tr><td>Ví, kdo byl Baden-Powell</td><td>Bojí se pavouků</td><td>Zná jméno svého starosty</td><td>Narodil/a se v létě</td><td>Rád/a tancuje</td></tr>
+        </table>
+    </div>
+    
+    <div class="karticka">
+        <h2>SKAUTSKÉ BINGO</h2>
+        <div class="instrukce">Najdi někoho, na koho platí tvrzení v políčku, a nech ho se tam podepsat! Každý se může podepsat jen jednou.</div>
+        <table>
+    <tr><td>Nejí houby</td><td>Má rád/a rajskou omáčku</td><td>Umí lyžovat</td><td>Umí pískat na stéblo trávy</td><td>Jel/a někdy na vodě v lodi</td></tr><tr><td>Umí jezdit na snowboardu</td><td>Nosí u sebe nožík (rybičku)</td><td>Má hnědé oči</td><td>Má mladší sestru</td><td>Umí složit vlaštovku z papíru</td></tr><tr><td>Sbírá pokémony</td><td>Má modré oči</td><td>Umí udělat hvězdu</td><td>Dosáhne si jazykem na nos</td><td>Narodil/a se v létě</td></tr><tr><td>Nesnáší koprovku</td><td>Baví ho/ji dějepis</td><td>Nebojí se tmy</td><td>Chodí na fotbal</td><td>Má u sebe KPZ</td></tr><tr><td>Miluje pizzu</td><td>Chodí do 5. třídy</td><td>Umí postavit stan</td><td>Umí jezdit na koni</td><td>Narodil/a se v zimě</td></tr>
+        </table>
+    </div>
+    
+    <div class="karticka">
+        <h2>SKAUTSKÉ BINGO</h2>
+        <div class="instrukce">Najdi někoho, na koho platí tvrzení v políčku, a nech ho se tam podepsat! Každý se může podepsat jen jednou.</div>
+        <table>
+    <tr><td>Vyhrál/a nějakou medaili</td><td>Měl/a někdy zlomenou ruku nebo nohu</td><td>Umí udělat kotrmelec vzad</td><td>Má na sobě něco červeného</td><td>Chodí na florbal</td></tr><tr><td>Cestoval/a někdy letadlem</td><td>Miluje zmrzlinu</td><td>Těší se do školy</td><td>Má více než 2 sourozence</td><td>Rád/a tancuje</td></tr><tr><td>Nejí houby</td><td>Má na kroji víc než 3 odborky/vlčky</td><td>Umí uvařit čaj</td><td>Je levák</td><td>Nosí u sebe nožík (rybičku)</td></tr><tr><td>Umí udělat dřep na jedné noze</td><td>Má rád/a rajskou omáčku</td><td>Chodí do skautu déle než 2 roky</td><td>Má rovnátka</td><td>Narodil/a se v zimě</td></tr><tr><td>Zná morseovku</td><td>Má u sebe KPZ</td><td>Rád/a čte knížky</td><td>Má tento měsíc narozeniny nebo svátek</td><td>Chodí do 3. třídy</td></tr>
+        </table>
+    </div>
+    
+    <div class="karticka">
+        <h2>SKAUTSKÉ BINGO</h2>
+        <div class="instrukce">Najdi někoho, na koho platí tvrzení v políčku, a nech ho se tam podepsat! Každý se může podepsat jen jednou.</div>
+        <table>
+    <tr><td>Má doma křečka nebo morče</td><td>Umí udělat kotrmelec vzad</td><td>Chodí na florbal</td><td>Chodí na fotbal</td><td>Pije nejradši čistou vodu</td></tr><tr><td>Umí upéct buchtu</td><td>Chová rybičky</td><td>Umí udělat hvězdu</td><td>Umí pískat na prsty</td><td>Sbírá pokémony</td></tr><tr><td>Má na sobě něco červeného</td><td>Umí uvázat dračí smyčku</td><td>Zná jméno svého starosty</td><td>Je jedináček</td><td>Měl/a někdy zlomenou ruku nebo nohu</td></tr><tr><td>Umí pískat na stéblo trávy</td><td>Ví, kdo byl Baden-Powell</td><td>Má rád/a deskovky</td><td>Má hnědé oči</td><td>Má rád/a Star Wars</td></tr><tr><td>Chodí do 3. třídy</td><td>Hraje Roblox</td><td>Umí ambulantní uzel</td><td>Narodil/a se v létě</td><td>Byl/a někdy u moře</td></tr>
+        </table>
+    </div>
+    
+    <div class="karticka">
+        <h2>SKAUTSKÉ BINGO</h2>
+        <div class="instrukce">Najdi někoho, na koho platí tvrzení v políčku, a nech ho se tam podepsat! Každý se může podepsat jen jednou.</div>
+        <table>
+    <tr><td>Hraje na hudební nástroj</td><td>Narodil/a se v zimě</td><td>Má u sebe KPZ</td><td>Má na sobě něco červeného</td><td>Ví, kdo byl Baden-Powell</td></tr><tr><td>Má na kroji víc než 3 odborky/vlčky</td><td>Chodí na florbal</td><td>Má hnědé oči</td><td>Má mladší sestru</td><td>Chodí do 3. třídy</td></tr><tr><td>Umí složit vlaštovku z papíru</td><td>Narodil/a se v létě</td><td>Umí udělat kotrmelec vzad</td><td>Umí udělat hvězdu</td><td>Nesnáší koprovku</td></tr><tr><td>Pije nejradši čistou vodu</td><td>Rád/a čte knížky</td><td>Měl/a někdy zlomenou ruku nebo nohu</td><td>Nosí brýle</td><td>Těší se do školy</td></tr><tr><td>Rád/a kreslí</td><td>Byl/a letos na skautském táboře</td><td>Chodí do 5. třídy</td><td>Má rád/a sushi</td><td>Umí rozdělat oheň</td></tr>
+        </table>
+    </div>
+    
+    <div class="karticka">
+        <h2>SKAUTSKÉ BINGO</h2>
+        <div class="instrukce">Najdi někoho, na koho platí tvrzení v políčku, a nech ho se tam podepsat! Každý se může podepsat jen jednou.</div>
+        <table>
+    <tr><td>Umí ambulantní uzel</td><td>Umí pískat na prsty</td><td>Baví ho/ji dějepis</td><td>Sbírá pokémony</td><td>Má rád/a rajskou omáčku</td></tr><tr><td>Hraje závodně nějaký sport</td><td>Má rád/a sushi</td><td>Zná jméno svého starosty</td><td>Má rád/a Star Wars</td><td>Už někdy ztratil/a klíče</td></tr><tr><td>Hraje Minecraft</td><td>Umí jezdit na koni</td><td>Nebojí se tmy</td><td>Chodí na florbal</td><td>Má staršího bratra</td></tr><tr><td>Mluví anglicky</td><td>Miluje zmrzlinu</td><td>Baví ho/ji matematika</td><td>Rád/a čte knížky</td><td>Umí upéct buchtu</td></tr><tr><td>Umí udělat dřep na jedné noze</td><td>Nesnáší koprovku</td><td>Hraje na hudební nástroj</td><td>Má u sebe KPZ</td><td>Pozná dub od buku</td></tr>
+        </table>
+    </div>
+    
+    <div class="karticka">
+        <h2>SKAUTSKÉ BINGO</h2>
+        <div class="instrukce">Najdi někoho, na koho platí tvrzení v políčku, a nech ho se tam podepsat! Každý se může podepsat jen jednou.</div>
+        <table>
+    <tr><td>Má na sobě něco červeného</td><td>Těší se do školy</td><td>Má rád/a Star Wars</td><td>Bojí se pavouků</td><td>Umí uvařit čaj</td></tr><tr><td>Chodí na fotbal</td><td>Nebojí se tmy</td><td>Má doma psa</td><td>Chodí do 5. třídy</td><td>Je levák</td></tr><tr><td>Chová rybičky</td><td>Má rád/a rajskou omáčku</td><td>Umí složit vlaštovku z papíru</td><td>Nejí houby</td><td>Chodí do 3. třídy</td></tr><tr><td>Rád/a kreslí</td><td>Umí pískat na prsty</td><td>Má na sobě něco zeleného</td><td>Pozná dub od buku</td><td>Umí udělat hvězdu</td></tr><tr><td>Mluví anglicky</td><td>Dosáhne si jazykem na nos</td><td>Ví, kdo byl Baden-Powell</td><td>Hraje Minecraft</td><td>Pije nejradši čistou vodu</td></tr>
+        </table>
+    </div>
+    
+    <div class="karticka">
+        <h2>SKAUTSKÉ BINGO</h2>
+        <div class="instrukce">Najdi někoho, na koho platí tvrzení v políčku, a nech ho se tam podepsat! Každý se může podepsat jen jednou.</div>
+        <table>
+    <tr><td>Bojí se pavouků</td><td>Zná hlavní město Slovenska</td><td>Umí udělat dřep na jedné noze</td><td>Má modré oči</td><td>Umí uvařit čaj</td></tr><tr><td>Chodí do 4. třídy</td><td>Baví ho/ji matematika</td><td>Nesnáší koprovku</td><td>Mluví anglicky</td><td>Byl/a někdy u moře</td></tr><tr><td>Hraje závodně nějaký sport</td><td>Je levák</td><td>Má doma křečka nebo morče</td><td>Má mladší sestru</td><td>Zná skautskou hymnu</td></tr><tr><td>Hraje Roblox</td><td>Má na kroji víc než 3 odborky/vlčky</td><td>Má staršího bratra</td><td>Má tento měsíc narozeniny nebo svátek</td><td>Má na sobě něco zeleného</td></tr><tr><td>Rád/a tancuje</td><td>Pije nejradši čistou vodu</td><td>Rád/a čte knížky</td><td>Chodí do 5. třídy</td><td>Pozná dub od buku</td></tr>
+        </table>
+    </div>
+    
+    <div class="karticka">
+        <h2>SKAUTSKÉ BINGO</h2>
+        <div class="instrukce">Najdi někoho, na koho platí tvrzení v políčku, a nech ho se tam podepsat! Každý se může podepsat jen jednou.</div>
+        <table>
+    <tr><td>Umí upéct buchtu</td><td>Umí uvázat dračí smyčku</td><td>Zná skautskou hymnu</td><td>Miluje zmrzlinu</td><td>Chodí na fotbal</td></tr><tr><td>Má na sobě něco červeného</td><td>Má rád/a sushi</td><td>Má rád/a deskovky</td><td>Má tento měsíc narozeniny nebo svátek</td><td>Rád/a kreslí</td></tr><tr><td>Sbírá pokémony</td><td>Byl/a letos na skautském táboře</td><td>Umí lyžovat</td><td>Nosí u sebe nožík (rybičku)</td><td>Byl/a někdy u moře</td></tr><tr><td>Umí ambulantní uzel</td><td>Spal/a už pod širákem</td><td>Dosáhne si jazykem na nos</td><td>Umí plavat kraula</td><td>Pije nejradši čistou vodu</td></tr><tr><td>Umí jezdit na snowboardu</td><td>Narodil/a se v létě</td><td>Umí udělat dřep na jedné noze</td><td>Je jedináček</td><td>Chodí do skautu déle než 2 roky</td></tr>
+        </table>
+    </div>
+    
+    <div class="karticka">
+        <h2>SKAUTSKÉ BINGO</h2>
+        <div class="instrukce">Najdi někoho, na koho platí tvrzení v políčku, a nech ho se tam podepsat! Každý se může podepsat jen jednou.</div>
+        <table>
+    <tr><td>Miluje pizzu</td><td>Je jedináček</td><td>Má staršího bratra</td><td>Jel/a někdy na vodě v lodi</td><td>Rád/a tancuje</td></tr><tr><td>Umí upéct buchtu</td><td>Byl/a letos na skautském táboře</td><td>Má rád/a deskovky</td><td>Umí udělat hvězdu</td><td>Vyhrál/a nějakou medaili</td></tr><tr><td>Má hnědé oči</td><td>Umí udělat dřep na jedné noze</td><td>Sleduje Marvel filmy</td><td>Má na sobě něco zeleného</td><td>Sbírá pokémony</td></tr><tr><td>Mluví anglicky</td><td>Rád/a čte knížky</td><td>Hraje závodně nějaký sport</td><td>Má doma psa</td><td>Má doma křečka nebo morče</td></tr><tr><td>Měl/a někdy zlomenou ruku nebo nohu</td><td>Nesnáší koprovku</td><td>Má rád/a Star Wars</td><td>Ví, kdo byl Baden-Powell</td><td>Umí ambulantní uzel</td></tr>
+        </table>
+    </div>
+    
+    <div class="karticka">
+        <h2>SKAUTSKÉ BINGO</h2>
+        <div class="instrukce">Najdi někoho, na koho platí tvrzení v políčku, a nech ho se tam podepsat! Každý se může podepsat jen jednou.</div>
+        <table>
+    <tr><td>Chodí do skautu déle než 2 roky</td><td>Hraje závodně nějaký sport</td><td>Rád/a čte knížky</td><td>Vyhrál/a nějakou medaili</td><td>Má doma křečka nebo morče</td></tr><tr><td>Má rád/a deskovky</td><td>Je levák</td><td>Umí postavit stan</td><td>Chodí na fotbal</td><td>Má mladší sestru</td></tr><tr><td>Sleduje Marvel filmy</td><td>Umí složit vlaštovku z papíru</td><td>Rád/a kreslí</td><td>Nosí u sebe nožík (rybičku)</td><td>Dosáhne si jazykem na nos</td></tr><tr><td>Má na kroji víc než 3 odborky/vlčky</td><td>Chodí do 3. třídy</td><td>Umí udělat dřep na jedné noze</td><td>Má staršího bratra</td><td>Umí pískat na prsty</td></tr><tr><td>Nesnáší koprovku</td><td>Sbírá pokémony</td><td>Má rád/a rajskou omáčku</td><td>Hraje Minecraft</td><td>Má hnědé oči</td></tr>
+        </table>
+    </div>
+    
+    <div class="karticka">
+        <h2>SKAUTSKÉ BINGO</h2>
+        <div class="instrukce">Najdi někoho, na koho platí tvrzení v políčku, a nech ho se tam podepsat! Každý se může podepsat jen jednou.</div>
+        <table>
+    <tr><td>Narodil/a se v zimě</td><td>Umí udělat kotrmelec vzad</td><td>Byl/a někdy u moře</td><td>Rád/a tancuje</td><td>Umí rozdělat oheň</td></tr><tr><td>Pije nejradši čistou vodu</td><td>Hraje na hudební nástroj</td><td>Rád/a kreslí</td><td>Chodí do skautu déle než 2 roky</td><td>Cestoval/a někdy letadlem</td></tr><tr><td>Má doma psa</td><td>Nebojí se tmy</td><td>Chová rybičky</td><td>Mluví anglicky</td><td>Má rád/a sushi</td></tr><tr><td>Vyhrál/a nějakou medaili</td><td>Umí upéct buchtu</td><td>Umí pískat na prsty</td><td>Má více než 2 sourozence</td><td>Miluje zmrzlinu</td></tr><tr><td>Nejí houby</td><td>Je levák</td><td>Umí udělat dřep na jedné noze</td><td>Má rovnátka</td><td>Byl/a letos na skautském táboře</td></tr>
+        </table>
+    </div>
+    
+    <div class="karticka">
+        <h2>SKAUTSKÉ BINGO</h2>
+        <div class="instrukce">Najdi někoho, na koho platí tvrzení v políčku, a nech ho se tam podepsat! Každý se může podepsat jen jednou.</div>
+        <table>
+    <tr><td>Těší se do školy</td><td>Umí uvařit čaj</td><td>Nebojí se tmy</td><td>Byl/a někdy u moře</td><td>Má doma kočku</td></tr><tr><td>Sbírá pokémony</td><td>Umí uvázat dračí smyčku</td><td>Ví, kdo byl Baden-Powell</td><td>Chodí do 4. třídy</td><td>Má na sobě něco červeného</td></tr><tr><td>Dosáhne si jazykem na nos</td><td>Umí rozdělat oheň</td><td>Je levák</td><td>Umí pískat na prsty</td><td>Spal/a už pod širákem</td></tr><tr><td>Má rád/a Star Wars</td><td>Mluví anglicky</td><td>Umí udělat hvězdu</td><td>Hraje Minecraft</td><td>Zná hlavní město Slovenska</td></tr><tr><td>Hraje závodně nějaký sport</td><td>Pozná dub od buku</td><td>Má rovnátka</td><td>Umí ambulantní uzel</td><td>Byl/a letos na skautském táboře</td></tr>
+        </table>
+    </div>
+    
+    <div class="karticka">
+        <h2>SKAUTSKÉ BINGO</h2>
+        <div class="instrukce">Najdi někoho, na koho platí tvrzení v políčku, a nech ho se tam podepsat! Každý se může podepsat jen jednou.</div>
+        <table>
+    <tr><td>Těší se do školy</td><td>Má rád/a deskovky</td><td>Byl/a někdy u moře</td><td>Hraje na hudební nástroj</td><td>Umí složit vlaštovku z papíru</td></tr><tr><td>Baví ho/ji matematika</td><td>Má modré oči</td><td>Má tento měsíc narozeniny nebo svátek</td><td>Umí udělat hvězdu</td><td>Je jedináček</td></tr><tr><td>Sleduje Marvel filmy</td><td>Má doma křečka nebo morče</td><td>Umí plavat kraula</td><td>Chodí do 5. třídy</td><td>Už někdy ztratil/a klíče</td></tr><tr><td>Spal/a už pod širákem</td><td>Umí lyžovat</td><td>Hraje Minecraft</td><td>Chodí do 4. třídy</td><td>Má více než 2 sourozence</td></tr><tr><td>Umí rozdělat oheň</td><td>Má doma psa</td><td>Rád/a čte knížky</td><td>Hraje závodně nějaký sport</td><td>Chodí do skautu déle než 2 roky</td></tr>
+        </table>
+    </div>
+    
+    <div class="karticka">
+        <h2>SKAUTSKÉ BINGO</h2>
+        <div class="instrukce">Najdi někoho, na koho platí tvrzení v políčku, a nech ho se tam podepsat! Každý se může podepsat jen jednou.</div>
+        <table>
+    <tr><td>Mluví anglicky</td><td>Baví ho/ji dějepis</td><td>Je jedináček</td><td>Těší se do školy</td><td>Pije nejradši čistou vodu</td></tr><tr><td>Má rád/a Star Wars</td><td>Zná hlavní město Slovenska</td><td>Má mladší sestru</td><td>Nosí u sebe nožík (rybičku)</td><td>Chodí na fotbal</td></tr><tr><td>Spal/a už pod širákem</td><td>Hraje Roblox</td><td>Už někdy ztratil/a klíče</td><td>Umí uvařit čaj</td><td>Cestoval/a někdy letadlem</td></tr><tr><td>Má rád/a rajskou omáčku</td><td>Má více než 2 sourozence</td><td>Umí rozdělat oheň</td><td>Měl/a někdy zlomenou ruku nebo nohu</td><td>Má u sebe KPZ</td></tr><tr><td>Má rád/a deskovky</td><td>Hraje závodně nějaký sport</td><td>Chodí do 5. třídy</td><td>Rád/a tancuje</td><td>Zná skautskou hymnu</td></tr>
+        </table>
+    </div>
+    
+    <div class="karticka">
+        <h2>SKAUTSKÉ BINGO</h2>
+        <div class="instrukce">Najdi někoho, na koho platí tvrzení v políčku, a nech ho se tam podepsat! Každý se může podepsat jen jednou.</div>
+        <table>
+    <tr><td>Má u sebe KPZ</td><td>Už někdy ztratil/a klíče</td><td>Má doma psa</td><td>Zná jméno svého starosty</td><td>Byl/a někdy u moře</td></tr><tr><td>Má doma křečka nebo morče</td><td>Rád/a kreslí</td><td>Rád/a tancuje</td><td>Sbírá pokémony</td><td>Baví ho/ji dějepis</td></tr><tr><td>Nesnáší koprovku</td><td>Hraje závodně nějaký sport</td><td>Má modré oči</td><td>Má staršího bratra</td><td>Pozná dub od buku</td></tr><tr><td>Má mladší sestru</td><td>Těší se do školy</td><td>Umí pískat na stéblo trávy</td><td>Bojí se pavouků</td><td>Vyhrál/a nějakou medaili</td></tr><tr><td>Umí ambulantní uzel</td><td>Ví, kdo byl Baden-Powell</td><td>Umí uvařit čaj</td><td>Měl/a někdy zlomenou ruku nebo nohu</td><td>Chodí do 5. třídy</td></tr>
+        </table>
+    </div>
+    
+    <div class="karticka">
+        <h2>SKAUTSKÉ BINGO</h2>
+        <div class="instrukce">Najdi někoho, na koho platí tvrzení v políčku, a nech ho se tam podepsat! Každý se může podepsat jen jednou.</div>
+        <table>
+    <tr><td>Vyhrál/a nějakou medaili</td><td>Zná názvy alespoň 5 souhvězdí</td><td>Umí upéct buchtu</td><td>Má hnědé oči</td><td>Narodil/a se v zimě</td></tr><tr><td>Bojí se pavouků</td><td>Byl/a letos na skautském táboře</td><td>Chodí do 3. třídy</td><td>Chodí do 5. třídy</td><td>Zná skautskou hymnu</td></tr><tr><td>Rád/a čte knížky</td><td>Nosí brýle</td><td>Má doma křečka nebo morče</td><td>Miluje zmrzlinu</td><td>Má doma psa</td></tr><tr><td>Sleduje Marvel filmy</td><td>Rád/a tancuje</td><td>Umí udělat hvězdu</td><td>Mluví anglicky</td><td>Měl/a někdy zlomenou ruku nebo nohu</td></tr><tr><td>Chodí na fotbal</td><td>Baví ho/ji matematika</td><td>Už někdy ztratil/a klíče</td><td>Hraje na hudební nástroj</td><td>Dosáhne si jazykem na nos</td></tr>
+        </table>
+    </div>
+    
+    <div class="karticka">
+        <h2>SKAUTSKÉ BINGO</h2>
+        <div class="instrukce">Najdi někoho, na koho platí tvrzení v políčku, a nech ho se tam podepsat! Každý se může podepsat jen jednou.</div>
+        <table>
+    <tr><td>Těší se do školy</td><td>Umí uvařit čaj</td><td>Zná jméno svého starosty</td><td>Je levák</td><td>Umí rozdělat oheň</td></tr><tr><td>Baví ho/ji dějepis</td><td>Umí udělat dřep na jedné noze</td><td>Má na sobě něco zeleného</td><td>Sbírá pokémony</td><td>Má hnědé oči</td></tr><tr><td>Zná hlavní město Slovenska</td><td>Hraje závodně nějaký sport</td><td>Umí pískat na prsty</td><td>Jel/a někdy na vodě v lodi</td><td>Má doma psa</td></tr><tr><td>Rád/a kreslí</td><td>Mluví anglicky</td><td>Chová rybičky</td><td>Umí udělat hvězdu</td><td>Má rád/a deskovky</td></tr><tr><td>Chodí do skautu déle než 2 roky</td><td>Umí jezdit na snowboardu</td><td>Má na sobě něco červeného</td><td>Nosí u sebe nožík (rybičku)</td><td>Zná skautskou hymnu</td></tr>
+        </table>
+    </div>
+    
+    <div class="karticka">
+        <h2>SKAUTSKÉ BINGO</h2>
+        <div class="instrukce">Najdi někoho, na koho platí tvrzení v políčku, a nech ho se tam podepsat! Každý se může podepsat jen jednou.</div>
+        <table>
+    <tr><td>Umí uvázat dračí smyčku</td><td>Hraje Roblox</td><td>Umí pískat na prsty</td><td>Hraje na hudební nástroj</td><td>Miluje pizzu</td></tr><tr><td>Rád/a tancuje</td><td>Mluví anglicky</td><td>Umí udělat dřep na jedné noze</td><td>Má na sobě něco zeleného</td><td>Chodí do 3. třídy</td></tr><tr><td>Spal/a už pod širákem</td><td>Ví, kdo byl Baden-Powell</td><td>Chodí na fotbal</td><td>Jel/a někdy na vodě v lodi</td><td>Sleduje Marvel filmy</td></tr><tr><td>Byl/a někdy u moře</td><td>Zná jméno svého starosty</td><td>Má rovnátka</td><td>Umí udělat kotrmelec vzad</td><td>Miluje zmrzlinu</td></tr><tr><td>Má staršího bratra</td><td>Má u sebe KPZ</td><td>Má rád/a sushi</td><td>Vyhrál/a nějakou medaili</td><td>Rád/a čte knížky</td></tr>
+        </table>
+    </div>
+    
+    <div class="karticka">
+        <h2>SKAUTSKÉ BINGO</h2>
+        <div class="instrukce">Najdi někoho, na koho platí tvrzení v políčku, a nech ho se tam podepsat! Každý se může podepsat jen jednou.</div>
+        <table>
+    <tr><td>Je jedináček</td><td>Umí pískat na stéblo trávy</td><td>Mluví anglicky</td><td>Má u sebe KPZ</td><td>Má doma křečka nebo morče</td></tr><tr><td>Chodí do 5. třídy</td><td>Chodí do skautu déle než 2 roky</td><td>Umí plavat kraula</td><td>Umí uvázat dračí smyčku</td><td>Baví ho/ji dějepis</td></tr><tr><td>Má modré oči</td><td>Má rovnátka</td><td>Jel/a někdy na vodě v lodi</td><td>Umí udělat dřep na jedné noze</td><td>Má na sobě něco zeleného</td></tr><tr><td>Má rád/a Star Wars</td><td>Má více než 2 sourozence</td><td>Zná skautskou hymnu</td><td>Byl/a letos na skautském táboře</td><td>Umí jezdit na snowboardu</td></tr><tr><td>Umí jezdit na koni</td><td>Nejí houby</td><td>Pije nejradši čistou vodu</td><td>Zná morseovku</td><td>Baví ho/ji matematika</td></tr>
+        </table>
+    </div>
+    
+    <div class="karticka">
+        <h2>SKAUTSKÉ BINGO</h2>
+        <div class="instrukce">Najdi někoho, na koho platí tvrzení v políčku, a nech ho se tam podepsat! Každý se může podepsat jen jednou.</div>
+        <table>
+    <tr><td>Zná skautskou hymnu</td><td>Má doma křečka nebo morče</td><td>Cestoval/a někdy letadlem</td><td>Umí ambulantní uzel</td><td>Umí udělat hvězdu</td></tr><tr><td>Má tento měsíc narozeniny nebo svátek</td><td>Má staršího bratra</td><td>Má doma psa</td><td>Chodí do skautu déle než 2 roky</td><td>Má více než 2 sourozence</td></tr><tr><td>Hraje na hudební nástroj</td><td>Má na kroji víc než 3 odborky/vlčky</td><td>Už někdy ztratil/a klíče</td><td>Má rád/a deskovky</td><td>Má na sobě něco zeleného</td></tr><tr><td>Chodí do 5. třídy</td><td>Spal/a už pod širákem</td><td>Mluví anglicky</td><td>Zná morseovku</td><td>Nejí houby</td></tr><tr><td>Byl/a letos na skautském táboře</td><td>Má na sobě něco červeného</td><td>Hraje Minecraft</td><td>Zná jméno svého starosty</td><td>Umí jezdit na koni</td></tr>
+        </table>
+    </div>
+    
+    <div class="karticka">
+        <h2>SKAUTSKÉ BINGO</h2>
+        <div class="instrukce">Najdi někoho, na koho platí tvrzení v políčku, a nech ho se tam podepsat! Každý se může podepsat jen jednou.</div>
+        <table>
+    <tr><td>Má rád/a Star Wars</td><td>Má staršího bratra</td><td>Dosáhne si jazykem na nos</td><td>Má doma psa</td><td>Bojí se pavouků</td></tr><tr><td>Rád/a tancuje</td><td>Umí uvařit čaj</td><td>Baví ho/ji matematika</td><td>Narodil/a se v létě</td><td>Chodí na fotbal</td></tr><tr><td>Má modré oči</td><td>Jel/a někdy na vodě v lodi</td><td>Má rovnátka</td><td>Má na sobě něco zeleného</td><td>Umí rozdělat oheň</td></tr><tr><td>Je levák</td><td>Má na sobě něco červeného</td><td>Má na kroji víc než 3 odborky/vlčky</td><td>Umí pískat na prsty</td><td>Sleduje Marvel filmy</td></tr><tr><td>Hraje Minecraft</td><td>Byl/a letos na skautském táboře</td><td>Umí udělat kotrmelec vzad</td><td>Baví ho/ji dějepis</td><td>Umí jezdit na snowboardu</td></tr>
+        </table>
+    </div>
+    
+    <div class="karticka">
+        <h2>SKAUTSKÉ BINGO</h2>
+        <div class="instrukce">Najdi někoho, na koho platí tvrzení v políčku, a nech ho se tam podepsat! Každý se může podepsat jen jednou.</div>
+        <table>
+    <tr><td>Umí uvařit čaj</td><td>Má u sebe KPZ</td><td>Umí rozdělat oheň</td><td>Byl/a někdy u moře</td><td>Sbírá pokémony</td></tr><tr><td>Narodil/a se v létě</td><td>Narodil/a se v zimě</td><td>Umí uvázat dračí smyčku</td><td>Má rád/a sushi</td><td>Zná skautskou hymnu</td></tr><tr><td>Umí pískat na prsty</td><td>Mluví anglicky</td><td>Má doma kočku</td><td>Chodí na fotbal</td><td>Chodí do skautu déle než 2 roky</td></tr><tr><td>Miluje pizzu</td><td>Má doma křečka nebo morče</td><td>Má doma psa</td><td>Má mladší sestru</td><td>Těší se do školy</td></tr><tr><td>Chová rybičky</td><td>Má na sobě něco zeleného</td><td>Sleduje Marvel filmy</td><td>Má tento měsíc narozeniny nebo svátek</td><td>Už někdy ztratil/a klíče</td></tr>
+        </table>
+    </div>
+    
+    <div class="karticka">
+        <h2>SKAUTSKÉ BINGO</h2>
+        <div class="instrukce">Najdi někoho, na koho platí tvrzení v políčku, a nech ho se tam podepsat! Každý se může podepsat jen jednou.</div>
+        <table>
+    <tr><td>Pije nejradši čistou vodu</td><td>Umí uvařit čaj</td><td>Má rovnátka</td><td>Má doma psa</td><td>Rád/a tancuje</td></tr><tr><td>Mluví anglicky</td><td>Má doma křečka nebo morče</td><td>Chodí do 4. třídy</td><td>Chodí do skautu déle než 2 roky</td><td>Umí postavit stan</td></tr><tr><td>Nosí u sebe nožík (rybičku)</td><td>Miluje pizzu</td><td>Zná jméno svého starosty</td><td>Má na sobě něco červeného</td><td>Baví ho/ji matematika</td></tr><tr><td>Těší se do školy</td><td>Jel/a někdy na vodě v lodi</td><td>Umí lyžovat</td><td>Nesnáší koprovku</td><td>Chodí do 3. třídy</td></tr><tr><td>Narodil/a se v zimě</td><td>Má rád/a rajskou omáčku</td><td>Je jedináček</td><td>Narodil/a se v létě</td><td>Má rád/a deskovky</td></tr>
+        </table>
+    </div>
+    
+    <div class="karticka">
+        <h2>SKAUTSKÉ BINGO</h2>
+        <div class="instrukce">Najdi někoho, na koho platí tvrzení v políčku, a nech ho se tam podepsat! Každý se může podepsat jen jednou.</div>
+        <table>
+    <tr><td>Má rovnátka</td><td>Má rád/a deskovky</td><td>Umí jezdit na koni</td><td>Má na sobě něco zeleného</td><td>Zná názvy alespoň 5 souhvězdí</td></tr><tr><td>Už někdy ztratil/a klíče</td><td>Rád/a kreslí</td><td>Měl/a někdy zlomenou ruku nebo nohu</td><td>Má na kroji víc než 3 odborky/vlčky</td><td>Ví, kdo byl Baden-Powell</td></tr><tr><td>Mluví anglicky</td><td>Hraje Roblox</td><td>Umí uvařit čaj</td><td>Má modré oči</td><td>Nejí houby</td></tr><tr><td>Umí složit vlaštovku z papíru</td><td>Baví ho/ji dějepis</td><td>Umí plavat kraula</td><td>Je levák</td><td>Má na sobě něco červeného</td></tr><tr><td>Má tento měsíc narozeniny nebo svátek</td><td>Má rád/a sushi</td><td>Sleduje Marvel filmy</td><td>Umí upéct buchtu</td><td>Narodil/a se v zimě</td></tr>
+        </table>
+    </div>
+    
+    <div class="karticka">
+        <h2>SKAUTSKÉ BINGO</h2>
+        <div class="instrukce">Najdi někoho, na koho platí tvrzení v políčku, a nech ho se tam podepsat! Každý se může podepsat jen jednou.</div>
+        <table>
+    <tr><td>Má rád/a sushi</td><td>Sbírá pokémony</td><td>Má více než 2 sourozence</td><td>Umí udělat hvězdu</td><td>Zná morseovku</td></tr><tr><td>Umí upéct buchtu</td><td>Umí pískat na stéblo trávy</td><td>Jel/a někdy na vodě v lodi</td><td>Umí uvázat dračí smyčku</td><td>Má mladší sestru</td></tr><tr><td>Hraje na hudební nástroj</td><td>Nosí u sebe nožík (rybičku)</td><td>Ví, kdo byl Baden-Powell</td><td>Baví ho/ji dějepis</td><td>Má tento měsíc narozeniny nebo svátek</td></tr><tr><td>Zná jméno svého starosty</td><td>Má rád/a Star Wars</td><td>Bojí se pavouků</td><td>Zná názvy alespoň 5 souhvězdí</td><td>Spal/a už pod širákem</td></tr><tr><td>Zná hlavní město Slovenska</td><td>Má hnědé oči</td><td>Těší se do školy</td><td>Narodil/a se v létě</td><td>Nosí brýle</td></tr>
+        </table>
+    </div>
+    
+    <div class="karticka">
+        <h2>SKAUTSKÉ BINGO</h2>
+        <div class="instrukce">Najdi někoho, na koho platí tvrzení v políčku, a nech ho se tam podepsat! Každý se může podepsat jen jednou.</div>
+        <table>
+    <tr><td>Zná jméno svého starosty</td><td>Umí lyžovat</td><td>Má u sebe KPZ</td><td>Umí jezdit na koni</td><td>Má modré oči</td></tr><tr><td>Má doma křečka nebo morče</td><td>Má více než 2 sourozence</td><td>Má na sobě něco zeleného</td><td>Sleduje Marvel filmy</td><td>Byl/a letos na skautském táboře</td></tr><tr><td>Měl/a někdy zlomenou ruku nebo nohu</td><td>Pije nejradši čistou vodu</td><td>Má rovnátka</td><td>Je jedináček</td><td>Má rád/a Star Wars</td></tr><tr><td>Chodí do skautu déle než 2 roky</td><td>Jel/a někdy na vodě v lodi</td><td>Těší se do školy</td><td>Narodil/a se v létě</td><td>Má rád/a deskovky</td></tr><tr><td>Hraje Minecraft</td><td>Byl/a někdy u moře</td><td>Už někdy ztratil/a klíče</td><td>Chodí do 5. třídy</td><td>Umí plavat kraula</td></tr>
+        </table>
+    </div>
+    
+    <div class="karticka">
+        <h2>SKAUTSKÉ BINGO</h2>
+        <div class="instrukce">Najdi někoho, na koho platí tvrzení v políčku, a nech ho se tam podepsat! Každý se může podepsat jen jednou.</div>
+        <table>
+    <tr><td>Spal/a už pod širákem</td><td>Miluje zmrzlinu</td><td>Je jedináček</td><td>Zná jméno svého starosty</td><td>Má modré oči</td></tr><tr><td>Jel/a někdy na vodě v lodi</td><td>Má doma kočku</td><td>Chodí do 4. třídy</td><td>Chodí do skautu déle než 2 roky</td><td>Má rád/a deskovky</td></tr><tr><td>Zná hlavní město Slovenska</td><td>Má tento měsíc narozeniny nebo svátek</td><td>Má doma křečka nebo morče</td><td>Nosí u sebe nožík (rybičku)</td><td>Narodil/a se v zimě</td></tr><tr><td>Má na kroji víc než 3 odborky/vlčky</td><td>Cestoval/a někdy letadlem</td><td>Vyhrál/a nějakou medaili</td><td>Nejí houby</td><td>Chová rybičky</td></tr><tr><td>Umí lyžovat</td><td>Má rád/a Star Wars</td><td>Hraje na hudební nástroj</td><td>Umí uvázat dračí smyčku</td><td>Má hnědé oči</td></tr>
+        </table>
+    </div>
+    
+    <div class="karticka">
+        <h2>SKAUTSKÉ BINGO</h2>
+        <div class="instrukce">Najdi někoho, na koho platí tvrzení v políčku, a nech ho se tam podepsat! Každý se může podepsat jen jednou.</div>
+        <table>
+    <tr><td>Hraje Minecraft</td><td>Umí udělat kotrmelec vzad</td><td>Má hnědé oči</td><td>Chodí na fotbal</td><td>Chová rybičky</td></tr><tr><td>Měl/a někdy zlomenou ruku nebo nohu</td><td>Jel/a někdy na vodě v lodi</td><td>Má doma psa</td><td>Umí plavat kraula</td><td>Zná jméno svého starosty</td></tr><tr><td>Má staršího bratra</td><td>Umí jezdit na snowboardu</td><td>Mluví anglicky</td><td>Cestoval/a někdy letadlem</td><td>Hraje Roblox</td></tr><tr><td>Baví ho/ji matematika</td><td>Umí udělat dřep na jedné noze</td><td>Umí složit vlaštovku z papíru</td><td>Má u sebe KPZ</td><td>Umí ambulantní uzel</td></tr><tr><td>Ví, kdo byl Baden-Powell</td><td>Bojí se pavouků</td><td>Umí pískat na prsty</td><td>Je jedináček</td><td>Umí jezdit na koni</td></tr>
+        </table>
+    </div>
+    
+    <div class="karticka">
+        <h2>SKAUTSKÉ BINGO</h2>
+        <div class="instrukce">Najdi někoho, na koho platí tvrzení v políčku, a nech ho se tam podepsat! Každý se může podepsat jen jednou.</div>
+        <table>
+    <tr><td>Miluje pizzu</td><td>Zná skautskou hymnu</td><td>Miluje zmrzlinu</td><td>Hraje závodně nějaký sport</td><td>Má více než 2 sourozence</td></tr><tr><td>Má na kroji víc než 3 odborky/vlčky</td><td>Má na sobě něco zeleného</td><td>Má rád/a rajskou omáčku</td><td>Má rád/a Star Wars</td><td>Má doma psa</td></tr><tr><td>Mluví anglicky</td><td>Má u sebe KPZ</td><td>Hraje Minecraft</td><td>Nosí brýle</td><td>Rád/a kreslí</td></tr><tr><td>Chodí na fotbal</td><td>Cestoval/a někdy letadlem</td><td>Umí uvázat dračí smyčku</td><td>Umí uvařit čaj</td><td>Má na sobě něco červeného</td></tr><tr><td>Baví ho/ji dějepis</td><td>Nebojí se tmy</td><td>Vyhrál/a nějakou medaili</td><td>Má staršího bratra</td><td>Má rád/a sushi</td></tr>
+        </table>
+    </div>
+    
+    <div class="karticka">
+        <h2>SKAUTSKÉ BINGO</h2>
+        <div class="instrukce">Najdi někoho, na koho platí tvrzení v políčku, a nech ho se tam podepsat! Každý se může podepsat jen jednou.</div>
+        <table>
+    <tr><td>Byl/a někdy u moře</td><td>Umí pískat na prsty</td><td>Má doma kočku</td><td>Měl/a někdy zlomenou ruku nebo nohu</td><td>Rád/a kreslí</td></tr><tr><td>Má rád/a deskovky</td><td>Zná jméno svého starosty</td><td>Má doma psa</td><td>Umí uvařit čaj</td><td>Miluje pizzu</td></tr><tr><td>Chová rybičky</td><td>Zná morseovku</td><td>Narodil/a se v zimě</td><td>Baví ho/ji dějepis</td><td>Už někdy ztratil/a klíče</td></tr><tr><td>Umí udělat dřep na jedné noze</td><td>Má na sobě něco červeného</td><td>Rád/a čte knížky</td><td>Narodil/a se v létě</td><td>Sleduje Marvel filmy</td></tr><tr><td>Umí pískat na stéblo trávy</td><td>Ví, kdo byl Baden-Powell</td><td>Umí udělat hvězdu</td><td>Hraje závodně nějaký sport</td><td>Umí udělat kotrmelec vzad</td></tr>
+        </table>
+    </div>
+    
+    <div class="karticka">
+        <h2>SKAUTSKÉ BINGO</h2>
+        <div class="instrukce">Najdi někoho, na koho platí tvrzení v políčku, a nech ho se tam podepsat! Každý se může podepsat jen jednou.</div>
+        <table>
+    <tr><td>Nesnáší koprovku</td><td>Zná názvy alespoň 5 souhvězdí</td><td>Umí udělat hvězdu</td><td>Nebojí se tmy</td><td>Dosáhne si jazykem na nos</td></tr><tr><td>Umí uvázat dračí smyčku</td><td>Chodí do 5. třídy</td><td>Umí uvařit čaj</td><td>Už někdy ztratil/a klíče</td><td>Umí plavat kraula</td></tr><tr><td>Má rád/a Star Wars</td><td>Má na sobě něco červeného</td><td>Narodil/a se v zimě</td><td>Těší se do školy</td><td>Baví ho/ji matematika</td></tr><tr><td>Jel/a někdy na vodě v lodi</td><td>Spal/a už pod širákem</td><td>Chodí na fotbal</td><td>Umí rozdělat oheň</td><td>Pije nejradši čistou vodu</td></tr><tr><td>Umí upéct buchtu</td><td>Miluje pizzu</td><td>Má u sebe KPZ</td><td>Hraje Roblox</td><td>Vyhrál/a nějakou medaili</td></tr>
+        </table>
+    </div>
+    
+    <div class="karticka">
+        <h2>SKAUTSKÉ BINGO</h2>
+        <div class="instrukce">Najdi někoho, na koho platí tvrzení v políčku, a nech ho se tam podepsat! Každý se může podepsat jen jednou.</div>
+        <table>
+    <tr><td>Umí jezdit na snowboardu</td><td>Zná jméno svého starosty</td><td>Chodí do 5. třídy</td><td>Nosí u sebe nožík (rybičku)</td><td>Hraje na hudební nástroj</td></tr><tr><td>Umí uvařit čaj</td><td>Má doma kočku</td><td>Má rád/a Star Wars</td><td>Má doma křečka nebo morče</td><td>Umí udělat hvězdu</td></tr><tr><td>Umí ambulantní uzel</td><td>Umí lyžovat</td><td>Vyhrál/a nějakou medaili</td><td>Miluje zmrzlinu</td><td>Chodí na fotbal</td></tr><tr><td>Má na sobě něco zeleného</td><td>Byl/a někdy u moře</td><td>Už někdy ztratil/a klíče</td><td>Těší se do školy</td><td>Umí postavit stan</td></tr><tr><td>Umí pískat na prsty</td><td>Chodí do 3. třídy</td><td>Zná morseovku</td><td>Umí udělat dřep na jedné noze</td><td>Má rád/a rajskou omáčku</td></tr>
+        </table>
+    </div>
+    
+    <div class="karticka">
+        <h2>SKAUTSKÉ BINGO</h2>
+        <div class="instrukce">Najdi někoho, na koho platí tvrzení v políčku, a nech ho se tam podepsat! Každý se může podepsat jen jednou.</div>
+        <table>
+    <tr><td>Chodí na fotbal</td><td>Zná skautskou hymnu</td><td>Umí udělat dřep na jedné noze</td><td>Je levák</td><td>Chodí na florbal</td></tr><tr><td>Zná jméno svého starosty</td><td>Hraje na hudební nástroj</td><td>Umí složit vlaštovku z papíru</td><td>Pozná dub od buku</td><td>Nebojí se tmy</td></tr><tr><td>Nejí houby</td><td>Umí uvázat dračí smyčku</td><td>Má staršího bratra</td><td>Hraje závodně nějaký sport</td><td>Nosí u sebe nožík (rybičku)</td></tr><tr><td>Má hnědé oči</td><td>Sbírá pokémony</td><td>Umí jezdit na snowboardu</td><td>Umí udělat hvězdu</td><td>Zná hlavní město Slovenska</td></tr><tr><td>Chodí do 5. třídy</td><td>Rád/a kreslí</td><td>Hraje Roblox</td><td>Umí udělat kotrmelec vzad</td><td>Nesnáší koprovku</td></tr>
+        </table>
+    </div>
+    
+    <div class="karticka">
+        <h2>SKAUTSKÉ BINGO</h2>
+        <div class="instrukce">Najdi někoho, na koho platí tvrzení v políčku, a nech ho se tam podepsat! Každý se může podepsat jen jednou.</div>
+        <table>
+    <tr><td>Hraje Roblox</td><td>Umí ambulantní uzel</td><td>Rád/a kreslí</td><td>Má na kroji víc než 3 odborky/vlčky</td><td>Umí uvařit čaj</td></tr><tr><td>Baví ho/ji matematika</td><td>Umí uvázat dračí smyčku</td><td>Má rovnátka</td><td>Má mladší sestru</td><td>Má tento měsíc narozeniny nebo svátek</td></tr><tr><td>Baví ho/ji dějepis</td><td>Chodí na florbal</td><td>Umí udělat hvězdu</td><td>Zná jméno svého starosty</td><td>Má doma psa</td></tr><tr><td>Sleduje Marvel filmy</td><td>Pije nejradši čistou vodu</td><td>Má doma křečka nebo morče</td><td>Má rád/a deskovky</td><td>Chodí na fotbal</td></tr><tr><td>Narodil/a se v zimě</td><td>Vyhrál/a nějakou medaili</td><td>Má staršího bratra</td><td>Měl/a někdy zlomenou ruku nebo nohu</td><td>Miluje zmrzlinu</td></tr>
+        </table>
+    </div>
+    
+    <div class="karticka">
+        <h2>SKAUTSKÉ BINGO</h2>
+        <div class="instrukce">Najdi někoho, na koho platí tvrzení v políčku, a nech ho se tam podepsat! Každý se může podepsat jen jednou.</div>
+        <table>
+    <tr><td>Mluví anglicky</td><td>Nosí brýle</td><td>Má rád/a rajskou omáčku</td><td>Má doma křečka nebo morče</td><td>Umí ambulantní uzel</td></tr><tr><td>Umí pískat na stéblo trávy</td><td>Byl/a někdy u moře</td><td>Rád/a tancuje</td><td>Chová rybičky</td><td>Je levák</td></tr><tr><td>Má mladší sestru</td><td>Umí rozdělat oheň</td><td>Má rád/a sushi</td><td>Hraje na hudební nástroj</td><td>Nebojí se tmy</td></tr><tr><td>Sbírá pokémony</td><td>Zná hlavní město Slovenska</td><td>Dosáhne si jazykem na nos</td><td>Miluje pizzu</td><td>Chodí do skautu déle než 2 roky</td></tr><tr><td>Narodil/a se v létě</td><td>Miluje zmrzlinu</td><td>Umí složit vlaštovku z papíru</td><td>Nesnáší koprovku</td><td>Má hnědé oči</td></tr>
+        </table>
+    </div>
+    
+    <div class="karticka">
+        <h2>SKAUTSKÉ BINGO</h2>
+        <div class="instrukce">Najdi někoho, na koho platí tvrzení v políčku, a nech ho se tam podepsat! Každý se může podepsat jen jednou.</div>
+        <table>
+    <tr><td>Umí pískat na prsty</td><td>Má na kroji víc než 3 odborky/vlčky</td><td>Rád/a kreslí</td><td>Umí složit vlaštovku z papíru</td><td>Sleduje Marvel filmy</td></tr><tr><td>Narodil/a se v zimě</td><td>Baví ho/ji matematika</td><td>Umí uvázat dračí smyčku</td><td>Zná skautskou hymnu</td><td>Hraje na hudební nástroj</td></tr><tr><td>Má rád/a rajskou omáčku</td><td>Jel/a někdy na vodě v lodi</td><td>Chodí do 5. třídy</td><td>Vyhrál/a nějakou medaili</td><td>Umí jezdit na snowboardu</td></tr><tr><td>Dosáhne si jazykem na nos</td><td>Miluje zmrzlinu</td><td>Hraje závodně nějaký sport</td><td>Má na sobě něco červeného</td><td>Chodí do 3. třídy</td></tr><tr><td>Chodí na fotbal</td><td>Umí pískat na stéblo trávy</td><td>Zná jméno svého starosty</td><td>Cestoval/a někdy letadlem</td><td>Miluje pizzu</td></tr>
+        </table>
+    </div>
+    
+    <div class="karticka">
+        <h2>SKAUTSKÉ BINGO</h2>
+        <div class="instrukce">Najdi někoho, na koho platí tvrzení v políčku, a nech ho se tam podepsat! Každý se může podepsat jen jednou.</div>
+        <table>
+    <tr><td>Má doma kočku</td><td>Sbírá pokémony</td><td>Už někdy ztratil/a klíče</td><td>Umí pískat na prsty</td><td>Byl/a letos na skautském táboře</td></tr><tr><td>Miluje pizzu</td><td>Umí udělat hvězdu</td><td>Chodí do skautu déle než 2 roky</td><td>Má tento měsíc narozeniny nebo svátek</td><td>Cestoval/a někdy letadlem</td></tr><tr><td>Má hnědé oči</td><td>Chodí na florbal</td><td>Sleduje Marvel filmy</td><td>Má doma křečka nebo morče</td><td>Je levák</td></tr><tr><td>Chodí na fotbal</td><td>Chodí do 4. třídy</td><td>Těší se do školy</td><td>Umí upéct buchtu</td><td>Nesnáší koprovku</td></tr><tr><td>Miluje zmrzlinu</td><td>Rád/a čte knížky</td><td>Umí uvařit čaj</td><td>Umí udělat dřep na jedné noze</td><td>Chová rybičky</td></tr>
+        </table>
+    </div>
+    
+    <div class="karticka">
+        <h2>SKAUTSKÉ BINGO</h2>
+        <div class="instrukce">Najdi někoho, na koho platí tvrzení v políčku, a nech ho se tam podepsat! Každý se může podepsat jen jednou.</div>
+        <table>
+    <tr><td>Hraje Minecraft</td><td>Chodí do 5. třídy</td><td>Umí jezdit na koni</td><td>Narodil/a se v létě</td><td>Má hnědé oči</td></tr><tr><td>Má na sobě něco červeného</td><td>Baví ho/ji dějepis</td><td>Narodil/a se v zimě</td><td>Hraje závodně nějaký sport</td><td>Má na kroji víc než 3 odborky/vlčky</td></tr><tr><td>Je jedináček</td><td>Má na sobě něco zeleného</td><td>Byl/a letos na skautském táboře</td><td>Zná jméno svého starosty</td><td>Miluje pizzu</td></tr><tr><td>Má doma psa</td><td>Sbírá pokémony</td><td>Má více než 2 sourozence</td><td>Umí udělat hvězdu</td><td>Vyhrál/a nějakou medaili</td></tr><tr><td>Spal/a už pod širákem</td><td>Těší se do školy</td><td>Dosáhne si jazykem na nos</td><td>Zná morseovku</td><td>Hraje na hudební nástroj</td></tr>
+        </table>
+    </div>
+    
+    <div class="karticka">
+        <h2>SKAUTSKÉ BINGO</h2>
+        <div class="instrukce">Najdi někoho, na koho platí tvrzení v políčku, a nech ho se tam podepsat! Každý se může podepsat jen jednou.</div>
+        <table>
+    <tr><td>Nebojí se tmy</td><td>Hraje Minecraft</td><td>Těší se do školy</td><td>Umí udělat kotrmelec vzad</td><td>Hraje Roblox</td></tr><tr><td>Chodí do 4. třídy</td><td>Je levák</td><td>Umí uvařit čaj</td><td>Spal/a už pod širákem</td><td>Sbírá pokémony</td></tr><tr><td>Bojí se pavouků</td><td>Narodil/a se v zimě</td><td>Má více než 2 sourozence</td><td>Ví, kdo byl Baden-Powell</td><td>Miluje zmrzlinu</td></tr><tr><td>Má na sobě něco zeleného</td><td>Zná morseovku</td><td>Vyhrál/a nějakou medaili</td><td>Má na sobě něco červeného</td><td>Má mladší sestru</td></tr><tr><td>Má u sebe KPZ</td><td>Má doma křečka nebo morče</td><td>Baví ho/ji dějepis</td><td>Zná skautskou hymnu</td><td>Umí udělat hvězdu</td></tr>
+        </table>
+    </div>
+    
+    <div class="karticka">
+        <h2>SKAUTSKÉ BINGO</h2>
+        <div class="instrukce">Najdi někoho, na koho platí tvrzení v políčku, a nech ho se tam podepsat! Každý se může podepsat jen jednou.</div>
+        <table>
+    <tr><td>Chodí na fotbal</td><td>Má tento měsíc narozeniny nebo svátek</td><td>Sbírá pokémony</td><td>Umí udělat hvězdu</td><td>Už někdy ztratil/a klíče</td></tr><tr><td>Chodí na florbal</td><td>Těší se do školy</td><td>Chodí do 5. třídy</td><td>Je levák</td><td>Narodil/a se v létě</td></tr><tr><td>Baví ho/ji dějepis</td><td>Vyhrál/a nějakou medaili</td><td>Chodí do skautu déle než 2 roky</td><td>Má rád/a Star Wars</td><td>Má doma kočku</td></tr><tr><td>Mluví anglicky</td><td>Pije nejradši čistou vodu</td><td>Nejí houby</td><td>Nosí brýle</td><td>Umí rozdělat oheň</td></tr><tr><td>Nesnáší koprovku</td><td>Byl/a někdy u moře</td><td>Umí pískat na stéblo trávy</td><td>Umí lyžovat</td><td>Byl/a letos na skautském táboře</td></tr>
+        </table>
+    </div>
+    
+    <div class="karticka">
+        <h2>SKAUTSKÉ BINGO</h2>
+        <div class="instrukce">Najdi někoho, na koho platí tvrzení v políčku, a nech ho se tam podepsat! Každý se může podepsat jen jednou.</div>
+        <table>
+    <tr><td>Má na sobě něco červeného</td><td>Zná hlavní město Slovenska</td><td>Cestoval/a někdy letadlem</td><td>Byl/a letos na skautském táboře</td><td>Má na kroji víc než 3 odborky/vlčky</td></tr><tr><td>Baví ho/ji matematika</td><td>Rád/a tancuje</td><td>Mluví anglicky</td><td>Umí udělat kotrmelec vzad</td><td>Hraje Minecraft</td></tr><tr><td>Chodí na fotbal</td><td>Má doma psa</td><td>Umí ambulantní uzel</td><td>Má mladší sestru</td><td>Těší se do školy</td></tr><tr><td>Ví, kdo byl Baden-Powell</td><td>Má hnědé oči</td><td>Umí upéct buchtu</td><td>Chová rybičky</td><td>Byl/a někdy u moře</td></tr><tr><td>Má doma kočku</td><td>Dosáhne si jazykem na nos</td><td>Baví ho/ji dějepis</td><td>Sbírá pokémony</td><td>Umí uvařit čaj</td></tr>
+        </table>
+    </div>
+    
+    <div class="karticka">
+        <h2>SKAUTSKÉ BINGO</h2>
+        <div class="instrukce">Najdi někoho, na koho platí tvrzení v políčku, a nech ho se tam podepsat! Každý se může podepsat jen jednou.</div>
+        <table>
+    <tr><td>Je levák</td><td>Má více než 2 sourozence</td><td>Bojí se pavouků</td><td>Umí udělat hvězdu</td><td>Měl/a někdy zlomenou ruku nebo nohu</td></tr><tr><td>Ví, kdo byl Baden-Powell</td><td>Umí složit vlaštovku z papíru</td><td>Rád/a tancuje</td><td>Má doma křečka nebo morče</td><td>Umí pískat na stéblo trávy</td></tr><tr><td>Už někdy ztratil/a klíče</td><td>Má modré oči</td><td>Cestoval/a někdy letadlem</td><td>Umí upéct buchtu</td><td>Umí pískat na prsty</td></tr><tr><td>Umí jezdit na snowboardu</td><td>Má rád/a rajskou omáčku</td><td>Má mladší sestru</td><td>Chodí do 5. třídy</td><td>Nejí houby</td></tr><tr><td>Má rád/a Star Wars</td><td>Dosáhne si jazykem na nos</td><td>Mluví anglicky</td><td>Těší se do školy</td><td>Chodí na fotbal</td></tr>
+        </table>
+    </div>
+    
+    <div class="karticka">
+        <h2>SKAUTSKÉ BINGO</h2>
+        <div class="instrukce">Najdi někoho, na koho platí tvrzení v políčku, a nech ho se tam podepsat! Každý se může podepsat jen jednou.</div>
+        <table>
+    <tr><td>Umí udělat kotrmelec vzad</td><td>Umí složit vlaštovku z papíru</td><td>Rád/a čte knížky</td><td>Má na sobě něco červeného</td><td>Pije nejradši čistou vodu</td></tr><tr><td>Má rád/a deskovky</td><td>Spal/a už pod širákem</td><td>Dosáhne si jazykem na nos</td><td>Umí ambulantní uzel</td><td>Těší se do školy</td></tr><tr><td>Má doma křečka nebo morče</td><td>Má doma kočku</td><td>Mluví anglicky</td><td>Hraje Minecraft</td><td>Chodí do skautu déle než 2 roky</td></tr><tr><td>Baví ho/ji dějepis</td><td>Rád/a kreslí</td><td>Rád/a tancuje</td><td>Umí uvázat dračí smyčku</td><td>Jel/a někdy na vodě v lodi</td></tr><tr><td>Zná jméno svého starosty</td><td>Má tento měsíc narozeniny nebo svátek</td><td>Má na kroji víc než 3 odborky/vlčky</td><td>Chodí do 4. třídy</td><td>Má mladší sestru</td></tr>
+        </table>
+    </div>
+    
+    <div class="karticka">
+        <h2>SKAUTSKÉ BINGO</h2>
+        <div class="instrukce">Najdi někoho, na koho platí tvrzení v políčku, a nech ho se tam podepsat! Každý se může podepsat jen jednou.</div>
+        <table>
+    <tr><td>Chová rybičky</td><td>Chodí do 3. třídy</td><td>Má hnědé oči</td><td>Ví, kdo byl Baden-Powell</td><td>Nosí brýle</td></tr><tr><td>Miluje zmrzlinu</td><td>Umí ambulantní uzel</td><td>Chodí do 4. třídy</td><td>Hraje závodně nějaký sport</td><td>Umí udělat hvězdu</td></tr><tr><td>Umí postavit stan</td><td>Rád/a tancuje</td><td>Má na sobě něco červeného</td><td>Narodil/a se v létě</td><td>Jel/a někdy na vodě v lodi</td></tr><tr><td>Má na kroji víc než 3 odborky/vlčky</td><td>Sbírá pokémony</td><td>Zná morseovku</td><td>Chodí do 5. třídy</td><td>Těší se do školy</td></tr><tr><td>Umí plavat kraula</td><td>Baví ho/ji dějepis</td><td>Umí jezdit na koni</td><td>Zná jméno svého starosty</td><td>Je levák</td></tr>
+        </table>
+    </div>
+    
+    <div class="karticka">
+        <h2>SKAUTSKÉ BINGO</h2>
+        <div class="instrukce">Najdi někoho, na koho platí tvrzení v políčku, a nech ho se tam podepsat! Každý se může podepsat jen jednou.</div>
+        <table>
+    <tr><td>Umí postavit stan</td><td>Baví ho/ji matematika</td><td>Hraje Minecraft</td><td>Miluje zmrzlinu</td><td>Má na kroji víc než 3 odborky/vlčky</td></tr><tr><td>Má mladší sestru</td><td>Je jedináček</td><td>Měl/a někdy zlomenou ruku nebo nohu</td><td>Má doma křečka nebo morče</td><td>Zná hlavní město Slovenska</td></tr><tr><td>Umí lyžovat</td><td>Chodí do 5. třídy</td><td>Baví ho/ji dějepis</td><td>Má u sebe KPZ</td><td>Má hnědé oči</td></tr><tr><td>Má rád/a sushi</td><td>Umí upéct buchtu</td><td>Má na sobě něco červeného</td><td>Chová rybičky</td><td>Má rád/a rajskou omáčku</td></tr><tr><td>Mluví anglicky</td><td>Nesnáší koprovku</td><td>Je levák</td><td>Umí udělat dřep na jedné noze</td><td>Spal/a už pod širákem</td></tr>
+        </table>
+    </div>
+    
+    <div class="karticka">
+        <h2>SKAUTSKÉ BINGO</h2>
+        <div class="instrukce">Najdi někoho, na koho platí tvrzení v políčku, a nech ho se tam podepsat! Každý se může podepsat jen jednou.</div>
+        <table>
+    <tr><td>Spal/a už pod širákem</td><td>Pije nejradši čistou vodu</td><td>Má modré oči</td><td>Narodil/a se v zimě</td><td>Má více než 2 sourozence</td></tr><tr><td>Baví ho/ji dějepis</td><td>Nejí houby</td><td>Pozná dub od buku</td><td>Chodí do 3. třídy</td><td>Už někdy ztratil/a klíče</td></tr><tr><td>Je jedináček</td><td>Umí jezdit na koni</td><td>Má hnědé oči</td><td>Miluje zmrzlinu</td><td>Chodí do 5. třídy</td></tr><tr><td>Zná morseovku</td><td>Mluví anglicky</td><td>Zná jméno svého starosty</td><td>Ví, kdo byl Baden-Powell</td><td>Má tento měsíc narozeniny nebo svátek</td></tr><tr><td>Těší se do školy</td><td>Umí udělat dřep na jedné noze</td><td>Umí udělat kotrmelec vzad</td><td>Narodil/a se v létě</td><td>Umí upéct buchtu</td></tr>
+        </table>
+    </div>
+    
+    <div class="karticka">
+        <h2>SKAUTSKÉ BINGO</h2>
+        <div class="instrukce">Najdi někoho, na koho platí tvrzení v políčku, a nech ho se tam podepsat! Každý se může podepsat jen jednou.</div>
+        <table>
+    <tr><td>Má doma kočku</td><td>Hraje Minecraft</td><td>Má více než 2 sourozence</td><td>Sleduje Marvel filmy</td><td>Umí uvázat dračí smyčku</td></tr><tr><td>Umí lyžovat</td><td>Umí ambulantní uzel</td><td>Chodí do skautu déle než 2 roky</td><td>Má rád/a deskovky</td><td>Má rovnátka</td></tr><tr><td>Umí pískat na prsty</td><td>Narodil/a se v zimě</td><td>Má na sobě něco červeného</td><td>Má rád/a Star Wars</td><td>Ví, kdo byl Baden-Powell</td></tr><tr><td>Umí pískat na stéblo trávy</td><td>Zná hlavní město Slovenska</td><td>Byl/a někdy u moře</td><td>Mluví anglicky</td><td>Má tento měsíc narozeniny nebo svátek</td></tr><tr><td>Umí plavat kraula</td><td>Chodí na fotbal</td><td>Chodí do 3. třídy</td><td>Umí uvařit čaj</td><td>Umí rozdělat oheň</td></tr>
+        </table>
+    </div>
+    
+    <div class="karticka">
+        <h2>SKAUTSKÉ BINGO</h2>
+        <div class="instrukce">Najdi někoho, na koho platí tvrzení v políčku, a nech ho se tam podepsat! Každý se může podepsat jen jednou.</div>
+        <table>
+    <tr><td>Sbírá pokémony</td><td>Má rád/a rajskou omáčku</td><td>Je jedináček</td><td>Těší se do školy</td><td>Umí lyžovat</td></tr><tr><td>Už někdy ztratil/a klíče</td><td>Má na sobě něco zeleného</td><td>Baví ho/ji dějepis</td><td>Nebojí se tmy</td><td>Má tento měsíc narozeniny nebo svátek</td></tr><tr><td>Narodil/a se v zimě</td><td>Chodí do 4. třídy</td><td>Zná názvy alespoň 5 souhvězdí</td><td>Má rád/a Star Wars</td><td>Rád/a čte knížky</td></tr><tr><td>Vyhrál/a nějakou medaili</td><td>Sleduje Marvel filmy</td><td>Umí pískat na stéblo trávy</td><td>Chodí do 5. třídy</td><td>Chová rybičky</td></tr><tr><td>Umí jezdit na koni</td><td>Byl/a letos na skautském táboře</td><td>Umí uvařit čaj</td><td>Umí upéct buchtu</td><td>Umí udělat dřep na jedné noze</td></tr>
+        </table>
+    </div>
+    
+    <div class="karticka">
+        <h2>SKAUTSKÉ BINGO</h2>
+        <div class="instrukce">Najdi někoho, na koho platí tvrzení v políčku, a nech ho se tam podepsat! Každý se může podepsat jen jednou.</div>
+        <table>
+    <tr><td>Má na kroji víc než 3 odborky/vlčky</td><td>Jel/a někdy na vodě v lodi</td><td>Chodí do 5. třídy</td><td>Chodí do 4. třídy</td><td>Umí jezdit na koni</td></tr><tr><td>Bojí se pavouků</td><td>Má rovnátka</td><td>Má rád/a Star Wars</td><td>Pije nejradši čistou vodu</td><td>Hraje Roblox</td></tr><tr><td>Má na sobě něco červeného</td><td>Sleduje Marvel filmy</td><td>Nejí houby</td><td>Má doma kočku</td><td>Těší se do školy</td></tr><tr><td>Pozná dub od buku</td><td>Miluje pizzu</td><td>Má rád/a rajskou omáčku</td><td>Rád/a kreslí</td><td>Baví ho/ji matematika</td></tr><tr><td>Miluje zmrzlinu</td><td>Byl/a letos na skautském táboře</td><td>Zná jméno svého starosty</td><td>Chová rybičky</td><td>Narodil/a se v létě</td></tr>
+        </table>
+    </div>
+    
+    <div class="karticka">
+        <h2>SKAUTSKÉ BINGO</h2>
+        <div class="instrukce">Najdi někoho, na koho platí tvrzení v políčku, a nech ho se tam podepsat! Každý se může podepsat jen jednou.</div>
+        <table>
+    <tr><td>Umí upéct buchtu</td><td>Miluje zmrzlinu</td><td>Má modré oči</td><td>Chodí do 4. třídy</td><td>Zná jméno svého starosty</td></tr><tr><td>Zná morseovku</td><td>Byl/a někdy u moře</td><td>Umí pískat na prsty</td><td>Má rovnátka</td><td>Chodí na fotbal</td></tr><tr><td>Rád/a tancuje</td><td>Chodí do 3. třídy</td><td>Zná hlavní město Slovenska</td><td>Cestoval/a někdy letadlem</td><td>Má u sebe KPZ</td></tr><tr><td>Má rád/a rajskou omáčku</td><td>Umí složit vlaštovku z papíru</td><td>Má rád/a sushi</td><td>Pije nejradši čistou vodu</td><td>Umí jezdit na koni</td></tr><tr><td>Baví ho/ji dějepis</td><td>Umí lyžovat</td><td>Pozná dub od buku</td><td>Chodí na florbal</td><td>Ví, kdo byl Baden-Powell</td></tr>
+        </table>
+    </div>
+    
+    <div class="karticka">
+        <h2>SKAUTSKÉ BINGO</h2>
+        <div class="instrukce">Najdi někoho, na koho platí tvrzení v políčku, a nech ho se tam podepsat! Každý se může podepsat jen jednou.</div>
+        <table>
+    <tr><td>Těší se do školy</td><td>Chová rybičky</td><td>Zná skautskou hymnu</td><td>Hraje Minecraft</td><td>Sleduje Marvel filmy</td></tr><tr><td>Zná morseovku</td><td>Pozná dub od buku</td><td>Hraje Roblox</td><td>Má staršího bratra</td><td>Miluje zmrzlinu</td></tr><tr><td>Umí pískat na stéblo trávy</td><td>Má rád/a rajskou omáčku</td><td>Umí udělat kotrmelec vzad</td><td>Hraje závodně nějaký sport</td><td>Hraje na hudební nástroj</td></tr><tr><td>Umí jezdit na koni</td><td>Umí ambulantní uzel</td><td>Narodil/a se v zimě</td><td>Má mladší sestru</td><td>Má doma kočku</td></tr><tr><td>Rád/a čte knížky</td><td>Má tento měsíc narozeniny nebo svátek</td><td>Má doma křečka nebo morče</td><td>Má doma psa</td><td>Mluví anglicky</td></tr>
+        </table>
+    </div>
+    
+    <div class="karticka">
+        <h2>SKAUTSKÉ BINGO</h2>
+        <div class="instrukce">Najdi někoho, na koho platí tvrzení v políčku, a nech ho se tam podepsat! Každý se může podepsat jen jednou.</div>
+        <table>
+    <tr><td>Nejí houby</td><td>Umí pískat na prsty</td><td>Dosáhne si jazykem na nos</td><td>Cestoval/a někdy letadlem</td><td>Umí udělat hvězdu</td></tr><tr><td>Chodí do skautu déle než 2 roky</td><td>Zná hlavní město Slovenska</td><td>Má doma kočku</td><td>Umí složit vlaštovku z papíru</td><td>Zná jméno svého starosty</td></tr><tr><td>Má rovnátka</td><td>Umí jezdit na koni</td><td>Pije nejradši čistou vodu</td><td>Byl/a letos na skautském táboře</td><td>Má na sobě něco zeleného</td></tr><tr><td>Má tento měsíc narozeniny nebo svátek</td><td>Miluje pizzu</td><td>Měl/a někdy zlomenou ruku nebo nohu</td><td>Narodil/a se v zimě</td><td>Ví, kdo byl Baden-Powell</td></tr><tr><td>Má modré oči</td><td>Sleduje Marvel filmy</td><td>Umí pískat na stéblo trávy</td><td>Umí postavit stan</td><td>Nebojí se tmy</td></tr>
+        </table>
+    </div>
+    
+    <div class="karticka">
+        <h2>SKAUTSKÉ BINGO</h2>
+        <div class="instrukce">Najdi někoho, na koho platí tvrzení v políčku, a nech ho se tam podepsat! Každý se může podepsat jen jednou.</div>
+        <table>
+    <tr><td>Ví, kdo byl Baden-Powell</td><td>Má u sebe KPZ</td><td>Má mladší sestru</td><td>Hraje na hudební nástroj</td><td>Hraje závodně nějaký sport</td></tr><tr><td>Má doma psa</td><td>Baví ho/ji matematika</td><td>Umí jezdit na snowboardu</td><td>Zná morseovku</td><td>Má doma křečka nebo morče</td></tr><tr><td>Rád/a čte knížky</td><td>Miluje pizzu</td><td>Umí uvázat dračí smyčku</td><td>Umí udělat dřep na jedné noze</td><td>Cestoval/a někdy letadlem</td></tr><tr><td>Umí rozdělat oheň</td><td>Chodí na florbal</td><td>Zná hlavní město Slovenska</td><td>Baví ho/ji dějepis</td><td>Byl/a letos na skautském táboře</td></tr><tr><td>Zná jméno svého starosty</td><td>Je levák</td><td>Má rád/a Star Wars</td><td>Jel/a někdy na vodě v lodi</td><td>Umí plavat kraula</td></tr>
+        </table>
+    </div>
+    
+    <div class="karticka">
+        <h2>SKAUTSKÉ BINGO</h2>
+        <div class="instrukce">Najdi někoho, na koho platí tvrzení v políčku, a nech ho se tam podepsat! Každý se může podepsat jen jednou.</div>
+        <table>
+    <tr><td>Je jedináček</td><td>Má tento měsíc narozeniny nebo svátek</td><td>Už někdy ztratil/a klíče</td><td>Má u sebe KPZ</td><td>Zná názvy alespoň 5 souhvězdí</td></tr><tr><td>Rád/a tancuje</td><td>Sleduje Marvel filmy</td><td>Umí jezdit na koni</td><td>Má mladší sestru</td><td>Chodí na fotbal</td></tr><tr><td>Má na sobě něco zeleného</td><td>Rád/a čte knížky</td><td>Těší se do školy</td><td>Sbírá pokémony</td><td>Umí plavat kraula</td></tr><tr><td>Nosí u sebe nožík (rybičku)</td><td>Má rovnátka</td><td>Chodí do 5. třídy</td><td>Umí lyžovat</td><td>Miluje pizzu</td></tr><tr><td>Hraje Minecraft</td><td>Umí složit vlaštovku z papíru</td><td>Nejí houby</td><td>Má rád/a sushi</td><td>Chodí na florbal</td></tr>
+        </table>
+    </div>
+    
+    <div class="karticka">
+        <h2>SKAUTSKÉ BINGO</h2>
+        <div class="instrukce">Najdi někoho, na koho platí tvrzení v políčku, a nech ho se tam podepsat! Každý se může podepsat jen jednou.</div>
+        <table>
+    <tr><td>Má rád/a deskovky</td><td>Spal/a už pod širákem</td><td>Má na sobě něco červeného</td><td>Chodí do skautu déle než 2 roky</td><td>Má modré oči</td></tr><tr><td>Umí jezdit na snowboardu</td><td>Miluje pizzu</td><td>Cestoval/a někdy letadlem</td><td>Má na kroji víc než 3 odborky/vlčky</td><td>Je levák</td></tr><tr><td>Umí udělat dřep na jedné noze</td><td>Už někdy ztratil/a klíče</td><td>Nejí houby</td><td>Má mladší sestru</td><td>Narodil/a se v zimě</td></tr><tr><td>Ví, kdo byl Baden-Powell</td><td>Nosí u sebe nožík (rybičku)</td><td>Umí uvařit čaj</td><td>Zná morseovku</td><td>Má na sobě něco zeleného</td></tr><tr><td>Měl/a někdy zlomenou ruku nebo nohu</td><td>Hraje na hudební nástroj</td><td>Má rád/a Star Wars</td><td>Hraje Minecraft</td><td>Má doma křečka nebo morče</td></tr>
+        </table>
+    </div>
+    
+    <div class="karticka">
+        <h2>SKAUTSKÉ BINGO</h2>
+        <div class="instrukce">Najdi někoho, na koho platí tvrzení v políčku, a nech ho se tam podepsat! Každý se může podepsat jen jednou.</div>
+        <table>
+    <tr><td>Má rád/a Star Wars</td><td>Rád/a tancuje</td><td>Nejí houby</td><td>Má na sobě něco zeleného</td><td>Spal/a už pod širákem</td></tr><tr><td>Umí uvázat dračí smyčku</td><td>Umí postavit stan</td><td>Vyhrál/a nějakou medaili</td><td>Těší se do školy</td><td>Hraje závodně nějaký sport</td></tr><tr><td>Umí plavat kraula</td><td>Baví ho/ji dějepis</td><td>Nosí brýle</td><td>Zná názvy alespoň 5 souhvězdí</td><td>Umí udělat kotrmelec vzad</td></tr><tr><td>Má doma kočku</td><td>Chová rybičky</td><td>Umí pískat na stéblo trávy</td><td>Narodil/a se v zimě</td><td>Má rád/a sushi</td></tr><tr><td>Je jedináček</td><td>Má modré oči</td><td>Cestoval/a někdy letadlem</td><td>Byl/a někdy u moře</td><td>Zná hlavní město Slovenska</td></tr>
+        </table>
+    </div>
+    
+    <div class="karticka">
+        <h2>SKAUTSKÉ BINGO</h2>
+        <div class="instrukce">Najdi někoho, na koho platí tvrzení v políčku, a nech ho se tam podepsat! Každý se může podepsat jen jednou.</div>
+        <table>
+    <tr><td>Ví, kdo byl Baden-Powell</td><td>Hraje na hudební nástroj</td><td>Umí rozdělat oheň</td><td>Chodí do 4. třídy</td><td>Umí složit vlaštovku z papíru</td></tr><tr><td>Umí udělat kotrmelec vzad</td><td>Rád/a čte knížky</td><td>Umí postavit stan</td><td>Má na sobě něco červeného</td><td>Umí udělat hvězdu</td></tr><tr><td>Chodí do 3. třídy</td><td>Chová rybičky</td><td>Má rád/a rajskou omáčku</td><td>Hraje Roblox</td><td>Má modré oči</td></tr><tr><td>Má rád/a sushi</td><td>Baví ho/ji dějepis</td><td>Jel/a někdy na vodě v lodi</td><td>Má rád/a deskovky</td><td>Nosí u sebe nožík (rybičku)</td></tr><tr><td>Mluví anglicky</td><td>Narodil/a se v létě</td><td>Umí plavat kraula</td><td>Byl/a někdy u moře</td><td>Má doma kočku</td></tr>
+        </table>
+    </div>
+    
+    <div class="karticka">
+        <h2>SKAUTSKÉ BINGO</h2>
+        <div class="instrukce">Najdi někoho, na koho platí tvrzení v políčku, a nech ho se tam podepsat! Každý se může podepsat jen jednou.</div>
+        <table>
+    <tr><td>Má na kroji víc než 3 odborky/vlčky</td><td>Zná jméno svého starosty</td><td>Je levák</td><td>Mluví anglicky</td><td>Zná morseovku</td></tr><tr><td>Miluje pizzu</td><td>Má staršího bratra</td><td>Umí složit vlaštovku z papíru</td><td>Má rád/a rajskou omáčku</td><td>Nesnáší koprovku</td></tr><tr><td>Umí postavit stan</td><td>Jel/a někdy na vodě v lodi</td><td>Hraje Minecraft</td><td>Má rovnátka</td><td>Těší se do školy</td></tr><tr><td>Má modré oči</td><td>Má rád/a sushi</td><td>Chodí na fotbal</td><td>Zná skautskou hymnu</td><td>Umí uvařit čaj</td></tr><tr><td>Umí lyžovat</td><td>Hraje na hudební nástroj</td><td>Umí udělat kotrmelec vzad</td><td>Vyhrál/a nějakou medaili</td><td>Rád/a kreslí</td></tr>
+        </table>
+    </div>
+    
+    <div class="karticka">
+        <h2>SKAUTSKÉ BINGO</h2>
+        <div class="instrukce">Najdi někoho, na koho platí tvrzení v políčku, a nech ho se tam podepsat! Každý se může podepsat jen jednou.</div>
+        <table>
+    <tr><td>Umí rozdělat oheň</td><td>Rád/a tancuje</td><td>Chodí na fotbal</td><td>Miluje zmrzlinu</td><td>Má rád/a sushi</td></tr><tr><td>Zná morseovku</td><td>Hraje na hudební nástroj</td><td>Zná jméno svého starosty</td><td>Umí lyžovat</td><td>Pije nejradši čistou vodu</td></tr><tr><td>Zná názvy alespoň 5 souhvězdí</td><td>Má hnědé oči</td><td>Umí ambulantní uzel</td><td>Baví ho/ji matematika</td><td>Vyhrál/a nějakou medaili</td></tr><tr><td>Umí udělat kotrmelec vzad</td><td>Má rád/a rajskou omáčku</td><td>Má rád/a Star Wars</td><td>Baví ho/ji dějepis</td><td>Má rád/a deskovky</td></tr><tr><td>Má modré oči</td><td>Byl/a někdy u moře</td><td>Hraje Minecraft</td><td>Dosáhne si jazykem na nos</td><td>Bojí se pavouků</td></tr>
+        </table>
+    </div>
+    
+    <div class="karticka">
+        <h2>SKAUTSKÉ BINGO</h2>
+        <div class="instrukce">Najdi někoho, na koho platí tvrzení v políčku, a nech ho se tam podepsat! Každý se může podepsat jen jednou.</div>
+        <table>
+    <tr><td>Narodil/a se v zimě</td><td>Nosí brýle</td><td>Umí pískat na prsty</td><td>Má rád/a sushi</td><td>Má rád/a rajskou omáčku</td></tr><tr><td>Sleduje Marvel filmy</td><td>Má na sobě něco zeleného</td><td>Pije nejradši čistou vodu</td><td>Chodí na florbal</td><td>Umí udělat kotrmelec vzad</td></tr><tr><td>Chodí do 3. třídy</td><td>Má staršího bratra</td><td>Má u sebe KPZ</td><td>Nebojí se tmy</td><td>Umí jezdit na koni</td></tr><tr><td>Umí uvařit čaj</td><td>Narodil/a se v létě</td><td>Chodí do 4. třídy</td><td>Baví ho/ji matematika</td><td>Umí udělat hvězdu</td></tr><tr><td>Umí plavat kraula</td><td>Je levák</td><td>Má rovnátka</td><td>Má doma kočku</td><td>Umí jezdit na snowboardu</td></tr>
+        </table>
+    </div>
+    
+    <div class="karticka">
+        <h2>SKAUTSKÉ BINGO</h2>
+        <div class="instrukce">Najdi někoho, na koho platí tvrzení v políčku, a nech ho se tam podepsat! Každý se může podepsat jen jednou.</div>
+        <table>
+    <tr><td>Má na kroji víc než 3 odborky/vlčky</td><td>Vyhrál/a nějakou medaili</td><td>Narodil/a se v létě</td><td>Zná morseovku</td><td>Sbírá pokémony</td></tr><tr><td>Má rád/a sushi</td><td>Bojí se pavouků</td><td>Nesnáší koprovku</td><td>Umí složit vlaštovku z papíru</td><td>Má tento měsíc narozeniny nebo svátek</td></tr><tr><td>Zná názvy alespoň 5 souhvězdí</td><td>Má mladší sestru</td><td>Chodí na florbal</td><td>Rád/a čte knížky</td><td>Chodí do 3. třídy</td></tr><tr><td>Má modré oči</td><td>Má hnědé oči</td><td>Už někdy ztratil/a klíče</td><td>Má na sobě něco červeného</td><td>Narodil/a se v zimě</td></tr><tr><td>Spal/a už pod širákem</td><td>Chodí do 5. třídy</td><td>Má rovnátka</td><td>Byl/a letos na skautském táboře</td><td>Nosí u sebe nožík (rybičku)</td></tr>
+        </table>
+    </div>
+    
+    <div class="karticka">
+        <h2>SKAUTSKÉ BINGO</h2>
+        <div class="instrukce">Najdi někoho, na koho platí tvrzení v políčku, a nech ho se tam podepsat! Každý se může podepsat jen jednou.</div>
+        <table>
+    <tr><td>Zná skautskou hymnu</td><td>Byl/a někdy u moře</td><td>Bojí se pavouků</td><td>Baví ho/ji matematika</td><td>Nosí u sebe nožík (rybičku)</td></tr><tr><td>Chodí do 4. třídy</td><td>Umí pískat na stéblo trávy</td><td>Nesnáší koprovku</td><td>Jel/a někdy na vodě v lodi</td><td>Hraje Roblox</td></tr><tr><td>Umí upéct buchtu</td><td>Umí ambulantní uzel</td><td>Má rád/a sushi</td><td>Chodí na fotbal</td><td>Cestoval/a někdy letadlem</td></tr><tr><td>Má rád/a Star Wars</td><td>Umí rozdělat oheň</td><td>Chodí na florbal</td><td>Má u sebe KPZ</td><td>Rád/a kreslí</td></tr><tr><td>Pozná dub od buku</td><td>Umí složit vlaštovku z papíru</td><td>Rád/a čte knížky</td><td>Umí jezdit na koni</td><td>Umí lyžovat</td></tr>
+        </table>
+    </div>
+    
+    <div class="karticka">
+        <h2>SKAUTSKÉ BINGO</h2>
+        <div class="instrukce">Najdi někoho, na koho platí tvrzení v políčku, a nech ho se tam podepsat! Každý se může podepsat jen jednou.</div>
+        <table>
+    <tr><td>Je levák</td><td>Umí jezdit na koni</td><td>Miluje zmrzlinu</td><td>Už někdy ztratil/a klíče</td><td>Byl/a někdy u moře</td></tr><tr><td>Umí uvařit čaj</td><td>Mluví anglicky</td><td>Baví ho/ji matematika</td><td>Má více než 2 sourozence</td><td>Hraje závodně nějaký sport</td></tr><tr><td>Umí plavat kraula</td><td>Chová rybičky</td><td>Má na kroji víc než 3 odborky/vlčky</td><td>Jel/a někdy na vodě v lodi</td><td>Cestoval/a někdy letadlem</td></tr><tr><td>Chodí na florbal</td><td>Chodí do skautu déle než 2 roky</td><td>Umí pískat na prsty</td><td>Byl/a letos na skautském táboře</td><td>Zná morseovku</td></tr><tr><td>Má rovnátka</td><td>Má na sobě něco červeného</td><td>Baví ho/ji dějepis</td><td>Umí uvázat dračí smyčku</td><td>Umí složit vlaštovku z papíru</td></tr>
+        </table>
+    </div>
+    
+    <div class="karticka">
+        <h2>SKAUTSKÉ BINGO</h2>
+        <div class="instrukce">Najdi někoho, na koho platí tvrzení v políčku, a nech ho se tam podepsat! Každý se může podepsat jen jednou.</div>
+        <table>
+    <tr><td>Umí udělat kotrmelec vzad</td><td>Nosí brýle</td><td>Miluje pizzu</td><td>Nejí houby</td><td>Má rovnátka</td></tr><tr><td>Je levák</td><td>Umí udělat hvězdu</td><td>Má na sobě něco červeného</td><td>Měl/a někdy zlomenou ruku nebo nohu</td><td>Chodí na fotbal</td></tr><tr><td>Cestoval/a někdy letadlem</td><td>Hraje Minecraft</td><td>Mluví anglicky</td><td>Rád/a kreslí</td><td>Chodí do 4. třídy</td></tr><tr><td>Chodí do 5. třídy</td><td>Zná názvy alespoň 5 souhvězdí</td><td>Narodil/a se v létě</td><td>Umí udělat dřep na jedné noze</td><td>Zná skautskou hymnu</td></tr><tr><td>Dosáhne si jazykem na nos</td><td>Byl/a někdy u moře</td><td>Chová rybičky</td><td>Má staršího bratra</td><td>Umí plavat kraula</td></tr>
+        </table>
+    </div>
+    
+    <div class="karticka">
+        <h2>SKAUTSKÉ BINGO</h2>
+        <div class="instrukce">Najdi někoho, na koho platí tvrzení v políčku, a nech ho se tam podepsat! Každý se může podepsat jen jednou.</div>
+        <table>
+    <tr><td>Má doma křečka nebo morče</td><td>Chová rybičky</td><td>Zná morseovku</td><td>Hraje Roblox</td><td>Umí pískat na prsty</td></tr><tr><td>Umí udělat hvězdu</td><td>Má u sebe KPZ</td><td>Rád/a čte knížky</td><td>Zná hlavní město Slovenska</td><td>Vyhrál/a nějakou medaili</td></tr><tr><td>Umí jezdit na koni</td><td>Je levák</td><td>Chodí na fotbal</td><td>Rád/a kreslí</td><td>Sbírá pokémony</td></tr><tr><td>Nosí brýle</td><td>Pozná dub od buku</td><td>Zná jméno svého starosty</td><td>Byl/a někdy u moře</td><td>Umí jezdit na snowboardu</td></tr><tr><td>Hraje na hudební nástroj</td><td>Má mladší sestru</td><td>Umí ambulantní uzel</td><td>Umí upéct buchtu</td><td>Dosáhne si jazykem na nos</td></tr>
+        </table>
+    </div>
+    
+    <div class="karticka">
+        <h2>SKAUTSKÉ BINGO</h2>
+        <div class="instrukce">Najdi někoho, na koho platí tvrzení v políčku, a nech ho se tam podepsat! Každý se může podepsat jen jednou.</div>
+        <table>
+    <tr><td>Baví ho/ji dějepis</td><td>Chodí do 3. třídy</td><td>Má staršího bratra</td><td>Zná skautskou hymnu</td><td>Rád/a kreslí</td></tr><tr><td>Těší se do školy</td><td>Miluje zmrzlinu</td><td>Vyhrál/a nějakou medaili</td><td>Má rád/a Star Wars</td><td>Ví, kdo byl Baden-Powell</td></tr><tr><td>Umí upéct buchtu</td><td>Je levák</td><td>Umí udělat hvězdu</td><td>Umí plavat kraula</td><td>Cestoval/a někdy letadlem</td></tr><tr><td>Chodí na fotbal</td><td>Pozná dub od buku</td><td>Chová rybičky</td><td>Hraje Roblox</td><td>Umí udělat kotrmelec vzad</td></tr><tr><td>Zná názvy alespoň 5 souhvězdí</td><td>Měl/a někdy zlomenou ruku nebo nohu</td><td>Chodí do skautu déle než 2 roky</td><td>Narodil/a se v létě</td><td>Byl/a letos na skautském táboře</td></tr>
+        </table>
+    </div>
+    
+    <div class="karticka">
+        <h2>SKAUTSKÉ BINGO</h2>
+        <div class="instrukce">Najdi někoho, na koho platí tvrzení v políčku, a nech ho se tam podepsat! Každý se může podepsat jen jednou.</div>
+        <table>
+    <tr><td>Dosáhne si jazykem na nos</td><td>Těší se do školy</td><td>Vyhrál/a nějakou medaili</td><td>Byl/a letos na skautském táboře</td><td>Umí postavit stan</td></tr><tr><td>Miluje pizzu</td><td>Měl/a někdy zlomenou ruku nebo nohu</td><td>Má u sebe KPZ</td><td>Umí upéct buchtu</td><td>Pije nejradši čistou vodu</td></tr><tr><td>Hraje Roblox</td><td>Má rád/a deskovky</td><td>Narodil/a se v zimě</td><td>Umí plavat kraula</td><td>Umí uvařit čaj</td></tr><tr><td>Chodí do 4. třídy</td><td>Chová rybičky</td><td>Rád/a kreslí</td><td>Mluví anglicky</td><td>Má doma křečka nebo morče</td></tr><tr><td>Bojí se pavouků</td><td>Umí uvázat dračí smyčku</td><td>Má rád/a rajskou omáčku</td><td>Má tento měsíc narozeniny nebo svátek</td><td>Umí rozdělat oheň</td></tr>
+        </table>
+    </div>
+    
+    <div class="karticka">
+        <h2>SKAUTSKÉ BINGO</h2>
+        <div class="instrukce">Najdi někoho, na koho platí tvrzení v políčku, a nech ho se tam podepsat! Každý se může podepsat jen jednou.</div>
+        <table>
+    <tr><td>Hraje Minecraft</td><td>Bojí se pavouků</td><td>Miluje zmrzlinu</td><td>Nesnáší koprovku</td><td>Narodil/a se v zimě</td></tr><tr><td>Spal/a už pod širákem</td><td>Chodí na fotbal</td><td>Má doma kočku</td><td>Umí pískat na stéblo trávy</td><td>Hraje Roblox</td></tr><tr><td>Umí uvařit čaj</td><td>Sleduje Marvel filmy</td><td>Dosáhne si jazykem na nos</td><td>Má tento měsíc narozeniny nebo svátek</td><td>Mluví anglicky</td></tr><tr><td>Má rád/a rajskou omáčku</td><td>Nosí brýle</td><td>Umí rozdělat oheň</td><td>Zná hlavní město Slovenska</td><td>Má u sebe KPZ</td></tr><tr><td>Už někdy ztratil/a klíče</td><td>Umí udělat dřep na jedné noze</td><td>Má rovnátka</td><td>Má mladší sestru</td><td>Má hnědé oči</td></tr>
+        </table>
+    </div>
+    
+    <div class="karticka">
+        <h2>SKAUTSKÉ BINGO</h2>
+        <div class="instrukce">Najdi někoho, na koho platí tvrzení v políčku, a nech ho se tam podepsat! Každý se může podepsat jen jednou.</div>
+        <table>
+    <tr><td>Má u sebe KPZ</td><td>Umí uvařit čaj</td><td>Zná názvy alespoň 5 souhvězdí</td><td>Bojí se pavouků</td><td>Umí uvázat dračí smyčku</td></tr><tr><td>Hraje na hudební nástroj</td><td>Chodí do skautu déle než 2 roky</td><td>Hraje závodně nějaký sport</td><td>Pije nejradši čistou vodu</td><td>Má rád/a deskovky</td></tr><tr><td>Má doma psa</td><td>Narodil/a se v létě</td><td>Má rovnátka</td><td>Sleduje Marvel filmy</td><td>Chodí do 3. třídy</td></tr><tr><td>Má modré oči</td><td>Nosí brýle</td><td>Umí jezdit na snowboardu</td><td>Narodil/a se v zimě</td><td>Byl/a někdy u moře</td></tr><tr><td>Rád/a kreslí</td><td>Umí udělat dřep na jedné noze</td><td>Umí jezdit na koni</td><td>Umí postavit stan</td><td>Má hnědé oči</td></tr>
+        </table>
+    </div>
+    
+    <div class="karticka">
+        <h2>SKAUTSKÉ BINGO</h2>
+        <div class="instrukce">Najdi někoho, na koho platí tvrzení v políčku, a nech ho se tam podepsat! Každý se může podepsat jen jednou.</div>
+        <table>
+    <tr><td>Umí jezdit na koni</td><td>Baví ho/ji matematika</td><td>Zná skautskou hymnu</td><td>Nosí u sebe nožík (rybičku)</td><td>Spal/a už pod širákem</td></tr><tr><td>Hraje Minecraft</td><td>Rád/a čte knížky</td><td>Umí udělat dřep na jedné noze</td><td>Nebojí se tmy</td><td>Těší se do školy</td></tr><tr><td>Už někdy ztratil/a klíče</td><td>Má doma křečka nebo morče</td><td>Vyhrál/a nějakou medaili</td><td>Má na sobě něco červeného</td><td>Je jedináček</td></tr><tr><td>Umí uvázat dračí smyčku</td><td>Bojí se pavouků</td><td>Nesnáší koprovku</td><td>Chodí do 4. třídy</td><td>Umí uvařit čaj</td></tr><tr><td>Chodí do 5. třídy</td><td>Hraje Roblox</td><td>Umí udělat kotrmelec vzad</td><td>Umí pískat na prsty</td><td>Má doma psa</td></tr>
+        </table>
+    </div>
+    
+    <div class="karticka">
+        <h2>SKAUTSKÉ BINGO</h2>
+        <div class="instrukce">Najdi někoho, na koho platí tvrzení v políčku, a nech ho se tam podepsat! Každý se může podepsat jen jednou.</div>
+        <table>
+    <tr><td>Byl/a letos na skautském táboře</td><td>Umí postavit stan</td><td>Má staršího bratra</td><td>Má doma křečka nebo morče</td><td>Má na sobě něco červeného</td></tr><tr><td>Rád/a tancuje</td><td>Má více než 2 sourozence</td><td>Má rovnátka</td><td>Spal/a už pod širákem</td><td>Umí jezdit na snowboardu</td></tr><tr><td>Umí udělat dřep na jedné noze</td><td>Chodí na florbal</td><td>Hraje Roblox</td><td>Umí uvařit čaj</td><td>Zná hlavní město Slovenska</td></tr><tr><td>Umí jezdit na koni</td><td>Zná názvy alespoň 5 souhvězdí</td><td>Má doma kočku</td><td>Má rád/a deskovky</td><td>Rád/a čte knížky</td></tr><tr><td>Umí rozdělat oheň</td><td>Hraje Minecraft</td><td>Dosáhne si jazykem na nos</td><td>Baví ho/ji matematika</td><td>Umí udělat hvězdu</td></tr>
+        </table>
+    </div>
+    
+    <div class="karticka">
+        <h2>SKAUTSKÉ BINGO</h2>
+        <div class="instrukce">Najdi někoho, na koho platí tvrzení v políčku, a nech ho se tam podepsat! Každý se může podepsat jen jednou.</div>
+        <table>
+    <tr><td>Nebojí se tmy</td><td>Umí pískat na prsty</td><td>Měl/a někdy zlomenou ruku nebo nohu</td><td>Umí jezdit na koni</td><td>Baví ho/ji matematika</td></tr><tr><td>Pozná dub od buku</td><td>Bojí se pavouků</td><td>Má rád/a rajskou omáčku</td><td>Má u sebe KPZ</td><td>Chodí na florbal</td></tr><tr><td>Umí uvázat dračí smyčku</td><td>Má doma kočku</td><td>Umí složit vlaštovku z papíru</td><td>Zná názvy alespoň 5 souhvězdí</td><td>Má rád/a deskovky</td></tr><tr><td>Umí udělat kotrmelec vzad</td><td>Má doma psa</td><td>Chodí do skautu déle než 2 roky</td><td>Sbírá pokémony</td><td>Nosí u sebe nožík (rybičku)</td></tr><tr><td>Chodí na fotbal</td><td>Je jedináček</td><td>Je levák</td><td>Chodí do 3. třídy</td><td>Byl/a letos na skautském táboře</td></tr>
+        </table>
+    </div>
+    
+    <div class="karticka">
+        <h2>SKAUTSKÉ BINGO</h2>
+        <div class="instrukce">Najdi někoho, na koho platí tvrzení v políčku, a nech ho se tam podepsat! Každý se může podepsat jen jednou.</div>
+        <table>
+    <tr><td>Umí jezdit na koni</td><td>Nesnáší koprovku</td><td>Umí upéct buchtu</td><td>Sleduje Marvel filmy</td><td>Má u sebe KPZ</td></tr><tr><td>Chodí do skautu déle než 2 roky</td><td>Měl/a někdy zlomenou ruku nebo nohu</td><td>Má rád/a sushi</td><td>Zná názvy alespoň 5 souhvězdí</td><td>Má rád/a Star Wars</td></tr><tr><td>Těší se do školy</td><td>Baví ho/ji dějepis</td><td>Dosáhne si jazykem na nos</td><td>Hraje na hudební nástroj</td><td>Má doma křečka nebo morče</td></tr><tr><td>Je levák</td><td>Má rovnátka</td><td>Má doma psa</td><td>Pozná dub od buku</td><td>Sbírá pokémony</td></tr><tr><td>Má více než 2 sourozence</td><td>Hraje Roblox</td><td>Zná morseovku</td><td>Má tento měsíc narozeniny nebo svátek</td><td>Má na sobě něco zeleného</td></tr>
+        </table>
+    </div>
+    
+    <div class="karticka">
+        <h2>SKAUTSKÉ BINGO</h2>
+        <div class="instrukce">Najdi někoho, na koho platí tvrzení v políčku, a nech ho se tam podepsat! Každý se může podepsat jen jednou.</div>
+        <table>
+    <tr><td>Cestoval/a někdy letadlem</td><td>Spal/a už pod širákem</td><td>Miluje pizzu</td><td>Nebojí se tmy</td><td>Hraje Roblox</td></tr><tr><td>Zná názvy alespoň 5 souhvězdí</td><td>Nesnáší koprovku</td><td>Chová rybičky</td><td>Umí složit vlaštovku z papíru</td><td>Chodí do skautu déle než 2 roky</td></tr><tr><td>Rád/a kreslí</td><td>Zná hlavní město Slovenska</td><td>Mluví anglicky</td><td>Umí ambulantní uzel</td><td>Má na sobě něco červeného</td></tr><tr><td>Má modré oči</td><td>Zná morseovku</td><td>Dosáhne si jazykem na nos</td><td>Těší se do školy</td><td>Umí lyžovat</td></tr><tr><td>Má doma psa</td><td>Chodí do 4. třídy</td><td>Narodil/a se v létě</td><td>Má rád/a sushi</td><td>Rád/a čte knížky</td></tr>
+        </table>
+    </div>
+    
+    <div class="karticka">
+        <h2>SKAUTSKÉ BINGO</h2>
+        <div class="instrukce">Najdi někoho, na koho platí tvrzení v políčku, a nech ho se tam podepsat! Každý se může podepsat jen jednou.</div>
+        <table>
+    <tr><td>Sbírá pokémony</td><td>Mluví anglicky</td><td>Má rád/a deskovky</td><td>Cestoval/a někdy letadlem</td><td>Chodí do 3. třídy</td></tr><tr><td>Pije nejradši čistou vodu</td><td>Má doma kočku</td><td>Zná hlavní město Slovenska</td><td>Narodil/a se v létě</td><td>Umí ambulantní uzel</td></tr><tr><td>Zná názvy alespoň 5 souhvězdí</td><td>Nejí houby</td><td>Je jedináček</td><td>Umí postavit stan</td><td>Má rád/a rajskou omáčku</td></tr><tr><td>Jel/a někdy na vodě v lodi</td><td>Umí udělat kotrmelec vzad</td><td>Spal/a už pod širákem</td><td>Hraje na hudební nástroj</td><td>Baví ho/ji dějepis</td></tr><tr><td>Má hnědé oči</td><td>Byl/a někdy u moře</td><td>Baví ho/ji matematika</td><td>Je levák</td><td>Nebojí se tmy</td></tr>
+        </table>
+    </div>
+    
+    <div class="karticka">
+        <h2>SKAUTSKÉ BINGO</h2>
+        <div class="instrukce">Najdi někoho, na koho platí tvrzení v políčku, a nech ho se tam podepsat! Každý se může podepsat jen jednou.</div>
+        <table>
+    <tr><td>Jel/a někdy na vodě v lodi</td><td>Hraje na hudební nástroj</td><td>Chová rybičky</td><td>Už někdy ztratil/a klíče</td><td>Mluví anglicky</td></tr><tr><td>Sbírá pokémony</td><td>Umí jezdit na koni</td><td>Hraje závodně nějaký sport</td><td>Zná jméno svého starosty</td><td>Umí udělat hvězdu</td></tr><tr><td>Má hnědé oči</td><td>Má u sebe KPZ</td><td>Rád/a čte knížky</td><td>Má rád/a rajskou omáčku</td><td>Má mladší sestru</td></tr><tr><td>Má staršího bratra</td><td>Pije nejradši čistou vodu</td><td>Umí pískat na stéblo trávy</td><td>Rád/a tancuje</td><td>Cestoval/a někdy letadlem</td></tr><tr><td>Chodí na florbal</td><td>Miluje zmrzlinu</td><td>Je jedináček</td><td>Má rád/a sushi</td><td>Má na sobě něco červeného</td></tr>
+        </table>
+    </div>
+    
+    <div class="karticka">
+        <h2>SKAUTSKÉ BINGO</h2>
+        <div class="instrukce">Najdi někoho, na koho platí tvrzení v políčku, a nech ho se tam podepsat! Každý se může podepsat jen jednou.</div>
+        <table>
+    <tr><td>Má rád/a rajskou omáčku</td><td>Cestoval/a někdy letadlem</td><td>Umí pískat na stéblo trávy</td><td>Miluje pizzu</td><td>Spal/a už pod širákem</td></tr><tr><td>Má na sobě něco zeleného</td><td>Pozná dub od buku</td><td>Chová rybičky</td><td>Nosí brýle</td><td>Hraje Minecraft</td></tr><tr><td>Umí plavat kraula</td><td>Umí udělat dřep na jedné noze</td><td>Má na sobě něco červeného</td><td>Umí jezdit na snowboardu</td><td>Bojí se pavouků</td></tr><tr><td>Umí upéct buchtu</td><td>Umí udělat kotrmelec vzad</td><td>Těší se do školy</td><td>Zná skautskou hymnu</td><td>Chodí na fotbal</td></tr><tr><td>Už někdy ztratil/a klíče</td><td>Má doma křečka nebo morče</td><td>Chodí do 3. třídy</td><td>Narodil/a se v létě</td><td>Sbírá pokémony</td></tr>
+        </table>
+    </div>
+    
+    <div class="karticka">
+        <h2>SKAUTSKÉ BINGO</h2>
+        <div class="instrukce">Najdi někoho, na koho platí tvrzení v políčku, a nech ho se tam podepsat! Každý se může podepsat jen jednou.</div>
+        <table>
+    <tr><td>Měl/a někdy zlomenou ruku nebo nohu</td><td>Narodil/a se v létě</td><td>Má mladší sestru</td><td>Umí udělat kotrmelec vzad</td><td>Umí pískat na stéblo trávy</td></tr><tr><td>Chová rybičky</td><td>Umí uvázat dračí smyčku</td><td>Hraje na hudební nástroj</td><td>Má doma kočku</td><td>Už někdy ztratil/a klíče</td></tr><tr><td>Cestoval/a někdy letadlem</td><td>Má rád/a deskovky</td><td>Rád/a čte knížky</td><td>Je jedináček</td><td>Hraje Minecraft</td></tr><tr><td>Umí lyžovat</td><td>Má na sobě něco červeného</td><td>Má modré oči</td><td>Má rád/a rajskou omáčku</td><td>Narodil/a se v zimě</td></tr><tr><td>Chodí do 3. třídy</td><td>Chodí do 5. třídy</td><td>Rád/a kreslí</td><td>Má rád/a Star Wars</td><td>Byl/a letos na skautském táboře</td></tr>
+        </table>
+    </div>
+    
+    <div class="karticka">
+        <h2>SKAUTSKÉ BINGO</h2>
+        <div class="instrukce">Najdi někoho, na koho platí tvrzení v políčku, a nech ho se tam podepsat! Každý se může podepsat jen jednou.</div>
+        <table>
+    <tr><td>Umí pískat na prsty</td><td>Miluje zmrzlinu</td><td>Umí uvařit čaj</td><td>Umí složit vlaštovku z papíru</td><td>Je levák</td></tr><tr><td>Baví ho/ji dějepis</td><td>Narodil/a se v zimě</td><td>Narodil/a se v létě</td><td>Bojí se pavouků</td><td>Má staršího bratra</td></tr><tr><td>Zná hlavní město Slovenska</td><td>Chodí do 5. třídy</td><td>Zná jméno svého starosty</td><td>Zná skautskou hymnu</td><td>Sbírá pokémony</td></tr><tr><td>Hraje závodně nějaký sport</td><td>Má u sebe KPZ</td><td>Sleduje Marvel filmy</td><td>Pije nejradši čistou vodu</td><td>Dosáhne si jazykem na nos</td></tr><tr><td>Jel/a někdy na vodě v lodi</td><td>Chodí do 3. třídy</td><td>Je jedináček</td><td>Umí rozdělat oheň</td><td>Umí uvázat dračí smyčku</td></tr>
+        </table>
+    </div>
+    
+</body>
+</html>
