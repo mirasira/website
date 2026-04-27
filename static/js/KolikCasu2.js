@@ -1989,3 +1989,4 @@ window.setInterval(() => {
         // drawCountdown(countdownData); // Pass the object
     }
 }, 1000); // Update every second (1000 milliseconds)
+
