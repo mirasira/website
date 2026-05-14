@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ČVUT Generátor vizitek</title>
+    <style>
+        :root {
+            --cvut-blue: #0065BD; /* Pantone 300 */
+        }
+        body {
+            font-family: Arial, sans-serif; /* Fallback za font Technika */
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 40px;
+            display: flex;
+            gap: 40px;
+            justify-content: center;
+        }
+        .form-container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            width: 350px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            font-size: 14px;
+            margin-bottom: 5px;
+            color: #333;
+        }
+        input {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        /* Vizitka - Přesné rozměry podle manuálu */
+        .card-preview-container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        .card {
+            width: 85mm;
+            height: 55mm;
+            background: white;
+            position: relative;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+            /* Ideálně zde načíst font Technika přes @font-face */
+            font-family: 'Arial', sans-serif; 
+            color: var(--cvut-blue);
+            box-sizing: border-box;
+            overflow: hidden;
+        }
+        /* Jméno a funkce - Y: 10mm, X: 6mm */
+        .card-name-block {
+            position: absolute;
+            top: 10mm;
+            left: 6mm;
+        }
+        .card-name {
+            font-size: 8.5pt;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 0.5px; /* Prostrkání */
+        }
+        .card-title {
+            font-size: 8.5pt;
+            font-weight: bold;
+        }
+        .card-function {
+            font-size: 6pt;
+            font-weight: bold;
+            margin-top: 2mm;
+            text-transform: uppercase;
+        }
+        /* Modrý box s logem ČVUT - Y: 25mm, X: 6mm */
+        .card-logo-box {
+            position: absolute;
+            top: 25mm;
+            left: 6mm;
+            width: 28mm; /* Odhad z nákresu (36mm - 6mm = 30mm, s malou mezerou) */
+            height: 24mm; /* od 25mm do 49mm */
+            background-color: var(--cvut-blue);
+            color: white;
+            padding: 2mm;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        .card-logo-box h1 {
+            margin: 0;
+            font-size: 14pt;
+        }
+        .card-logo-box p {
+            margin: 0;
+            font-size: 5pt;
+            line-height: 1.1;
+        }
+        /* Kontaktní údaje - Y: 25mm, X: 36mm */
+        .card-contact {
+            position: absolute;
+            top: 25mm;
+            left: 36mm;
+            font-size: 6pt;
+            font-weight: bold;
+            line-height: 1.3;
+            text-transform: uppercase;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="form-container">
+        <h2>Údaje na vizitku</h2>
+        <div class="form-group">
+            <label>Titul před jménem</label>
+            <input type="text" id="input-title-pre" value="Ing.">
+        </div>
+        <div class="form-group">
+            <label>Jméno a Příjmení</label>
+            <input type="text" id="input-name" value="Miroslav David">
+        </div>
+        <div class="form-group">
+            <label>Funkce</label>
+            <input type="text" id="input-function" value="PhD Candidate, Researcher">
+        </div>
+        <div class="form-group">
+            <label>Součást ČVUT</label>
+            <input type="text" id="input-dept" value="CIIRC">
+        </div>
+        <div class="form-group">
+            <label>Telefon</label>
+            <input type="text" id="input-phone" value="+420 123 456 789">
+        </div>
+        <div class="form-group">
+            <label>E-mail</label>
+            <input type="text" id="input-email" value="miroslav.david@cvut.cz">
+        </div>
+    </div>
+
+    <div class="card-preview-container">
+        <h2>Živý náhled</h2>
+        <div class="card" id="business-card">
+            <div class="card-name-block">
+                <span class="card-title" id="out-title-pre">Ing.</span>
+                <span class="card-name" id="out-name">MIROSLAV DAVID</span>
+                <div class="card-function" id="out-function">PHD CANDIDATE, RESEARCHER</div>
+            </div>
+            
+            <div class="card-logo-box">
+                <h1>CTU</h1>
+                <p>CZECH TECHNICAL<br>UNIVERSITY<br>IN PRAGUE</p>
+            </div>
+
+            <div class="card-contact">
+                <div id="out-dept">CIIRC</div>
+                <div>JUGOSLÁVSKÝCH PARTYZÁNŮ 1580/3<br>160 00 PRAHA 6<br>ČESKÁ REPUBLIKA</div>
+                <div id="out-phone">+420 123 456 789</div>
+                <div id="out-email">MIROSLAV.DAVID@CVUT.CZ</div>
+                <div>WWW.CVUT.CZ</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Funkce pro propojení inputu s výstupem na vizitce
+        function bindInput(inputId, outputId, transform = null) {
+            const input = document.getElementById(inputId);
+            const output = document.getElementById(outputId);
+            
+            input.addEventListener('input', (e) => {
+                let text = e.target.value;
+                if (transform === 'uppercase') text = text.toUpperCase();
+                output.textContent = text;
+            });
+        }
+
+        // Navázání všech políček
+        bindInput('input-title-pre', 'out-title-pre');
+        bindInput('input-name', 'out-name', 'uppercase');
+        bindInput('input-function', 'out-function', 'uppercase');
+        bindInput('input-dept', 'out-dept', 'uppercase');
+        bindInput('input-phone', 'out-phone');
+        bindInput('input-email', 'out-email', 'uppercase');
+    </script>
+</body>
+</html>
