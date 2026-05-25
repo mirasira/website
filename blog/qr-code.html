@@ -1,0 +1,1035 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How QR Codes Work</title>
+    <style>
+        *, *::before, *::after { box-sizing:border-box; margin:0; padding:0; }
+        :root {
+            --dark:#0f172a; --mid:#334155; --muted:#64748b;
+            --subtle:#94a3b8; --border:#e2e8f0; --bg:#f8fafc; --white:#ffffff;
+        }
+        body { font-family:'Segoe UI',system-ui,sans-serif; background:var(--bg); color:var(--dark); line-height:1.65; }
+
+        .hero { background:var(--dark); color:var(--white); padding:88px 24px 80px; text-align:center; position:relative; overflow:hidden; }
+        .hero::before { content:''; position:absolute; inset:0; background:repeating-linear-gradient(-45deg,transparent 0,transparent 28px,rgba(255,255,255,.025) 28px,rgba(255,255,255,.025) 29px); }
+        .hero-inner { position:relative; }
+        .hero h1 { font-size:clamp(2.4rem,6vw,4rem); font-weight:800; letter-spacing:-2.5px; line-height:1.05; margin-bottom:16px; }
+        .hero h1 em { font-style:normal; color:#38bdf8; }
+        .hero .sub { font-size:1.1rem; color:var(--subtle); max-width:500px; margin:0 auto; }
+
+        .container { max-width:1000px; margin:0 auto; padding:0 28px; }
+        .section { padding:88px 0; }
+        .section--alt { background:var(--white); }
+
+        .badge { display:inline-flex; align-items:center; gap:10px; margin-bottom:16px; }
+        .badge-num { width:28px; height:28px; background:var(--dark); color:var(--white); font-size:.72rem; font-weight:800; border-radius:50%; display:flex; align-items:center; justify-content:center; }
+        .badge-label { font-size:.72rem; font-weight:700; letter-spacing:3.5px; text-transform:uppercase; color:var(--muted); }
+
+        .section-title { font-size:clamp(1.7rem,4vw,2.3rem); font-weight:800; letter-spacing:-.8px; line-height:1.15; margin-bottom:10px; }
+        .section-lead { font-size:1.05rem; color:var(--muted); max-width:600px; margin-bottom:48px; }
+
+        .two-col { display:flex; gap:56px; align-items:flex-start; }
+        .col-visual { flex-shrink:0; }
+        .col-text { flex:1; min-width:0; }
+        .col-text h3 { font-size:1.2rem; font-weight:700; margin-bottom:12px; }
+        .col-text p { font-size:.97rem; color:var(--mid); margin-bottom:14px; }
+        .col-text p strong { color:var(--dark); }
+        @media(max-width:680px){ .two-col{flex-direction:column;} }
+
+        .qr-frame { background:var(--white); border:1px solid var(--border); border-radius:14px; padding:14px; display:inline-block; box-shadow:0 6px 28px rgba(0,0,0,.09); }
+
+        .legend { display:flex; flex-wrap:wrap; gap:12px; margin-top:14px; }
+        .legend-item { display:flex; align-items:center; gap:6px; font-size:.79rem; color:var(--muted); }
+        .legend-swatch { width:13px; height:13px; border-radius:3px; flex-shrink:0; }
+
+        .callout { background:var(--bg); border-left:3px solid var(--dark); border-radius:0 10px 10px 0; padding:16px 20px; margin-top:20px; }
+        .callout .ct { font-size:.88rem; font-weight:700; margin-bottom:5px; color:var(--dark); }
+        .callout p { font-size:.88rem; color:var(--muted); margin:0; }
+
+        /* Controls */
+        .i-card { background:var(--white); border:1px solid var(--border); border-radius:18px; padding:36px 40px; box-shadow:0 4px 24px rgba(0,0,0,.07); }
+        .ctrls { display:flex; align-items:center; gap:12px; flex-wrap:wrap; margin-bottom:28px; }
+        .ctrls label { font-size:.88rem; font-weight:700; color:var(--mid); }
+        select,input[type="number"],input[type="text"] {
+            border:2px solid var(--border); border-radius:8px; padding:8px 12px;
+            font-size:.92rem; color:var(--dark); background:var(--white);
+            transition:border-color .2s;
+        }
+        select { cursor:pointer; }
+        input[type="number"] { width:80px; -moz-appearance:textfield; }
+        input[type="number"]::-webkit-inner-spin-button { opacity:.5; }
+        input[type="text"] { width:280px; }
+        select:focus,input:focus { outline:none; border-color:var(--dark); }
+        button { background:var(--dark); color:var(--white); border:none; border-radius:8px; padding:10px 22px; font-size:.9rem; font-weight:700; cursor:pointer; transition:background .2s,transform .1s; }
+        button:hover { background:var(--mid); }
+        button:active { transform:scale(.97); }
+        .hint { font-size:.8rem; color:var(--subtle); }
+
+        /* Slider */
+        .slider-row { display:flex; align-items:center; gap:12px; margin-top:14px; }
+        .slider-row label { font-size:.84rem; font-weight:700; color:var(--mid); white-space:nowrap; }
+        input[type="range"] { -webkit-appearance:none; appearance:none; width:190px; height:4px; background:var(--border); border-radius:4px; outline:none; cursor:pointer; }
+        input[type="range"]::-webkit-slider-thumb { -webkit-appearance:none; width:18px; height:18px; background:var(--dark); border-radius:50%; }
+        input[type="range"]::-moz-range-thumb { width:18px; height:18px; background:var(--dark); border-radius:50%; border:none; }
+        .slider-val { font-size:.8rem; font-weight:700; color:var(--dark); background:var(--bg); border:1px solid var(--border); border-radius:6px; padding:3px 10px; min-width:120px; }
+
+        /* Bit display */
+        .bit-display { font-family:monospace; font-size:1rem; font-weight:700; letter-spacing:2px; margin:16px 0 6px; display:flex; flex-wrap:wrap; gap:2px; }
+        .bit { display:inline-block; width:20px; text-align:center; border-radius:4px; padding:4px 0; }
+        .bit-ec   { background:#dbeafe; color:#1d4ed8; }
+        .bit-mask { background:#dcfce7; color:#15803d; }
+        .bit-bch  { background:#fef3c7; color:#92400e; }
+        .bl { display:flex; gap:14px; flex-wrap:wrap; margin-bottom:14px; }
+        .bl-item { display:flex; align-items:center; gap:5px; font-size:.8rem; color:var(--mid); }
+        .bl-sw { width:13px; height:13px; border-radius:3px; }
+
+        /* Mask grid */
+        .mask-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:20px; }
+        @media(max-width:680px){ .mask-grid{grid-template-columns:repeat(2,1fr);} }
+        .mask-card { background:var(--white); border:1px solid var(--border); border-radius:12px; padding:14px; box-shadow:0 2px 10px rgba(0,0,0,.06); }
+        .mask-card h4 { font-size:.8rem; font-weight:700; margin-bottom:3px; }
+        .mask-card code { font-size:.7rem; color:var(--muted); display:block; margin-bottom:10px; font-family:monospace; }
+        .mask-card .qr-frame { padding:8px; }
+
+        /* Checkbox toggle */
+        .toggle-label { display:flex; align-items:center; gap:8px; font-size:.88rem; font-weight:600; color:var(--mid); cursor:pointer; user-select:none; }
+        .toggle-label input[type="checkbox"] { width:16px; height:16px; accent-color:var(--dark); cursor:pointer; }
+
+        /* Text encoder */
+        .enc-display { display:flex; flex-wrap:wrap; gap:3px; margin:18px 0 6px; font-family:monospace; font-size:.82rem; }
+        .enc-byte { border-radius:5px; padding:4px 7px; font-weight:700; display:flex; flex-direction:column; align-items:center; gap:1px; }
+        .enc-byte .char { font-size:.95em; }
+        .enc-byte .hex  { font-size:.75em; opacity:.8; }
+        .ec-strip { display:flex; flex-wrap:wrap; gap:3px; margin:10px 0 4px; font-family:monospace; font-size:.8rem; }
+        .ec-byte { border-radius:5px; padding:4px 7px; font-weight:700; background:#ede9fe; color:#6d28d9; border-bottom:3px solid #7c3aed; font-family:monospace; font-size:.8rem; }
+        .block-tag { display:inline-block; background:#f5f3ff; color:#7c3aed; border:1px solid #c4b5fd; border-radius:6px; padding:2px 8px; font-size:.75rem; font-weight:700; margin:6px 4px 2px 0; }
+
+        .byte-table { width:100%; border-collapse:collapse; font-size:.85rem; margin-top:16px; }
+        .byte-table th,.byte-table td { border:1px solid var(--border); padding:6px 10px; text-align:left; }
+        .byte-table th { background:var(--bg); font-weight:700; }
+        .byte-table code { font-family:monospace; font-size:.85em; }
+
+        .enc-info { font-size:.85rem; color:var(--mid); margin-top:12px; padding:12px 16px; background:var(--bg); border-radius:8px; }
+
+        .qr-center { display:flex; justify-content:center; }
+
+        /* Format table */
+        .mode-table { border-collapse:collapse; font-size:.87rem; width:100%; margin-top:10px; }
+        .mode-table th,.mode-table td { border:1px solid var(--border); padding:7px 12px; text-align:left; }
+        .mode-table th { background:var(--bg); font-weight:700; }
+        .mode-table tr.hl td { background:#ede9fe; color:#5b21b6; font-weight:700; }
+
+        .enc-row { display:flex; gap:0; margin:20px 0 10px; font-family:monospace; font-size:.88rem; flex-wrap:wrap; }
+        .enc-block { display:flex; flex-direction:column; align-items:center; border:2px solid; padding:7px 10px; margin-right:-2px; }
+        .enc-block .lb { font-size:.68rem; font-weight:700; margin-bottom:3px; }
+        .eb-enc  { border-color:#1d4ed8; background:#dbeafe; color:#1d4ed8; border-radius:8px 0 0 8px; }
+        .eb-len  { border-color:#15803d; background:#dcfce7; color:#15803d; }
+        .eb-data { border-color:#7c3aed; background:#ede9fe; color:#7c3aed; flex:1; }
+        .eb-pad  { border-color:#9ca3af; background:#f3f4f6; color:#6b7280; border-radius:0 8px 8px 0; }
+    </style>
+</head>
+<body>
+
+<header class="hero">
+    <div class="hero-inner container">
+        <h1>How <em>QR Codes</em> Work</h1>
+        <p class="sub">A visual, layer-by-layer breakdown — from the very first pattern to the encoded data itself.</p>
+    </div>
+</header>
+
+<main>
+
+<!-- ══ §1 Position Detection ══ -->
+<section class="section section--alt">
+    <div class="container">
+        <div class="badge"><span class="badge-num">1</span><span class="badge-label">Layer One</span></div>
+        <h2 class="section-title">Position Detection Patterns</h2>
+        <p class="section-lead">Before any data can be decoded the scanner must first find and orient the code. These compulsory elements are the foundation of every QR code.</p>
+        <div class="two-col">
+            <div class="col-visual">
+                <div class="qr-frame"><svg id="loc-svg" width="320" height="320" xmlns="http://www.w3.org/2000/svg"></svg></div>
+                <div class="slider-row">
+                    <label>Version</label>
+                    <input type="range" id="loc-slider" min="1" max="40" value="1" oninput="onLocSlider(this.value)">
+                    <span class="slider-val" id="loc-slider-val">v1 (21×21)</span>
+                </div>
+                <div class="legend" style="margin-top:12px;">
+                    <div class="legend-item"><div class="legend-swatch" style="background:#111;"></div>Finder</div>
+                    <div class="legend-item"><div class="legend-swatch" style="background:#64748b;"></div>Timing</div>
+                    <div class="legend-item"><div class="legend-swatch" style="background:#e2e8f0;border:1px solid #cbd5e1;"></div>Data area</div>
+                </div>
+            </div>
+            <div class="col-text">
+                <h3>The Three Corner Anchors</h3>
+                <p>Every QR code starts with three identical markers — one each in the <strong>top-left</strong>, <strong>top-right</strong>, and <strong>bottom-left</strong> corners. Each has a 7×7 black outer ring, white middle ring, and solid 3×3 black centre — a ratio that never appears in ordinary data.</p>
+                <p>The <strong>Timing Patterns</strong> along row 6 and column 6 alternate black/white, letting the decoder count rows and columns precisely. Drag the slider to see alignment patterns appear from version 2 onward.</p>
+                <div class="callout">
+                    <div class="ct">💡 Why only three corners?</div>
+                    <p>The missing bottom-right marker acts as a rotation cue — a scanner determines orientation just from which corner lacks a marker.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ══ §2 Format Information ══ -->
+<section class="section">
+    <div class="container">
+        <div class="badge"><span class="badge-num">2</span><span class="badge-label">Layer Two</span></div>
+        <h2 class="section-title">Format Information</h2>
+        <p class="section-lead">15 bits wrapped around the top-left finder — and duplicated across the other two corners — tell the scanner how to decode everything else.</p>
+        <div class="two-col">
+            <div class="col-visual">
+                <div class="qr-frame"><svg id="fmt-svg" width="320" height="320" xmlns="http://www.w3.org/2000/svg"></svg></div>
+                <div class="legend" style="margin-top:12px;">
+                    <div class="legend-item"><div class="legend-swatch" style="background:#3b82f6;"></div>Copy 1 (TL finder)</div>
+                    <div class="legend-item"><div class="legend-swatch" style="background:#7c3aed;"></div>Copy 2 (TR + BL)</div>
+                </div>
+            </div>
+            <div class="col-text">
+                <h3>Three Parts, 15 Bits</h3>
+                <div style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:18px;">
+                    <div>
+                        <label style="display:block;font-size:.78rem;font-weight:700;color:var(--muted);margin-bottom:4px;">EC Level</label>
+                        <select id="ec-select" onchange="updateFormat()">
+                            <option value="L">L — Low (7%)</option>
+                            <option value="M" selected>M — Medium (15%)</option>
+                            <option value="Q">Q — Quartile (25%)</option>
+                            <option value="H">H — High (30%)</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label style="display:block;font-size:.78rem;font-weight:700;color:var(--muted);margin-bottom:4px;">Mask Pattern</label>
+                        <select id="mask-select" onchange="updateFormat()">
+                            <option value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option>
+                            <option value="4">4</option><option value="5" selected>5</option><option value="6">6</option><option value="7">7</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="bl">
+                    <div class="bl-item"><div class="bl-sw" style="background:#dbeafe;border:1px solid #93c5fd;"></div>EC level (2 bits)</div>
+                    <div class="bl-item"><div class="bl-sw" style="background:#dcfce7;border:1px solid #86efac;"></div>Mask (3 bits)</div>
+                    <div class="bl-item"><div class="bl-sw" style="background:#fef3c7;border:1px solid #fcd34d;"></div>BCH check (10 bits)</div>
+                </div>
+                <div class="bit-display" id="bit-display"></div>
+                <div style="font-size:.76rem;color:var(--subtle);margin-bottom:18px;">Bit 14 (MSB) → Bit 0 (LSB)</div>
+                <p><strong>EC Level (2 bits)</strong> — sacrifices capacity for recovery redundancy.</p>
+                <p><strong>Mask (3 bits)</strong> — which XOR pattern was applied to the data area.</p>
+                <p><strong>BCH check (10 bits)</strong> — BCH(15,5) error correction on the 5 data bits, then XOR'd with <code>101010000010010</code> to prevent all-zero sequences.</p>
+                <div class="callout">
+                    <div class="ct">💡 Two identical copies</div>
+                    <p>If an entire corner is torn off, the other copy is used. BCH covers bit errors within one copy; the duplicate survives total corner loss.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ══ §3 Mask Patterns ══ -->
+<section class="section section--alt">
+    <div class="container">
+        <div class="badge"><span class="badge-num">3</span><span class="badge-label">Layer Three</span></div>
+        <h2 class="section-title">Mask Patterns</h2>
+        <p class="section-lead">After placing data, one of 8 XOR patterns is applied to every data module. Where the formula is true, the module flips. Structural modules are never masked. The encoder scores all 8 and picks the lowest-penalty result.</p>
+        <div class="mask-grid" id="mask-grid"></div>
+    </div>
+</section>
+
+<!-- ══ §4 Playground ══ -->
+<section class="section">
+    <div class="container">
+        <div class="badge"><span class="badge-num">4</span><span class="badge-label">Playground</span></div>
+        <h2 class="section-title">Interactive QR Structure</h2>
+        <p class="section-lead">All structural layers combined. Each element type is colour-coded. The mask is actually applied to the data. Toggle blank data to see the mask pattern directly.</p>
+        <div class="i-card">
+            <div class="ctrls">
+                <label>Version</label>
+                <input type="number" id="pg-version" value="1" min="1" max="40">
+                <label>EC</label>
+                <select id="pg-ec">
+                    <option value="L">L</option><option value="M" selected>M</option>
+                    <option value="Q">Q</option><option value="H">H</option>
+                </select>
+                <label>Mask</label>
+                <select id="pg-mask">
+                    <option value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option>
+                    <option value="4">4</option><option value="5" selected>5</option><option value="6">6</option><option value="7">7</option>
+                </select>
+                <label class="toggle-label">
+                    <input type="checkbox" id="pg-blank"> Blank data
+                </label>
+                <label class="toggle-label">
+                    <input type="checkbox" id="pg-colored" checked> Colour elements
+                </label>
+                <button onclick="regenerate()">Regenerate</button>
+            </div>
+            <!-- Layer legend (shown only when coloured) -->
+            <div class="legend" id="pg-legend" style="margin-bottom:24px;">
+                <div class="legend-item"><div class="legend-swatch" style="background:#b91c1c;"></div>Finder</div>
+                <div class="legend-item"><div class="legend-swatch" style="background:#d97706;"></div>Separator</div>
+                <div class="legend-item"><div class="legend-swatch" style="background:#1d4ed8;"></div>Timing</div>
+                <div class="legend-item"><div class="legend-swatch" style="background:#15803d;"></div>Alignment</div>
+                <div class="legend-item"><div class="legend-swatch" style="background:#7c3aed;"></div>Format info</div>
+                <div class="legend-item"><div class="legend-swatch" style="background:#0f172a;"></div>Dark module</div>
+                <div class="legend-item"><div class="legend-swatch" style="background:#475569;"></div>Data</div>
+            </div>
+            <div class="qr-center">
+                <div class="qr-frame"><svg id="qr" width="500" height="500" xmlns="http://www.w3.org/2000/svg"></svg></div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ══ §5 Data Encoding ══ -->
+<section class="section section--alt">
+    <div class="container">
+        <div class="badge"><span class="badge-num">5</span><span class="badge-label">Layer Four</span></div>
+        <h2 class="section-title">Data Encoding</h2>
+        <p class="section-lead">Before any bits reach the grid, raw data is packaged into a specific bitstream. Here is how it is structured.</p>
+        <div class="two-col">
+            <div class="col-text" style="flex:2;">
+                <h3>Bitstream Structure</h3>
+                <div class="enc-row">
+                    <div class="enc-block eb-enc"><span class="lb">ENC</span>0100</div>
+                    <div class="enc-block eb-len"><span class="lb">LEN</span>00001100</div>
+                    <div class="enc-block eb-data"><span class="lb">DATA bytes…</span>01001000 01100101 …</div>
+                    <div class="enc-block eb-pad"><span class="lb">PAD</span>0000…</div>
+                </div>
+                <p><strong>ENC — Mode Indicator (4 bits)</strong> — tells the decoder which encoding scheme was used:</p>
+                <table class="mode-table">
+                    <tr><th>Bits</th><th>Mode</th><th>Characters</th><th>Efficiency</th></tr>
+                    <tr><td>0001</td><td>Numeric</td><td>0–9 only</td><td>3 digits / 10 bits</td></tr>
+                    <tr><td>0010</td><td>Alphanumeric</td><td>0–9, A–Z, $%*+–./:</td><td>2 chars / 11 bits</td></tr>
+                    <tr class="hl"><td>0100</td><td>Byte</td><td>Any binary / text</td><td>1 byte / 8 bits</td></tr>
+                    <tr><td>1000</td><td>Kanji</td><td>Shift-JIS</td><td>1 char / 13 bits</td></tr>
+                </table>
+                <p style="margin-top:18px;"><strong>LEN</strong> — character count. Width varies by version and mode (for byte mode: 8 bits in versions 1–9, 16 bits in versions 10–40).</p>
+                <p><strong>DATA</strong> — in byte mode each character is its ISO 8859-1 byte value, identical to ASCII for characters below 128. Modern encoders use UTF-8 with an ECI header for non-Latin text.</p>
+                <p>After data: a <strong>0000 terminator</strong>, byte-boundary padding zeros, then alternating <code>11101100 / 00010001</code> padding bytes to fill remaining capacity. The block is then Reed-Solomon encoded — that is the next layer.</p>
+                <div class="callout">
+                    <div class="ct">💡 Why not always use Byte mode?</div>
+                    <p>A URL with only digits and uppercase letters uses Alphanumeric mode (~30% more capacity), giving a less dense, easier-to-scan code.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ══ §6 Text Encoder ══ -->
+<section class="section">
+    <div class="container">
+        <div class="badge"><span class="badge-num">6</span><span class="badge-label">Interactive</span></div>
+        <h2 class="section-title">Encode Text</h2>
+        <p class="section-lead">Type any short text and see it converted to bytes, then watch each byte's bits placed onto the QR code grid in the zigzag order the spec defines.</p>
+
+        <div class="i-card">
+            <div class="ctrls">
+                <label>Text</label>
+                <input type="text" id="enc-text" value="Hello" maxlength="60">
+                <label>EC</label>
+                <select id="enc-ec">
+                    <option value="L">L</option><option value="M" selected>M</option>
+                    <option value="Q">Q</option><option value="H">H</option>
+                </select>
+                <button onclick="runEncoder()">Encode</button>
+            </div>
+
+            <div id="enc-output" style="display:none;">
+                <div class="enc-info" id="enc-info"></div>
+
+                <!-- Byte strip -->
+                <div style="font-size:.8rem;font-weight:700;color:var(--muted);margin:20px 0 6px;">Encoded bytes</div>
+                <div class="enc-display" id="enc-bytes-strip"></div>
+
+                <!-- Byte table + QR side by side -->
+                <div style="display:flex;gap:36px;align-items:flex-start;margin-top:24px;flex-wrap:wrap;">
+                    <div style="flex:1;min-width:260px;">
+                        <div style="font-size:.8rem;font-weight:700;color:var(--muted);margin-bottom:8px;">Segment map</div>
+                        <table class="byte-table" id="enc-table"></table>
+                    </div>
+                    <div>
+                        <div style="font-size:.8rem;font-weight:700;color:var(--muted);margin-bottom:8px;">QR grid — data modules coloured by segment</div>
+                        <div class="qr-frame">
+                            <svg id="enc-qr" xmlns="http://www.w3.org/2000/svg"></svg>
+                        </div>
+                        <div class="legend" id="enc-legend" style="margin-top:10px;max-width:380px;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ══ §7 Reed-Solomon Error Correction ══ -->
+<section class="section section--alt">
+    <div class="container">
+        <div class="badge"><span class="badge-num">7</span><span class="badge-label">Layer Five</span></div>
+        <h2 class="section-title">Reed-Solomon Error Correction</h2>
+        <p class="section-lead">That grey area from §6 — now explained. RS adds check bytes so a scanner can reconstruct data even when part of the code is torn, dirty, or obscured.</p>
+
+        <div class="two-col" style="margin-bottom:48px;">
+            <div class="col-text" style="flex:2;">
+                <h3>The core idea</h3>
+                <p>Imagine fitting a curve through a set of points. If you know the curve has a certain shape, a handful of damaged points can be reconstructed from the undamaged ones. RS does exactly this — for bytes instead of geometric points.</p>
+                <p><strong>Step 1 — treat the data as a polynomial.</strong> Each data codeword becomes a coefficient: D(x) = d₀x^(n-1) + d₁x^(n-2) + … + d_(n-1).</p>
+                <p><strong>Step 2 — divide by the generator polynomial</strong> G(x) = (x−α⁰)(x−α¹)···(x−α^(ec-1)), where α is a primitive element of GF(256). The remainder R(x) = D(x) mod G(x) gives the EC codewords.</p>
+                <p><strong>Step 3 — append the remainder.</strong> The final block is D(x)·x^ec + R(x), which is exactly divisible by G(x). That divisibility lets the scanner detect and fix errors.</p>
+                <div class="callout">
+                    <div class="ct">🔢 GF(256) — the only hard part</div>
+                    <p>All arithmetic runs in <strong>GF(256)</strong>: a "Galois Field" of 256 elements (every byte). Addition = XOR. Multiplication uses precomputed exp/log tables built from the primitive polynomial x⁸+x⁴+x³+x²+1. Once <code>gfMul(a,b)</code> works, the rest is polynomial long division — about 20 lines of code.</p>
+                </div>
+                <div class="callout" style="margin-top:12px;border-color:#7c3aed;">
+                    <div class="ct" style="color:#6d28d9;">💡 Data is split into blocks first</div>
+                    <p>For larger QR versions the data codewords are split into 2–4 groups (blocks) and each block gets its own independent RS computation. The resulting data and EC codewords are then <strong>interleaved</strong> — a burst of damage that hits several consecutive modules only destroys one codeword per block, keeping errors correctable.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="i-card">
+            <div class="ctrls">
+                <label>Text</label>
+                <input type="text" id="rs-text" value="Hello" maxlength="60">
+                <label>EC</label>
+                <select id="rs-ec">
+                    <option value="L">L</option><option value="M" selected>M</option>
+                    <option value="Q">Q</option><option value="H">H</option>
+                </select>
+                <button onclick="runRS()">Compute RS</button>
+            </div>
+
+            <div id="rs-output" style="display:none;">
+                <div class="enc-info" id="rs-info"></div>
+
+                <div style="font-size:.8rem;font-weight:700;color:#7c3aed;margin:20px 0 4px;">Error correction codewords</div>
+                <div id="rs-ec-info" style="font-size:.8rem;color:var(--muted);margin-bottom:8px;"></div>
+                <div id="rs-ec-strip"></div>
+
+                <div style="display:flex;gap:36px;align-items:flex-start;margin-top:28px;flex-wrap:wrap;">
+                    <div>
+                        <div style="font-size:.8rem;font-weight:700;color:var(--muted);margin-bottom:8px;">Complete QR — data + error correction</div>
+                        <div class="qr-frame">
+                            <svg id="rs-qr" xmlns="http://www.w3.org/2000/svg"></svg>
+                        </div>
+                        <div class="legend" id="rs-legend" style="margin-top:10px;max-width:420px;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+</main>
+
+<script>
+// ─── Constants ───────────────────────────────────────────────────────────────
+const ALIGN_POS = [
+    [],[6,18],[6,22],[6,26],[6,30],[6,34],
+    [6,22,38],[6,24,42],[6,26,46],[6,28,50],[6,30,54],[6,32,58],[6,34,62],
+    [6,26,46,66],[6,26,48,70],[6,26,50,74],[6,30,54,78],[6,30,56,82],[6,30,58,86],[6,34,62,90],
+    [6,28,50,72,94],[6,26,50,74,98],[6,30,54,78,102],[6,28,54,80,106],[6,32,58,84,110],
+    [6,30,58,86,114],[6,34,62,90,118],
+    [6,26,50,74,98,122],[6,30,54,78,102,126],[6,26,52,78,104,130],[6,30,56,82,108,134],
+    [6,34,60,86,112,138],[6,30,58,86,114,142],[6,34,62,90,118,146],
+    [6,30,54,78,102,126,150],[6,24,50,76,102,128,154],[6,28,54,80,106,132,158],
+    [6,32,58,84,110,136,162],[6,26,54,82,110,138,166],[6,30,58,86,114,142,170],
+];
+
+const MASK_COND = [
+    (r,c)=>(r+c)%2===0,        (r,c)=>r%2===0,
+    (r,c)=>c%3===0,             (r,c)=>(r+c)%3===0,
+    (r,c)=>(Math.floor(r/2)+Math.floor(c/3))%2===0,
+    (r,c)=>(r*c)%2+(r*c)%3===0,
+    (r,c)=>((r*c)%2+(r*c)%3)%2===0,
+    (r,c)=>((r+c)%2+(r*c)%3)%2===0,
+];
+const MASK_FORMULA = [
+    "(r+c) % 2 = 0","r % 2 = 0","c % 3 = 0","(r+c) % 3 = 0",
+    "(⌊r/2⌋+⌊c/3⌋) % 2 = 0","(r·c)%2+(r·c)%3=0",
+    "((r·c)%2+(r·c)%3)%2=0","((r+c)%2+(r·c)%3)%2=0",
+];
+
+// Data codewords per version [L,M,Q,H]
+const DATA_CW = [
+    [19,16,13,9],[34,28,22,16],[55,44,34,26],[80,64,48,36],[108,86,62,46],
+    [136,108,76,60],[156,124,88,66],[194,154,110,86],[232,182,132,100],[274,216,154,122],
+    [324,254,180,140],[370,290,206,158],[428,334,244,180],[461,365,261,197],[523,415,295,223],
+    [589,453,325,253],[647,507,367,283],[721,563,397,313],[795,627,445,341],[861,669,485,385],
+];
+
+const EC_IDX = {L:0,M:1,Q:2,H:3};
+
+// Block structure per version/EC: [ecPerBlock, g1Blocks, g1DataCW, g2Blocks, g2DataCW]
+const BLOCK_INFO = [
+    [[7,1,19,0,0],[10,1,16,0,0],[13,1,13,0,0],[17,1,9,0,0]],    // v1
+    [[10,1,34,0,0],[16,1,28,0,0],[11,2,11,0,0],[14,2,8,0,0]],   // v2
+    [[15,1,55,0,0],[26,1,44,0,0],[18,2,17,0,0],[22,2,13,0,0]],  // v3
+    [[20,1,80,0,0],[18,2,32,0,0],[26,2,24,0,0],[16,4,9,0,0]],   // v4
+    [[26,1,108,0,0],[24,2,43,0,0],[18,2,15,2,16],[22,2,11,2,12]],// v5
+    [[18,2,68,0,0],[16,4,27,0,0],[24,4,19,0,0],[28,4,15,0,0]],  // v6
+    [[20,2,78,0,0],[18,4,31,0,0],[18,2,14,4,15],[26,4,13,1,14]],// v7
+    [[24,2,97,0,0],[22,2,38,2,39],[22,4,18,2,19],[26,4,14,2,15]],// v8
+    [[30,2,116,0,0],[22,3,36,2,37],[20,4,16,4,17],[24,4,12,4,13]],// v9
+    [[18,2,68,2,69],[26,4,43,1,44],[24,6,19,2,20],[28,6,15,2,16]],// v10
+    [[20,4,81,0,0],[30,1,50,4,51],[28,4,22,4,23],[28,3,12,8,13]],// v11
+    [[24,2,92,2,93],[22,6,36,2,37],[26,4,20,6,21],[28,7,14,4,15]],// v12
+    [[26,4,107,0,0],[22,8,37,1,38],[24,8,20,4,21],[22,12,11,4,12]],// v13
+    [[30,3,115,1,116],[24,4,40,5,41],[20,11,16,5,17],[24,11,12,5,13]],// v14
+    [[22,5,87,1,88],[24,5,41,5,42],[30,5,24,7,25],[24,11,12,7,13]],// v15
+    [[24,5,98,1,99],[28,7,45,3,46],[24,15,19,2,20],[30,3,15,13,16]],// v16
+    [[28,1,107,5,108],[28,10,46,1,47],[28,1,22,15,23],[28,2,14,17,15]],// v17
+    [[30,5,120,1,121],[26,9,43,4,44],[28,17,22,1,23],[28,2,14,19,15]],// v18
+    [[28,3,113,4,114],[26,3,44,11,45],[26,17,21,4,22],[26,9,13,16,14]],// v19
+    [[28,3,107,5,108],[28,3,41,13,42],[30,15,24,5,25],[28,15,15,10,16]],// v20
+];
+
+// Layer colours: [darkModule, lightModule]
+const LAYER_COL = {
+    finder:  ['#7f1d1d','#fca5a5'],
+    sep:     ['#c4b5a0','#f5f0eb'],   // separator is always light; show tinted so it's visible
+    timing:  ['#1e3a8a','#bfdbfe'],
+    align:   ['#14532d','#bbf7d0'],
+    format:  ['#4c1d95','#ddd6fe'],
+    dark:    ['#0f172a','#0f172a'],
+    data:    ['#1e293b','#f1f5f9'],
+};
+
+// Byte palette for text encoder
+const BYTE_PAL = [
+    ['#be123c','#ffe4e6'],['#b45309','#fef3c7'],['#15803d','#dcfce7'],
+    ['#0369a1','#dbeafe'],['#7c3aed','#ede9fe'],['#0f766e','#ccfbf1'],
+    ['#c2410c','#ffedd5'],['#6d28d9','#f5f3ff'],['#1d4ed8','#eff6ff'],
+    ['#9d174d','#fce7f3'],['#065f46','#ecfdf5'],['#1e40af','#dbeafe'],
+];
+
+// ─── Build structural grid ────────────────────────────────────────────────────
+// Returns { grid, type, func, version }
+// type[row][col]: 'finder'|'sep'|'timing'|'align'|'format'|'dark'|null
+function buildQRGrid(qrSize) {
+    const version = (qrSize-17)/4;
+    if (!Number.isInteger(version)||version<1||version>40) return null;
+
+    const grid = Array.from({length:qrSize},()=>new Array(qrSize).fill(null));
+    const type  = Array.from({length:qrSize},()=>new Array(qrSize).fill(null));
+    const func  = Array.from({length:qrSize},()=>new Array(qrSize).fill(false));
+
+    function mark(col,row,dark,t) {
+        if (col<0||col>=qrSize||row<0||row>=qrSize) return;
+        grid[row][col]=dark; type[row][col]=t; func[row][col]=true;
+    }
+
+    function placeFinder(ox,oy) {
+        for (let r=0;r<7;r++) for (let c=0;c<7;c++)
+            mark(ox+c,oy+r,(r===0||r===6||c===0||c===6)||(r>=2&&r<=4&&c>=2&&c<=4),'finder');
+    }
+    function placeAlign(cx,cy) {
+        for (let dr=-2;dr<=2;dr++) for (let dc=-2;dc<=2;dc++)
+            mark(cx+dc,cy+dr,Math.abs(dr)===2||Math.abs(dc)===2||(dr===0&&dc===0),'align');
+    }
+    function overlapFinder(cx,cy){ const s=qrSize; return (cx<=9&&cy<=9)||(cx>=s-10&&cy<=9)||(cx<=9&&cy>=s-10); }
+
+    // Finders
+    placeFinder(0,0); placeFinder(qrSize-7,0); placeFinder(0,qrSize-7);
+    // Separators
+    for (let i=0;i<=7;i++){
+        mark(7,i,false,'sep');          mark(i,7,false,'sep');
+        mark(qrSize-8,i,false,'sep');   mark(qrSize-8+i,7,false,'sep');
+        mark(7,qrSize-8+i,false,'sep'); mark(i,qrSize-8,false,'sep');
+    }
+    // Timing
+    for (let i=8;i<=qrSize-9;i++){ mark(i,6,i%2===0,'timing'); mark(6,i,i%2===0,'timing'); }
+    // Dark module
+    mark(8,4*version+9,true,'dark');
+    // Alignment
+    if (version>=2){ const pos=ALIGN_POS[version-1]; for(const cy of pos) for(const cx of pos) if(!overlapFinder(cx,cy)) placeAlign(cx,cy); }
+
+    // Format info positions (mark after everything else so they override)
+    const fmtPos = getFmtPos(qrSize);
+    [...fmtPos.copy1,...fmtPos.copy2].forEach(([c,r])=>{ if(r<qrSize&&c<qrSize){ func[r][c]=true; if(!type[r][c]) type[r][c]='format'; }});
+
+    return {grid,type,func,version};
+}
+
+// ─── Format info ─────────────────────────────────────────────────────────────
+function computeFmtBits(ec,mask) {
+    const EC={L:0b01,M:0b00,Q:0b11,H:0b10};
+    const data=(EC[ec]<<3)|mask;
+    let d=data<<10; const gen=0b10100110111;
+    for(let i=14;i>=10;i--) if(d&(1<<i)) d^=gen<<(i-10);
+    return ((data<<10)|(d&0x3FF))^0b101010000010010;
+}
+
+const FMT_C1=[
+    [0,8],[1,8],[2,8],[3,8],[4,8],[5,8],[7,8],[8,8],
+    [8,7],[8,5],[8,4],[8,3],[8,2],[8,1],[8,0]
+];
+const FMT_C2_BITS=[7,8,9,10,11,12,13,14,6,5,4,3,2,1,0];
+
+function getFmtPos(qrSize) {
+    const copy2=[];
+    for(let c=qrSize-8;c<qrSize;c++) copy2.push([c,8]);
+    for(let r=qrSize-7;r<qrSize;r++) copy2.push([8,r]);
+    return {copy1:FMT_C1,copy2};
+}
+
+function writeFmtBits(grid,qrSize,fmtBits) {
+    const {copy1,copy2}=getFmtPos(qrSize);
+    for(let i=0;i<15;i++){
+        const [c1,r1]=copy1[i];
+        if(r1<qrSize&&c1<qrSize) grid[r1][c1]=(fmtBits>>(14-i))&1?true:false;
+        const [c2,r2]=copy2[i];
+        if(r2<qrSize&&c2<qrSize) grid[r2][c2]=(fmtBits>>FMT_C2_BITS[i])&1?true:false;
+    }
+}
+
+// ─── Data module order (zigzag) ───────────────────────────────────────────────
+function getDataOrder(qrSize, func) {
+    const order=[]; let up=true, right=qrSize-1;
+    while(right>=1){
+        if(right===6) right=5;
+        for(let ri=0;ri<qrSize;ri++){
+            const row=up?(qrSize-1-ri):ri;
+            if(!func[row][right])   order.push([right,row]);
+            if(!func[row][right-1]) order.push([right-1,row]);
+        }
+        up=!up; right-=2;
+    }
+    return order;
+}
+
+// ─── Core SVG renderer (viewBox → stable layout) ──────────────────────────────
+function renderGrid(svg, qrSize, colorFn) {
+    const QZ=4, T=10, N=(qrSize+2*QZ)*T;
+    while(svg.firstChild) svg.removeChild(svg.firstChild);
+    svg.setAttribute("viewBox",`0 0 ${N} ${N}`);
+    svg.setAttribute("preserveAspectRatio","xMidYMid meet");
+    const bg=document.createElementNS("http://www.w3.org/2000/svg","rect");
+    bg.setAttribute("x",0);bg.setAttribute("y",0);bg.setAttribute("width",N);bg.setAttribute("height",N);
+    bg.setAttribute("fill","white");svg.appendChild(bg);
+    for(let row=0;row<qrSize;row++) for(let col=0;col<qrSize;col++){
+        const c=colorFn(col,row);
+        if(!c) continue;
+        const rect=document.createElementNS("http://www.w3.org/2000/svg","rect");
+        rect.setAttribute("x",(col+QZ)*T); rect.setAttribute("y",(row+QZ)*T);
+        rect.setAttribute("width",T); rect.setAttribute("height",T);
+        rect.setAttribute("fill",c); svg.appendChild(rect);
+    }
+}
+
+// ─── Draw helpers ─────────────────────────────────────────────────────────────
+function layerColor(t,dark,colored){
+    if(!colored) return dark?"black":"white";
+    if(t===null)  return dark?LAYER_COL.data[0]:LAYER_COL.data[1];
+    const [d,l]=LAYER_COL[t]||LAYER_COL.data;
+    return dark?d:l;
+}
+
+function drawLocalization(svgEl,qrSize){
+    const res=buildQRGrid(qrSize); if(!res) return;
+    const {grid,type}=res;
+    renderGrid(svgEl,qrSize,(col,row)=>{
+        const t=type[row][col], v=grid[row][col];
+        if(t==='sep') return '#e8edf2';
+        if(t) return v?LAYER_COL[t][0]:LAYER_COL[t][1];
+        return '#dde3ec';
+    });
+}
+
+function drawFormatInfo(svgEl,qrSize){
+    const res=buildQRGrid(qrSize); if(!res) return;
+    const {grid,type}=res;
+    const {copy1,copy2}=getFmtPos(qrSize);
+    const c1=new Set(copy1.map(([c,r])=>`${c},${r}`));
+    const c2=new Set(copy2.map(([c,r])=>`${c},${r}`));
+    renderGrid(svgEl,qrSize,(col,row)=>{
+        const k=`${col},${row}`, v=grid[row][col];
+        if(c1.has(k)) return '#3b82f6';
+        if(c2.has(k)) return '#7c3aed';
+        if(type[row][col]) return v?'black':'white';
+        return '#dde3ec';
+    });
+}
+
+function drawMaskPattern(svgEl,qrSize,m){
+    const res=buildQRGrid(qrSize); if(!res) return;
+    const {grid,type}=res;
+    const cond=MASK_COND[m];
+    renderGrid(svgEl,qrSize,(col,row)=>{
+        const t=type[row][col], v=grid[row][col];
+        if(t) return v?'black':'white';
+        return cond(row,col)?'#1d4ed8':'#e0e7ff';
+    });
+}
+
+function drawPlayground(svgEl,qrSize,ec,mask,blank,colored){
+    const res=buildQRGrid(qrSize); if(!res) return;
+    const {grid,type,func}=res;
+    const cond=MASK_COND[mask];
+
+    for(let row=0;row<qrSize;row++) for(let col=0;col<qrSize;col++)
+        if(grid[row][col]===null){
+            const bit=blank?false:Math.random()<0.5;
+            grid[row][col]=cond(row,col)?!bit:bit;
+        }
+
+    writeFmtBits(grid,qrSize,computeFmtBits(ec,mask));
+
+    renderGrid(svgEl,qrSize,(col,row)=>layerColor(type[row][col],grid[row][col],colored));
+}
+
+// ─── GF(256) + Reed-Solomon ───────────────────────────────────────────────────
+const GF_EXP=new Uint8Array(512), GF_LOG=new Uint8Array(256);
+(function(){let x=1;for(let i=0;i<255;i++){GF_EXP[i]=x;GF_LOG[x]=i;x<<=1;if(x&256)x^=285;x&=255;}for(let i=255;i<512;i++)GF_EXP[i]=GF_EXP[i-255];})();
+function gfMul(a,b){return a&&b?GF_EXP[GF_LOG[a]+GF_LOG[b]]:0;}
+function rsGenPoly(n){let g=[1];for(let i=0;i<n;i++){const ng=new Array(g.length+1).fill(0),ai=GF_EXP[i];for(let j=0;j<g.length;j++){ng[j]^=g[j];ng[j+1]^=gfMul(g[j],ai);}g=ng;}return g;}
+function rsEncode(data,ecCount){const gen=rsGenPoly(ecCount),msg=[...data,...new Array(ecCount).fill(0)];for(let i=0;i<data.length;i++){const c=msg[i];if(c)for(let j=0;j<gen.length;j++)msg[i+j]^=gfMul(gen[j],c);}return msg.slice(data.length);}
+
+// ─── Text encoder ─────────────────────────────────────────────────────────────
+function strToBytes(text){
+    const bytes=[];
+    for(let i=0;i<text.length;i++){
+        const code=text.charCodeAt(i);
+        if(code<0x80) bytes.push(code);
+        else if(code<0x800){ bytes.push(0xC0|(code>>6)); bytes.push(0x80|(code&0x3F)); }
+        else { bytes.push(0xE0|(code>>12)); bytes.push(0x80|((code>>6)&0x3F)); bytes.push(0x80|(code&0x3F)); }
+    }
+    return bytes;
+}
+
+function encodeText(text,ec){
+    const bytes=strToBytes(text);
+    const ecI=EC_IDX[ec];
+    let version=-1;
+    for(let v=1;v<=20;v++){
+        const cw=DATA_CW[v-1][ecI];
+        const lenBits=v<=9?8:16;
+        if(4+lenBits+bytes.length*8<=cw*8){version=v;break;}
+    }
+    if(version===-1) return null;
+
+    const totalCW=DATA_CW[version-1][ecI];
+    const lenBits=version<=9?8:16;
+    const rawBits=[];
+
+    // Mode: byte = 0100
+    [0,1,0,0].forEach(b=>rawBits.push(b));
+    // Length
+    for(let i=lenBits-1;i>=0;i--) rawBits.push((bytes.length>>i)&1);
+    // Data bytes
+    for(const b of bytes) for(let i=7;i>=0;i--) rawBits.push((b>>i)&1);
+    // Terminator
+    for(let i=0;i<4&&rawBits.length<totalCW*8;i++) rawBits.push(0);
+    // Byte padding
+    while(rawBits.length%8!==0) rawBits.push(0);
+    // Padding codewords
+    const pad=[0xEC,0x11]; let pi=0;
+    while(rawBits.length<totalCW*8){
+        for(let i=7;i>=0;i--) rawBits.push((pad[pi%2]>>i)&1);
+        pi++;
+    }
+
+    // Convert rawBits → data codewords array
+    const dataCWArr=[];
+    for(let i=0;i<totalCW;i++){
+        let val=0;
+        for(let b=0;b<8;b++) val=(val<<1)|rawBits[i*8+b];
+        dataCWArr.push(val);
+    }
+
+    // Block structure
+    const [ecPerBlock,g1n,g1d,g2n,g2d]=BLOCK_INFO[version-1][ecI];
+    const blocks=[];
+    let off=0;
+    for(let i=0;i<g1n;i++){blocks.push({data:dataCWArr.slice(off,off+g1d),ec:[]});off+=g1d;}
+    for(let i=0;i<g2n;i++){blocks.push({data:dataCWArr.slice(off,off+g2d),ec:[]});off+=g2d;}
+
+    // RS encode each block
+    for(const blk of blocks) blk.ec=rsEncode(blk.data,ecPerBlock);
+
+    // Interleave data then EC
+    const finalData=[];
+    const maxD=Math.max(...blocks.map(b=>b.data.length));
+    for(let i=0;i<maxD;i++) for(const blk of blocks) if(i<blk.data.length) finalData.push(blk.data[i]);
+    const ecCWArr=[];
+    for(let i=0;i<ecPerBlock;i++) for(const blk of blocks) ecCWArr.push(blk.ec[i]);
+
+    // Assemble final bitstream
+    const bits=[];
+    for(const cw of finalData) for(let i=7;i>=0;i--) bits.push((cw>>i)&1);
+    for(const cw of ecCWArr)   for(let i=7;i>=0;i--) bits.push((cw>>i)&1);
+
+    return {bits,bytes,version,totalCW,lenBits,dataCW:finalData,ecCW:ecCWArr,blocks,ecPerBlock};
+}
+
+function runEncoder(){
+    const text=document.getElementById("enc-text").value;
+    const ec=document.getElementById("enc-ec").value;
+    if(!text){alert("Enter some text.");return;}
+    const enc=encodeText(text,ec);
+    if(!enc){alert("Text too long — try a shorter string or lower EC level.");return;}
+
+    const {bits,bytes,version,lenBits,dataCW,ecCW,blocks,ecPerBlock}=enc;
+    const qrSize=17+4*version;
+    const res=buildQRGrid(qrSize);
+
+    // Segment boundaries in the raw (un-interleaved) encoding
+    const MODE_END=4, LEN_END=4+lenBits, DATA_END=LEN_END+bytes.length*8;
+    const numDataBits=dataCW.length*8;
+
+    // Per-byte colour palette
+    const pal=bytes.map((_,i)=>BYTE_PAL[i%BYTE_PAL.length]);
+
+    // Reconstruct raw (un-interleaved) bits from blocks for the segment table
+    const rawBits=[];
+    for(const blk of blocks) for(const cw of blk.data) for(let i=7;i>=0;i--) rawBits.push((cw>>i)&1);
+
+    // Build reverse-interleave map: interleaved CW index → original sequential CW index
+    const blockOffsets=[]; let offB=0;
+    for(const blk of blocks){blockOffsets.push(offB);offB+=blk.data.length;}
+    const numBlocks=blocks.length;
+    function interleavedCWtoRaw(cwIdx){
+        return blockOffsets[cwIdx%numBlocks]+Math.floor(cwIdx/numBlocks);
+    }
+
+    // Colour for a raw-bit index
+    function rawBitColor(rbi,isDark){
+        if(rbi<MODE_END) return isDark?'#1d4ed8':'#bfdbfe';
+        if(rbi<LEN_END)  return isDark?'#15803d':'#bbf7d0';
+        if(rbi<DATA_END){const bIdx=Math.floor((rbi-LEN_END)/8); return pal[bIdx%pal.length][isDark?0:1];}
+        return isDark?'#6b7280':'#e5e7eb';
+    }
+
+    // Build bit→module map (zigzag order)
+    const order=getDataOrder(qrSize,res.func);
+    const bitMap=new Map(); // "col,row" → bit index in final bits[]
+    for(let i=0;i<order.length&&i<bits.length;i++) bitMap.set(`${order[i][0]},${order[i][1]}`,i);
+
+    // Place actual bit values (fixed: parse string keys correctly)
+    for(const [key,bi] of bitMap){
+        const comma=key.indexOf(',');
+        const c=+key.slice(0,comma), r=+key.slice(comma+1);
+        res.grid[r][c]=bits[bi]===1;
+    }
+    writeFmtBits(res.grid,qrSize,computeFmtBits(ec,2));
+
+    // Render QR with full colour coding
+    const svg=document.getElementById("enc-qr");
+    svg.setAttribute("width","380"); svg.setAttribute("height","380");
+    renderGrid(svg,qrSize,(col,row)=>{
+        const t=res.type[row][col], v=res.grid[row][col];
+        if(t) return v?'black':'white';
+        const key=`${col},${row}`;
+        if(!bitMap.has(key)) return '#cbd5e1';
+        const bi=bitMap.get(key);
+        if(bi>=numDataBits) return '#cbd5e1'; // EC area → grey placeholder (§7)
+        const rawBI=interleavedCWtoRaw(Math.floor(bi/8))*8+(bi%8);
+        return rawBitColor(rawBI,v);
+    });
+
+    // ── Info bar ──
+    document.getElementById("enc-info").innerHTML=
+        `<b>Version ${version}</b> (${qrSize}×${qrSize}) · <b>EC: ${ec}</b> · `+
+        `<b>${bytes.length}</b> data byte${bytes.length!==1?'s':''} · `+
+        `<b>${dataCW.length}</b> data codewords · EC codewords shown in §7`;
+
+    // ── Data byte strip ──
+    const strip=document.getElementById("enc-bytes-strip");
+    strip.innerHTML='';
+    bytes.forEach((b,i)=>{
+        const [dk,lt]=pal[i];
+        const div=document.createElement("div");
+        div.className="enc-byte";
+        div.style.background=lt; div.style.color=dk; div.style.borderBottom=`3px solid ${dk}`;
+        div.innerHTML=`<span class="char">${b>=32&&b<127?String.fromCharCode(b):'·'}</span>`+
+                      `<span class="hex">0x${b.toString(16).toUpperCase().padStart(2,'0')}</span>`;
+        strip.appendChild(div);
+    });
+
+    // ── Segment table ──
+    const tbl=document.getElementById("enc-table");
+    tbl.innerHTML=`<tr><th>Segment</th><th>Bits</th><th>Value</th><th>Colour</th></tr>`;
+    function addRow(label,bitStr,value,dk){
+        tbl.innerHTML+=`<tr><td>${label}</td>`+
+            `<td style="font-family:monospace;font-size:.8em;word-break:break-all">${bitStr}</td>`+
+            `<td>${value}</td>`+
+            `<td><span style="display:inline-block;width:18px;height:18px;background:${dk};border-radius:4px;vertical-align:middle;"></span></td>`+
+            `</tr>`;
+    }
+    addRow('Mode (ENC)',rawBits.slice(0,4).join(''),'Byte = 0100','#1d4ed8');
+    addRow('Length (LEN)',rawBits.slice(4,4+lenBits).join(''),`${bytes.length} bytes`,'#15803d');
+    bytes.forEach((b,i)=>{
+        const s=rawBits.slice(LEN_END+i*8,LEN_END+(i+1)*8).join('');
+        const ch=b>=32&&b<127?String.fromCharCode(b):`0x${b.toString(16)}`;
+        addRow(`Byte ${i} '${ch}'`,s,`${b} = 0x${b.toString(16).toUpperCase()}`,pal[i][0]);
+    });
+    const remStr=rawBits.slice(DATA_END,DATA_END+16).join('')+(rawBits.length-DATA_END>16?'…':'');
+    addRow('Term + Padding',remStr,'–','#6b7280');
+
+    // ── Legend ──
+    const leg=document.getElementById("enc-legend");
+    leg.innerHTML='';
+    const addL=(label,color)=>{
+        leg.innerHTML+=`<div class="legend-item"><div class="legend-swatch" style="background:${color};"></div>${label}</div>`;
+    };
+    addL('Mode','#1d4ed8'); addL('Length','#15803d');
+    bytes.forEach((_,i)=>addL(`Byte ${i}`,pal[i][0]));
+    addL('Pad/Term','#6b7280'); addL('EC area (see §7)','#cbd5e1');
+
+    document.getElementById("enc-output").style.display='block';
+}
+
+// ─── Bit display ──────────────────────────────────────────────────────────────
+function renderBitDisplay(bits){
+    const el=document.getElementById("bit-display"); el.innerHTML='';
+    for(let i=14;i>=0;i--){
+        const b=(bits>>i)&1;
+        const cls=i>=13?'bit bit-ec':i>=10?'bit bit-mask':'bit bit-bch';
+        el.innerHTML+=`<span class="${cls}">${b}</span>`;
+    }
+}
+
+// ─── Event handlers ───────────────────────────────────────────────────────────
+function onLocSlider(v){
+    const ver=parseInt(v), sz=17+4*ver;
+    document.getElementById("loc-slider-val").textContent=`v${ver} (${sz}×${sz})`;
+    drawLocalization(document.getElementById("loc-svg"),sz);
+}
+function updateFormat(){
+    const ec=document.getElementById("ec-select").value;
+    const mask=parseInt(document.getElementById("mask-select").value);
+    renderBitDisplay(computeFmtBits(ec,mask));
+    drawFormatInfo(document.getElementById("fmt-svg"),21);
+}
+function regenerate(){
+    const ver=Math.max(1,Math.min(40,parseInt(document.getElementById("pg-version").value)||1));
+    const ec=document.getElementById("pg-ec").value;
+    const mask=parseInt(document.getElementById("pg-mask").value);
+    const blank=document.getElementById("pg-blank").checked;
+    const colored=document.getElementById("pg-colored").checked;
+    document.getElementById("pg-legend").style.display=colored?'flex':'none';
+    drawPlayground(document.getElementById("qr"),17+4*ver,ec,mask,blank,colored);
+}
+
+// ─── Build mask section ───────────────────────────────────────────────────────
+function buildMaskGrid(){
+    const container=document.getElementById("mask-grid");
+    for(let m=0;m<8;m++){
+        const card=document.createElement("div"); card.className="mask-card";
+        card.innerHTML=`<h4>Pattern ${m}</h4><code>${MASK_FORMULA[m]}</code>`;
+        const frame=document.createElement("div"); frame.className="qr-frame";
+        const svg=document.createElementNS("http://www.w3.org/2000/svg","svg");
+        svg.setAttribute("width","150"); svg.setAttribute("height","150");
+        svg.setAttribute("xmlns","http://www.w3.org/2000/svg");
+        frame.appendChild(svg); card.appendChild(frame); container.appendChild(card);
+        drawMaskPattern(svg,21,m);
+    }
+}
+
+// ─── Reed-Solomon section ─────────────────────────────────────────────────────
+function runRS(){
+    const text=document.getElementById("rs-text").value;
+    const ec=document.getElementById("rs-ec").value;
+    if(!text){alert("Enter some text.");return;}
+    const enc=encodeText(text,ec);
+    if(!enc){alert("Text too long — try a shorter string or lower EC level.");return;}
+
+    const {bits,bytes,version,lenBits,dataCW,ecCW,blocks,ecPerBlock}=enc;
+    const qrSize=17+4*version;
+    const res=buildQRGrid(qrSize);
+    const numDataBits=dataCW.length*8;
+    const pal=bytes.map((_,i)=>BYTE_PAL[i%BYTE_PAL.length]);
+
+    // Reverse-interleave: interleaved CW index → original sequential CW index
+    const blockOffsets=[]; let offB=0;
+    for(const blk of blocks){blockOffsets.push(offB);offB+=blk.data.length;}
+    const numBlocks=blocks.length;
+    function interleavedCWtoRaw(cwIdx){return blockOffsets[cwIdx%numBlocks]+Math.floor(cwIdx/numBlocks);}
+
+    // Raw bits for segment colouring
+    const rawBits=[];
+    for(const blk of blocks) for(const cw of blk.data) for(let i=7;i>=0;i--) rawBits.push((cw>>i)&1);
+    const MODE_END=4,LEN_END=4+lenBits,DATA_END=LEN_END+bytes.length*8;
+    function rawBitColor(rbi,isDark){
+        if(rbi<MODE_END) return isDark?'#1d4ed8':'#bfdbfe';
+        if(rbi<LEN_END)  return isDark?'#15803d':'#bbf7d0';
+        if(rbi<DATA_END){const bIdx=Math.floor((rbi-LEN_END)/8);return pal[bIdx%pal.length][isDark?0:1];}
+        return isDark?'#6b7280':'#e5e7eb';
+    }
+
+    // Place bits in grid
+    const order=getDataOrder(qrSize,res.func);
+    const bitMap=new Map();
+    for(let i=0;i<order.length&&i<bits.length;i++) bitMap.set(`${order[i][0]},${order[i][1]}`,i);
+    for(const [key,bi] of bitMap){
+        const comma=key.indexOf(',');
+        const c=+key.slice(0,comma), r=+key.slice(comma+1);
+        res.grid[r][c]=bits[bi]===1;
+    }
+    writeFmtBits(res.grid,qrSize,computeFmtBits(ec,2));
+
+    // Render QR: data coloured by segment, EC in purple
+    const svg=document.getElementById("rs-qr");
+    svg.setAttribute("width","380"); svg.setAttribute("height","380");
+    renderGrid(svg,qrSize,(col,row)=>{
+        const t=res.type[row][col], v=res.grid[row][col];
+        if(t) return v?'black':'white';
+        const key=`${col},${row}`;
+        if(!bitMap.has(key)) return '#cbd5e1';
+        const bi=bitMap.get(key);
+        if(bi>=numDataBits) return v?'#6d28d9':'#c4b5fd';
+        const rawBI=interleavedCWtoRaw(Math.floor(bi/8))*8+(bi%8);
+        return rawBitColor(rawBI,v);
+    });
+
+    // Info bar
+    document.getElementById("rs-info").innerHTML=
+        `<b>Version ${version}</b> (${qrSize}×${qrSize}) · <b>EC: ${ec}</b> · `+
+        `<b>${dataCW.length}</b> data CW + <b>${ecCW.length}</b> EC CW = `+
+        `<b>${dataCW.length+ecCW.length}</b> total codewords · `+
+        `<b>${numBlocks}</b> block${numBlocks!==1?'s':''}, <b>${ecPerBlock}</b> EC bytes/block`;
+
+    // EC strip per block
+    document.getElementById("rs-ec-info").textContent=
+        `Each block's data codewords go through polynomial division in GF(256) independently:`;
+    const ecStrip=document.getElementById("rs-ec-strip");
+    ecStrip.innerHTML='';
+    blocks.forEach((blk,bi)=>{
+        const wrap=document.createElement("div");
+        wrap.style.cssText="display:flex;flex-wrap:wrap;align-items:center;gap:3px;margin-bottom:10px;";
+        const tag=document.createElement("span");
+        tag.className="block-tag";
+        tag.textContent=`Block ${bi+1}  (${blk.data.length} data → ${ecPerBlock} EC)`;
+        wrap.appendChild(tag);
+        blk.ec.forEach(cw=>{
+            const d=document.createElement("div");
+            d.className="ec-byte";
+            d.textContent=`0x${cw.toString(16).toUpperCase().padStart(2,'0')}`;
+            wrap.appendChild(d);
+        });
+        ecStrip.appendChild(wrap);
+    });
+
+    // Legend
+    const leg=document.getElementById("rs-legend");
+    leg.innerHTML='';
+    const addL=(label,color)=>{
+        leg.innerHTML+=`<div class="legend-item"><div class="legend-swatch" style="background:${color};"></div>${label}</div>`;
+    };
+    addL('Mode','#1d4ed8'); addL('Length','#15803d');
+    bytes.forEach((_,i)=>addL(`Byte ${i}`,pal[i][0]));
+    addL('Pad/Term','#6b7280'); addL('EC codewords','#6d28d9');
+
+    document.getElementById("rs-output").style.display='block';
+}
+
+// ─── Init ─────────────────────────────────────────────────────────────────────
+drawLocalization(document.getElementById("loc-svg"),21);
+updateFormat();
+buildMaskGrid();
+regenerate();
+runEncoder();
+runRS();
+</script>
+</body>
+</html>
