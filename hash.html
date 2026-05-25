@@ -9,40 +9,29 @@
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
             line-height: 1.6;
             color: #333;
-            max-width: 800px;
+            max-width: 900px;
             margin: 0 auto;
             padding: 20px;
-            background-color: #f9f9f9;
+            background-color: #f0f4f8;
         }
-        h1, h2, h3 {
-            color: #2c3e50;
-        }
+        h1 { color: #2c3e50; text-align: center; }
+        h2 { color: #34495e; border-bottom: 2px solid #bdc3c7; padding-bottom: 5px; }
         .container {
             background-color: #fff;
             padding: 30px;
             border-radius: 8px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            margin-bottom: 30px;
         }
-        .example-box {
-            background-color: #e8f4f8;
-            padding: 15px;
-            border-left: 4px solid #3498db;
-            margin: 20px 0;
-            border-radius: 4px;
-        }
-        .collision-box {
-            background-color: #fcf3cf;
-            padding: 15px;
-            border-left: 4px solid #f1c40f;
-            margin: 20px 0;
-            border-radius: 4px;
-        }
+        .problem-section { border-left: 5px solid #e74c3c; padding-left: 20px; }
+        .solution-section { border-left: 5px solid #27ae60; padding-left: 20px; }
         .playground {
-            background-color: #ebedef;
+            background-color: #f8f9fa;
             padding: 20px;
             border-radius: 8px;
             text-align: center;
-            margin-top: 30px;
+            margin-top: 20px;
+            border: 1px solid #dee2e6;
         }
         input[type="text"] {
             padding: 10px;
@@ -51,142 +40,132 @@
             max-width: 300px;
             border: 1px solid #ccc;
             border-radius: 4px;
+            margin-bottom: 10px;
         }
         button {
             padding: 10px 20px;
             font-size: 16px;
-            background-color: #2c3e50;
             color: #fff;
             border: none;
             border-radius: 4px;
             cursor: pointer;
+            transition: background-color 0.2s;
         }
-        button:hover {
-            background-color: #1a252f;
-        }
-        #resultDisplay {
-            font-size: 24px;
+        .btn-red { background-color: #e74c3c; }
+        .btn-red:hover { background-color: #c0392b; }
+        .btn-green { background-color: #27ae60; }
+        .btn-green:hover { background-color: #2ecc71; }
+        
+        .resultDisplay {
+            font-size: 28px;
             font-weight: bold;
-            margin-top: 20px;
-            color: #e74c3c;
+            margin-top: 15px;
         }
-        .links {
-            margin-top: 40px;
-            padding-top: 20px;
-            border-top: 1px solid #eee;
+        .mathDisplay {
+            margin-top: 10px;
+            font-size: 14px;
+            color: #555;
+            background: #eee;
+            padding: 10px;
+            border-radius: 4px;
+            font-family: monospace;
+            text-align: left;
+            overflow-x: auto;
         }
     </style>
 </head>
 <body>
 
-<div class="container">
-    <h1>Understanding Hash Functions</h1>
-    <p>A hash function is a mathematical algorithm that takes data of any size and converts it into a fixed-size output. To understand how they work, let's look at a very simple, hand-calculable algorithm we will call the <strong>Positional Prime Hash</strong>.</p>
+    <h1>How Cryptographic Hashes Work</h1>
 
-    <h2>The Algorithm</h2>
-    <ol>
-        <li>Assign a number to each letter (A=1, B=2 ... Z=26).</li>
-        <li>Multiply each letter's value by its position in the word (1st letter x 1, 2nd x 2, etc.).</li>
-        <li>Sum all the values.</li>
-        <li>Divide the sum by 11 and take the <strong>remainder</strong> (modulo 11). This is our hash!</li>
-    </ol>
+    <div class="container problem-section">
+        <h2>The Problem: Positional Prime Hash</h2>
+        <p>This is a linear hash function. It uses basic addition and multiplication, then finds the remainder divided by 11. <strong>Why it fails:</strong> Because it is mathematically reversible, an attacker can easily work backward from the hash to find a valid password.</p>
+        
+        <div class="playground">
+            <h3>Try the Broken Hash</h3>
+            <p>Outputs a number between 0 and 10.</p>
+            <input type="text" id="wordInput1" placeholder="Type a word (e.g., CAB)" onkeypress="if(event.key==='Enter') generateHash1()">
+            <br>
+            <button class="btn-red" onclick="generateHash1()">Generate Hash</button>
+            <div id="resultDisplay1" class="resultDisplay" style="color: #e74c3c;">Hash: --</div>
+            <div id="mathDisplay1" class="mathDisplay">Math steps will appear here.</div>
+        </div>
+        <p><em>Try typing <strong>CAB</strong> and then <strong>DOG</strong>. You will see they both result in Hash 0 (A collision!). Because there are only 11 outputs, collisions happen instantly.</em></p>
+    </div>
 
-    <h2>Encoding Words into Hashes</h2>
-    
-    <div class="example-box">
-        <h3>Example 1: "CAT"</h3>
+    <div class="container solution-section">
+        <h2>The Fix: Toy-SHA-8</h2>
+        <p>To prevent attackers from working backward, real algorithms use non-linear <strong>bitwise operations</strong>. Toy-SHA-8 mimics SHA-256 on a tiny 8-bit scale.</p>
         <ul>
-            <li>C (3 x 1) = 3</li>
-            <li>A (1 x 2) = 2</li>
-            <li>T (20 x 3) = 60</li>
-            <li><strong>Sum:</strong> 65</li>
-            <li><strong>Hash:</strong> 65 % 11 = <strong>10</strong></li>
+            <li><strong>XOR (Exclusive OR):</strong> Shreds information by flipping bits based on other bits.</li>
+            <li><strong>Bit Shift:</strong> Rotates the binary 1s and 0s out of their original positions.</li>
+            <li><strong>Modulo 256:</strong> Forces the output to be exactly 8 bits (a number from 0 to 255).</li>
         </ul>
+        
+        <div class="playground">
+            <h3>Try the Secure Toy (Toy-SHA-8)</h3>
+            <p>Outputs an 8-bit number between 0 and 255.</p>
+            <input type="text" id="wordInput2" placeholder="Type a word (e.g., HELLO)" onkeypress="if(event.key==='Enter') generateHash2()">
+            <br>
+            <button class="btn-green" onclick="generateHash2()">Generate Toy-SHA-8 Hash</button>
+            <div id="resultDisplay2" class="resultDisplay" style="color: #27ae60;">Hash: --</div>
+            <div id="mathDisplay2" class="mathDisplay">Binary steps will appear here.</div>
+        </div>
+        <p><em>Notice how even a tiny change completely scrambles the output. Because the math is non-linear, you cannot write an equation to solve this backward. You would have to guess inputs one by one.</em></p>
     </div>
-
-    <div class="example-box">
-        <h3>Example 2: "ACT" (The Avalanche Effect)</h3>
-        <p>Even though it uses the exact same letters, changing the order changes the output completely.</p>
-        <ul>
-            <li>A (1 x 1) = 1</li>
-            <li>C (3 x 2) = 6</li>
-            <li>T (20 x 3) = 60</li>
-            <li><strong>Sum:</strong> 67</li>
-            <li><strong>Hash:</strong> 67 % 11 = <strong>1</strong></li>
-        </ul>
-    </div>
-
-    <h2>The Problem: Hash Collisions</h2>
-    <p>Because our toy function divides by 11 to find the remainder, there are only <strong>11 possible outputs</strong> (0 through 10). When millions of different words are squeezed into only 11 possible hashes, you inevitably get two different words that produce the exact same hash. This is called a <strong>Hash Collision</strong>.</p>
-
-    <div class="collision-box">
-        <h3>Collision Demonstration</h3>
-        <p>Let's look at the words <strong>CAB</strong> and <strong>DOG</strong>:</p>
-        <ul>
-            <li><strong>CAB:</strong> C(3x1=3) + A(1x2=2) + B(2x3=6). Sum = 11. Hash (11 % 11) = <strong>0</strong>.</li>
-            <li><strong>DOG:</strong> D(4x1=4) + O(15x2=30) + G(7x3=21). Sum = 55. Hash (55 % 11) = <strong>0</strong>.</li>
-        </ul>
-        <p>Both "CAB" and "DOG" result in a hash of 0. In a real security system, a collision means someone could use the wrong password to log into your account!</p>
-    </div>
-
-    <h2>Real Hash Functions vs. Our Toy</h2>
-    <p>Modern cryptographic hash functions, like <strong>SHA-256</strong>, work on similar principles of multiplication, addition, and modular arithmetic, but on a massive scale using binary data.</p>
-    <ul>
-        <li><strong>Output Size:</strong> Our toy outputs 11 possible numbers. SHA-256 outputs a 256-bit number, which means there are 2<sup>256</sup> possible hashes. That number is roughly equal to the number of atoms in the visible universe!</li>
-        <li><strong>Collision Probability:</strong> Because the pool of possible hashes is so astronomically large, the probability of finding two different files or passwords that share the same SHA-256 hash is practically zero.</li>
-    </ul>
-
-    <div class="playground">
-        <h2>Interactive Playground</h2>
-        <p>Try the Positional Prime Hash yourself! Type a word below (letters only).</p>
-        <input type="text" id="wordInput" placeholder="Enter a word (e.g., HELLO)" onkeypress="handleEnter(event)">
-        <button onclick="generateHash()">Generate Hash</button>
-        <div id="resultDisplay">Hash: --</div>
-        <div id="mathDisplay" style="margin-top: 10px; font-size: 14px; color: #555;"></div>
-    </div>
-
-    <div class="links">
-        <h2>Learn More</h2>
-        <ul>
-            <li><a href="https://en.wikipedia.org/wiki/SHA-2" target="_blank">Read about SHA-256 on Wikipedia</a></li>
-            <li><a href="https://emn178.github.io/online-tools/sha256.html" target="_blank">Try a real SHA-256 Generator</a></li>
-        </ul>
-    </div>
-</div>
 
 <script>
-    function handleEnter(event) {
-        if (event.key === "Enter") {
-            generateHash();
+    // --- HASH 1: POSITIONAL PRIME (THE PROBLEM) ---
+    function generateHash1() {
+        const input = document.getElementById('wordInput1').value.toUpperCase().replace(/[^A-Z]/g, '');
+        const res = document.getElementById('resultDisplay1');
+        const math = document.getElementById('mathDisplay1');
+        
+        if (!input) { res.innerText = "Hash: --"; math.innerText = "Please enter letters."; return; }
+
+        let sum = 0; let steps = [];
+        for (let i = 0; i < input.length; i++) {
+            let val = input.charCodeAt(i) - 64;
+            let pos = i + 1;
+            sum += (val * pos);
+            steps.push(`${input[i]}(${val}x${pos}=${val*pos})`);
         }
+        res.innerText = `Hash: ${sum % 11}`;
+        math.innerText = `Sum: ${steps.join(" + ")} = ${sum}\nModulo: ${sum} % 11 = ${sum % 11}`;
     }
 
-    function generateHash() {
-        const input = document.getElementById('wordInput').value.toUpperCase().replace(/[^A-Z]/g, '');
-        const resultDisplay = document.getElementById('resultDisplay');
-        const mathDisplay = document.getElementById('mathDisplay');
+    // --- HASH 2: TOY-SHA-8 (THE FIX) ---
+    function generateHash2() {
+        const input = document.getElementById('wordInput2').value;
+        const res = document.getElementById('resultDisplay2');
+        const math = document.getElementById('mathDisplay2');
         
-        if (input.length === 0) {
-            resultDisplay.innerText = "Please enter valid letters.";
-            mathDisplay.innerText = "";
-            return;
-        }
+        if (!input) { res.innerText = "Hash: --"; math.innerText = "Please enter text."; return; }
 
-        let sum = 0;
-        let mathSteps = [];
+        let hash = 170; // Starting state: 10101010 in binary
+        const K = 71;   // Constant prime number
+        let log = `Initial State: 170 (10101010)\n\n`;
 
         for (let i = 0; i < input.length; i++) {
-            const letterValue = input.charCodeAt(i) - 64; // A=1, B=2, etc.
-            const position = i + 1;
-            const stepValue = letterValue * position;
-            sum += stepValue;
-            mathSteps.push(`${input[i]}(${letterValue}x${position}=${stepValue})`);
+            let char = input.charCodeAt(i);
+            log += `--- Processing Letter '${input[i]}' (ASCII: ${char}) ---\n`;
+            
+            // 1. XOR
+            hash = hash ^ char;
+            log += `After XOR:       ${hash} (${hash.toString(2).padStart(8, '0')})\n`;
+            
+            // 2. Circular Shift Left by 3
+            hash = ((hash << 3) & 255) | (hash >>> 5);
+            log += `After Shift L3:  ${hash} (${hash.toString(2).padStart(8, '0')})\n`;
+            
+            // 3. Modulo Addition
+            hash = (hash + K) % 256;
+            log += `After Add ${K}:    ${hash} (${hash.toString(2).padStart(8, '0')})\n\n`;
         }
 
-        const hash = sum % 11;
-        
-        resultDisplay.innerText = `Hash: ${hash}`;
-        mathDisplay.innerText = `Math: ${mathSteps.join(" + ")} = ${sum}.  ${sum} % 11 = ${hash}.`;
+        res.innerText = `Hash: ${hash}`;
+        math.innerText = log + `Final 8-bit Hash: ${hash}`;
     }
 </script>
 

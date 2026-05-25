@@ -48,7 +48,7 @@ h2{
     bottom:0;
     left:0;
     right:0;
-    background:url('/pictures/index/MeOnRock.jpeg');
+    background:url('/static/images/index/MeOnRock.jpeg');
     background-size:cover;
     opacity:.4;
 }
