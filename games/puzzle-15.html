@@ -45,7 +45,60 @@
             </table>
 
     </div>
-    <script src="../static/js/script.js"></script>
+    <script>
+        function Move(stone){
+            let grid = [[1,2,3,4],[5,6,7,8],[9,10,11,12],[13,14,15,16]];
+            let clickedPosition = Number(stone.id.replace(/\D/g,''));
+            let clickedImg = document.getElementById("position"+clickedPosition).getAttribute("Name").replace(/\D/g,'');
+            let blankPosition = Number(document.getElementsByName("imgBlank")[0].id.replace(/\D/g,''));
+            let blankPositionXY = [Math.floor((blankPosition-1)/4), Math.floor((blankPosition-1)%4)];
+            let clickedPositionXY = [Math.floor((clickedPosition-1)/4), Math.floor((clickedPosition-1)%4)];
+
+            let dr = blankPositionXY[0]-clickedPositionXY[0];
+            let dc = blankPositionXY[1]-clickedPositionXY[1];
+            if ((dr==0 && Math.abs(dc)==1) || (dc==0 && Math.abs(dr)==1)){
+                document.getElementById("position"+grid[blankPositionXY[0]][blankPositionXY[1]]).innerHTML = "<img src='../static/images/15puzzle/"+clickedImg+".png' alt=''>";
+                document.getElementById("position"+grid[blankPositionXY[0]][blankPositionXY[1]]).setAttribute("Name","img"+clickedImg);
+
+                document.getElementById("position"+grid[clickedPositionXY[0]][clickedPositionXY[1]]).innerHTML = "<img src='../static/images/15puzzle/blank.png' alt=''>";
+                document.getElementById("position"+grid[clickedPositionXY[0]][clickedPositionXY[1]]).setAttribute("Name","imgBlank");
+
+                document.getElementById("Moves15").innerHTML = (Number(document.getElementById("Moves15").innerHTML)+1);
+            }
+        }
+
+        function SolvabilityCheck(){
+            let array = [];
+            for(let i=1;i<17;i++){
+                array.push(Number(document.getElementById("position"+i).getAttribute("Name").replace(/\D/g,'')));
+            }
+            let inversions = 0, Blank = 0;
+            for(let i=0;i<array.length;i++){
+                for(let j=0;j<i;j++){
+                    if(array[i]==0){ Blank=i; }
+                    else if(array[j]!=0 && array[i]<array[j]){ inversions++; }
+                }
+            }
+            let BlankRow = 4-Math.floor(Blank/4);
+            return (BlankRow%2==0 && inversions%2!=0) || (BlankRow%2!=0 && inversions%2==0);
+        }
+
+        function Shuffle(){
+            document.getElementById("Moves15").innerHTML = 0;
+            let grid = [[1,2,3,4],[5,6,7,8],[9,10,11,12],[13,14,15,16]];
+            for(let i=16;i>0;i--){
+                let random = Math.floor(Math.random()*16)+1;
+                let firstXY = [Math.floor((random-1)/4),(random-1)%4];
+                let secondXY = [Math.floor((i-1)/4),(i-1)%4];
+                let posA = document.getElementById("position"+grid[firstXY[0]][firstXY[1]]);
+                let posB = document.getElementById("position"+grid[secondXY[0]][secondXY[1]]);
+                let tempHTML = posA.innerHTML, tempName = posA.getAttribute("Name");
+                posA.innerHTML = posB.innerHTML; posA.setAttribute("Name", posB.getAttribute("Name"));
+                posB.innerHTML = tempHTML; posB.setAttribute("Name", tempName);
+            }
+            if(!SolvabilityCheck()) Shuffle();
+        }
+    </script>
         
    
     
