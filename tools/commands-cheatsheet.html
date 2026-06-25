@@ -118,6 +118,7 @@
         <li><a href="#C">C</a></li>
         <li><a href="#latex">LaTeX</a></li>
         <li><a href="#LLaVA-Plus">LLaVA-Plus</a></li>
+        <li><a href="#claude">Claude Code</a></li>
     </ul>
 
     <button onclick="topFunction()" id="myBtn" title="Go to top">Top</button>
@@ -555,6 +556,36 @@ CMD ["/print-message.sh"]
 
     </div>
 
+
+    <div class="header" id="claude">
+        <h1>Claude Code</h1>
+    </div>
+
+    <div class="section">
+        <h2>Slash Commands</h2>
+        <p class="note">Show how much context is used in current conversation</p>
+        <pre>/context</pre>
+        <p class="note">Clear conversation history and free up context</p>
+        <pre>/clear</pre>
+        <p class="note">Compact conversation history to reduce context usage</p>
+        <pre>/compact</pre>
+        <p class="note">Show status of background agents and tasks</p>
+        <pre>/status</pre>
+        <p class="note">Set reasoning effort level (low/medium/high/max)</p>
+        <pre>/effort &lt;level&gt;</pre>
+    </div>
+
+    <div class="section">
+        <h2>CLI Flags</h2>
+        <p class="note">Resume most recent conversation session</p>
+        <pre>claude --resume</pre>
+    </div>
+
+    <div class="section">
+        <h2>Skills</h2>
+        <p class="note">Interview you relentlessly about a plan or design until reaching shared understanding</p>
+        <pre>/grill-me</pre>
+    </div>
 
     <script src="../static/js/CommandsCheatsheet.js"></script>
 </body>
