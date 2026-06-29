@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Group Expense Simplifier</title>
+  <style>
+    :root {
+      --bg: #f4f4f5;
+      --card-bg: #ffffff;
+      --primary: #2563eb;
+      --primary-hover: #1d4ed8;
+      --text-main: #1f2937;
+      --text-muted: #6b7280;
+      --border: #e5e7eb;
+      --radius: 12px;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background-color: var(--bg);
+      color: var(--text-main);
+      max-width: 800px;
+      margin: 2rem auto;
+      padding: 0 1rem;
+      line-height: 1.5;
+    }
+
+    h1, h2 { margin-top: 0; }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+    }
+
+    @media (max-width: 600px) {
+      .grid { grid-template-columns: 1fr; }
+    }
+
+    .card {
+      background: var(--card-bg);
+      padding: 1.5rem;
+      border-radius: var(--radius);
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+      border: 1px solid var(--border);
+    }
+
+    .form-group {
+      margin-bottom: 1rem;
+    }
+
+    label {
+      display: block;
+      font-size: 0.875rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+
+    input[type="text"],
+    input[type="number"],
+    select {
+      width: 100%;
+      padding: 0.75rem;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      box-sizing: border-box;
+      font-size: 1rem;
+    }
+
+    .checkbox-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      margin-top: 0.5rem;
+    }
+
+    .checkbox-group label {
+      font-weight: normal;
+      display: flex;
+      align-items: center;
+      gap: 0.25rem;
+      background: var(--bg);
+      padding: 0.5rem 0.75rem;
+      border-radius: 20px;
+      cursor: pointer;
+    }
+
+    button {
+      background-color: var(--primary);
+      color: white;
+      border: none;
+      padding: 0.75rem 1.5rem;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      width: 100%;
+      transition: background-color 0.2s;
+    }
+
+    button:hover {
+      background-color: var(--primary-hover);
+    }
+
+    .list-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.75rem;
+      border-bottom: 1px solid var(--border);
+      font-size: 0.95rem;
+    }
+
+    .list-item:last-child { border-bottom: none; }
+    .badge { background: var(--bg); padding: 0.2rem 0.5rem; border-radius: 4px; font-size: 0.8rem; }
+
+    .list-item-actions {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .btn-icon {
+      background: none;
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      padding: 0.25rem 0.5rem;
+      border-radius: 6px;
+      font-size: 0.85rem;
+      width: auto;
+      line-height: 1;
+      cursor: pointer;
+      transition: background-color 0.15s, color 0.15s;
+    }
+
+    .btn-icon:hover { background-color: var(--bg); color: var(--text-main); }
+    .btn-icon.delete:hover { background-color: #fee2e2; color: #b91c1c; border-color: #fca5a5; }
+    .btn-icon.edit:hover { background-color: #dbeafe; color: #1d4ed8; border-color: #93c5fd; }
+
+    #results { margin-top: 1.5rem; }
+    .result-item {
+      background: #dcfce7;
+      color: #166534;
+      padding: 1rem;
+      border-radius: 8px;
+      margin-bottom: 0.5rem;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    /* Stats section */
+    #statsCard { margin-top: 1.5rem; display: none; }
+
+    .stat-row {
+      margin-bottom: 1rem;
+    }
+
+    .stat-row-header {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.9rem;
+      margin-bottom: 0.3rem;
+    }
+
+    .stat-bar-track {
+      position: relative;
+      background: var(--border);
+      border-radius: 4px;
+      height: 10px;
+      overflow: hidden;
+    }
+
+    .stat-bar-center {
+      position: absolute;
+      left: 50%;
+      top: 0;
+      bottom: 0;
+      width: 1px;
+      background: #9ca3af;
+      z-index: 1;
+    }
+
+    .stat-bar-fill {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      border-radius: 4px;
+    }
+
+    .stat-summary {
+      display: flex;
+      gap: 2rem;
+      margin-bottom: 1.25rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid var(--border);
+      flex-wrap: wrap;
+    }
+
+    .stat-summary-item {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+    }
+
+    .stat-summary-item strong {
+      display: block;
+      font-size: 1.25rem;
+      color: var(--text-main);
+    }
+
+    .edit-mode-banner {
+      background: #dbeafe;
+      color: #1e40af;
+      border-radius: 8px;
+      padding: 0.5rem 0.75rem;
+      font-size: 0.85rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+
+  <h1 style="text-align: center; margin-bottom: 2rem;">💸 Group Debt Simplifier</h1>
+
+  <div class="grid">
+    <div>
+      <div class="card" style="margin-bottom: 1.5rem;">
+        <h2>1. Add People</h2>
+        <div class="form-group" style="display: flex; gap: 0.5rem;">
+          <input type="text" id="newPerson" placeholder="Name">
+          <button onclick="addPerson()" style="width: auto;">Add</button>
+        </div>
+        <div id="peopleList" class="checkbox-group"></div>
+      </div>
+
+      <div class="card">
+        <h2>2. Add Expense</h2>
+        <div id="editBanner" class="edit-mode-banner">✏️ Editing expense — modify and submit to update</div>
+        <div class="form-group">
+          <label>Description</label>
+          <input type="text" id="expDesc" placeholder="e.g. Boat rental">
+        </div>
+        <div class="form-group">
+          <label>Amount (CZK)</label>
+          <input type="number" id="expAmount" placeholder="0.00">
+        </div>
+        <div class="form-group">
+          <label>Who Paid?</label>
+          <select id="expPayer"></select>
+        </div>
+        <div class="form-group">
+          <label>Who used it? (Split among)</label>
+          <div id="expInvolved" class="checkbox-group"></div>
+        </div>
+        <button id="submitExpenseBtn" onclick="submitExpense()">Add Expense</button>
+      </div>
+    </div>
+
+    <div>
+      <div class="card" style="margin-bottom: 1.5rem;">
+        <h2>Receipts</h2>
+        <div id="expenseList">
+          <p class="text-muted" style="color: var(--text-muted); font-size: 0.9rem;">No expenses added yet.</p>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>3. Settle Up</h2>
+        <button onclick="calculateDebts()" style="background-color: #10b981;">Calculate Minimum Transfers</button>
+        <div id="results"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" id="statsCard">
+    <h2>📊 Summary</h2>
+    <div id="statsContent"></div>
+  </div>
+
+  <script>
+    let people = [];
+    let expenses = [];
+    let editingIndex = -1;
+
+    // --- UI Update Functions ---
+    function updateUI() {
+      const peopleList = document.getElementById('peopleList');
+      peopleList.innerHTML = people.map(p => `<span class="badge">${p}</span>`).join('');
+
+      const payerSelect = document.getElementById('expPayer');
+      payerSelect.innerHTML = people.map(p => `<option value="${p}">${p}</option>`).join('');
+
+      const involvedDiv = document.getElementById('expInvolved');
+      involvedDiv.innerHTML = people.map(p => `
+        <label><input type="checkbox" value="${p}" checked> ${p}</label>
+      `).join('');
+
+      const expenseListDiv = document.getElementById('expenseList');
+      if (expenses.length === 0) {
+        expenseListDiv.innerHTML = '<p style="color: var(--text-muted); font-size: 0.9rem;">No expenses added yet.</p>';
+      } else {
+        expenseListDiv.innerHTML = expenses.map((exp, i) => `
+          <div class="list-item">
+            <div>
+              <strong>${exp.desc || 'Expense'}</strong><br>
+              <span style="color:var(--text-muted);font-size:0.85rem;">Paid by ${exp.paidBy} · split ${exp.involved.length} way${exp.involved.length !== 1 ? 's' : ''}</span>
+            </div>
+            <div class="list-item-actions">
+              <strong>${Math.round(exp.amount)} CZK</strong>
+              <button class="btn-icon edit" onclick="editExpense(${i})" title="Edit">✏️</button>
+              <button class="btn-icon delete" onclick="deleteExpense(${i})" title="Delete">🗑️</button>
+            </div>
+          </div>
+        `).join('');
+      }
+
+      renderStats();
+    }
+
+    function renderStats() {
+      const statsCard = document.getElementById('statsCard');
+      const statsContent = document.getElementById('statsContent');
+
+      if (expenses.length === 0 || people.length === 0) {
+        statsCard.style.display = 'none';
+        return;
+      }
+      statsCard.style.display = 'block';
+
+      const total = expenses.reduce((sum, e) => sum + e.amount, 0);
+      const avgPerPerson = total / people.length;
+
+      const paid = {}, owes = {};
+      people.forEach(p => { paid[p] = 0; owes[p] = 0; });
+
+      expenses.forEach(exp => {
+        paid[exp.paidBy] = (paid[exp.paidBy] || 0) + exp.amount;
+        const split = exp.amount / exp.involved.length;
+        exp.involved.forEach(p => { owes[p] = (owes[p] || 0) + split; });
+      });
+
+      const nets = people.map(p => paid[p] - owes[p]);
+      const maxAbs = Math.max(...nets.map(Math.abs), 1);
+
+      statsContent.innerHTML = `
+        <div class="stat-summary">
+          <div class="stat-summary-item"><strong>${Math.round(total)} CZK</strong>Total spent</div>
+          <div class="stat-summary-item"><strong>${expenses.length}</strong>Expense${expenses.length !== 1 ? 's' : ''}</div>
+          <div class="stat-summary-item"><strong>${Math.round(avgPerPerson)} CZK</strong>Per person (avg)</div>
+        </div>
+        ${people.map((p, i) => {
+          const net = nets[i];
+          const displayW = Math.abs(net) / maxAbs * 48;
+          const isPos = net >= 0;
+          const fillLeft = isPos ? 50 : (50 - displayW);
+          const label = isPos
+            ? (net < 0.5 ? 'settled' : `gets back ${Math.round(net)} CZK`)
+            : `owes ${Math.round(-net)} CZK`;
+          return `
+            <div class="stat-row">
+              <div class="stat-row-header">
+                <span><strong>${p}</strong> <span style="color:var(--text-muted);font-weight:normal;">paid ${Math.round(paid[p])} CZK</span></span>
+                <span style="color:${isPos ? '#166534' : '#b91c1c'};font-weight:600;">${label}</span>
+              </div>
+              <div class="stat-bar-track">
+                <div class="stat-bar-center"></div>
+                <div class="stat-bar-fill" style="left:${fillLeft}%;width:${displayW}%;background:${isPos ? '#10b981' : '#ef4444'};"></div>
+              </div>
+            </div>
+          `;
+        }).join('')}
+      `;
+    }
+
+    // --- Action Functions ---
+    function addPerson() {
+      const input = document.getElementById('newPerson');
+      const name = input.value.trim();
+      if (name && !people.includes(name)) {
+        people.push(name);
+        input.value = '';
+        updateUI();
+      }
+    }
+
+    function submitExpense() {
+      const desc = document.getElementById('expDesc').value.trim();
+      const amount = parseFloat(document.getElementById('expAmount').value);
+      const paidBy = document.getElementById('expPayer').value;
+      const checkboxes = document.querySelectorAll('#expInvolved input[type="checkbox"]:checked');
+      const involved = Array.from(checkboxes).map(cb => cb.value);
+
+      if (!amount || amount <= 0 || !paidBy || involved.length === 0) {
+        alert("Please fill in the amount, select who paid, and select at least one person involved.");
+        return;
+      }
+
+      const expense = { desc, amount, paidBy, involved };
+
+      if (editingIndex >= 0) {
+        expenses[editingIndex] = expense;
+        editingIndex = -1;
+        document.getElementById('editBanner').style.display = 'none';
+        document.getElementById('submitExpenseBtn').textContent = 'Add Expense';
+      } else {
+        expenses.push(expense);
+      }
+
+      document.getElementById('expDesc').value = '';
+      document.getElementById('expAmount').value = '';
+      document.getElementById('results').innerHTML = '';
+      updateUI();
+    }
+
+    function editExpense(index) {
+      const exp = expenses[index];
+      editingIndex = index;
+
+      document.getElementById('expDesc').value = exp.desc;
+      document.getElementById('expAmount').value = exp.amount;
+      document.getElementById('expPayer').value = exp.paidBy;
+
+      document.querySelectorAll('#expInvolved input[type="checkbox"]').forEach(cb => {
+        cb.checked = exp.involved.includes(cb.value);
+      });
+
+      document.getElementById('editBanner').style.display = 'block';
+      document.getElementById('submitExpenseBtn').textContent = 'Update Expense';
+      document.querySelector('.card:has(#submitExpenseBtn)').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+
+    function deleteExpense(index) {
+      if (editingIndex === index) {
+        editingIndex = -1;
+        document.getElementById('editBanner').style.display = 'none';
+        document.getElementById('submitExpenseBtn').textContent = 'Add Expense';
+      }
+      expenses.splice(index, 1);
+      document.getElementById('results').innerHTML = '';
+      updateUI();
+    }
+
+    // --- The Algorithm ---
+    function calculateDebts() {
+      const resultsDiv = document.getElementById('results');
+      if (expenses.length === 0) {
+        resultsDiv.innerHTML = '<p>Add some expenses first!</p>';
+        return;
+      }
+
+      const balances = {};
+      people.forEach(p => balances[p] = 0);
+
+      expenses.forEach(exp => {
+        const { paidBy, amount, involved } = exp;
+        const splitAmount = amount / involved.length;
+        balances[paidBy] += amount;
+        involved.forEach(person => {
+          balances[person] -= splitAmount;
+        });
+      });
+
+      const debtors = [];
+      const creditors = [];
+
+      for (const [person, balance] of Object.entries(balances)) {
+        const roundedBalance = Math.round(balance * 100) / 100;
+        if (roundedBalance < 0) debtors.push({ person, amount: -roundedBalance });
+        else if (roundedBalance > 0) creditors.push({ person, amount: roundedBalance });
+      }
+
+      debtors.sort((a, b) => b.amount - a.amount);
+      creditors.sort((a, b) => b.amount - a.amount);
+
+      const transactions = [];
+      let i = 0, j = 0;
+
+      while (i < debtors.length && j < creditors.length) {
+        const debtor = debtors[i];
+        const creditor = creditors[j];
+        const settlementAmount = Math.min(debtor.amount, creditor.amount);
+
+        transactions.push(`💸 <strong>${debtor.person}</strong> pays <strong>${creditor.person}</strong>: ${Math.round(settlementAmount)} CZK`);
+
+        debtor.amount = Math.round((debtor.amount - settlementAmount) * 100) / 100;
+        creditor.amount = Math.round((creditor.amount - settlementAmount) * 100) / 100;
+
+        if (debtor.amount === 0) i++;
+        if (creditor.amount === 0) j++;
+      }
+
+      if (transactions.length === 0) {
+        resultsDiv.innerHTML = '<div class="result-item">Everyone is settled up!</div>';
+      } else {
+        resultsDiv.innerHTML = transactions.map(t => `<div class="result-item">${t}</div>`).join('');
+      }
+    }
+  </script>
+</body>
+</html>
