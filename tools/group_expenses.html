@@ -226,6 +226,12 @@
 
   <h1 style="text-align: center; margin-bottom: 2rem;">💸 Group Debt Simplifier</h1>
 
+  <div class="card" style="margin-bottom: 1.5rem; display: flex; gap: 0.75rem; flex-wrap: wrap;">
+    <button onclick="saveToFile()" style="width: auto;">💾 Save to File</button>
+    <button onclick="document.getElementById('loadFileInput').click()" style="width: auto; background-color: #6b7280;">📂 Load from File</button>
+    <input type="file" id="loadFileInput" accept=".yaml,.yml,.txt" style="display: none;" onchange="loadFromFile(event)">
+  </div>
+
   <div class="grid">
     <div>
       <div class="card" style="margin-bottom: 1.5rem;">
@@ -374,6 +380,173 @@
           `;
         }).join('')}
       `;
+    }
+
+    // --- Save / Load ---
+    function quoteIfNeeded(value) {
+      const s = String(value);
+      if (/[:#\[\],"]/.test(s) || s !== s.trim() || s === '') {
+        return `"${s.replace(/"/g, '\\"')}"`;
+      }
+      return s;
+    }
+
+    function unquote(value) {
+      const s = value.trim();
+      if ((s.startsWith('"') && s.endsWith('"')) || (s.startsWith("'") && s.endsWith("'"))) {
+        return s.slice(1, -1).replace(/\\"/g, '"');
+      }
+      return s;
+    }
+
+    function splitTopLevel(str) {
+      const parts = [];
+      let current = '';
+      let quoteChar = null;
+      for (let i = 0; i < str.length; i++) {
+        const ch = str[i];
+        if (quoteChar) {
+          current += ch;
+          if (ch === '\\') { current += str[++i] || ''; continue; }
+          if (ch === quoteChar) quoteChar = null;
+        } else if (ch === '"' || ch === "'") {
+          quoteChar = ch;
+          current += ch;
+        } else if (ch === ',') {
+          parts.push(current);
+          current = '';
+        } else {
+          current += ch;
+        }
+      }
+      if (current.trim() !== '' || parts.length > 0) parts.push(current);
+      return parts;
+    }
+
+    function serializeData(peopleList, expenseList) {
+      const lines = ['people:'];
+      if (peopleList.length === 0) {
+        lines.push('  []');
+      } else {
+        peopleList.forEach(p => lines.push(`  - ${quoteIfNeeded(p)}`));
+      }
+
+      lines.push('', 'expenses:');
+      if (expenseList.length === 0) {
+        lines.push('  []');
+      } else {
+        expenseList.forEach(exp => {
+          lines.push(`  - desc: ${quoteIfNeeded(exp.desc || '')}`);
+          lines.push(`    amount: ${exp.amount}`);
+          lines.push(`    paidBy: ${quoteIfNeeded(exp.paidBy)}`);
+          lines.push(`    involved: [${exp.involved.map(quoteIfNeeded).join(', ')}]`);
+        });
+      }
+
+      return lines.join('\n') + '\n';
+    }
+
+    function parseData(text) {
+      const peopleList = [];
+      const expenseList = [];
+      let section = null;
+      let currentExpense = null;
+      let inInvolvedList = false;
+
+      text.split(/\r?\n/).forEach(rawLine => {
+        const trimmed = rawLine.trim();
+        if (!trimmed || trimmed.startsWith('#')) return;
+
+        if (trimmed === 'people:') { section = 'people'; inInvolvedList = false; return; }
+        if (trimmed === 'expenses:') {
+          if (currentExpense) expenseList.push(currentExpense);
+          currentExpense = null;
+          section = 'expenses';
+          inInvolvedList = false;
+          return;
+        }
+
+        if (section === 'people') {
+          const m = trimmed.match(/^-\s*(.+)$/);
+          if (m) peopleList.push(unquote(m[1]));
+          return;
+        }
+
+        if (section === 'expenses') {
+          const newExpMatch = trimmed.match(/^-\s*desc:\s*(.*)$/);
+          if (newExpMatch) {
+            if (currentExpense) expenseList.push(currentExpense);
+            currentExpense = { desc: unquote(newExpMatch[1]), amount: 0, paidBy: '', involved: [] };
+            inInvolvedList = false;
+            return;
+          }
+          if (!currentExpense) return;
+
+          const amountMatch = trimmed.match(/^amount:\s*(.*)$/);
+          if (amountMatch) { currentExpense.amount = parseFloat(amountMatch[1]) || 0; inInvolvedList = false; return; }
+
+          const paidByMatch = trimmed.match(/^paidBy:\s*(.*)$/);
+          if (paidByMatch) { currentExpense.paidBy = unquote(paidByMatch[1]); inInvolvedList = false; return; }
+
+          const involvedInlineMatch = trimmed.match(/^involved:\s*\[(.*)\]\s*$/);
+          if (involvedInlineMatch) {
+            currentExpense.involved = splitTopLevel(involvedInlineMatch[1]).map(s => unquote(s)).filter(s => s !== '');
+            inInvolvedList = false;
+            return;
+          }
+
+          if (trimmed === 'involved:') {
+            currentExpense.involved = [];
+            inInvolvedList = true;
+            return;
+          }
+
+          if (inInvolvedList) {
+            const itemMatch = trimmed.match(/^-\s*(.+)$/);
+            if (itemMatch) { currentExpense.involved.push(unquote(itemMatch[1])); return; }
+            inInvolvedList = false;
+          }
+        }
+      });
+
+      if (currentExpense) expenseList.push(currentExpense);
+      return { people: peopleList, expenses: expenseList };
+    }
+
+    function saveToFile() {
+      const content = serializeData(people, expenses);
+      const blob = new Blob([content], { type: 'text/yaml' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'group-expenses.yaml';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    }
+
+    function loadFromFile(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        try {
+          const parsed = parseData(e.target.result);
+          people = parsed.people;
+          expenses = parsed.expenses;
+          editingIndex = -1;
+          document.getElementById('editBanner').style.display = 'none';
+          document.getElementById('submitExpenseBtn').textContent = 'Add Expense';
+          document.getElementById('results').innerHTML = '';
+          updateUI();
+        } catch (err) {
+          alert('Failed to load file: ' + err.message);
+        }
+      };
+      reader.readAsText(file);
+      event.target.value = '';
     }
 
     // --- Action Functions ---
