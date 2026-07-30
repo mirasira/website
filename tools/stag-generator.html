@@ -1,0 +1,339 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>STag Marker Generator</title>
+  <meta name="description" content="Generate STag fiducial markers (the fiducial system missing from arucogen) client-side." />
+  <style>
+    :root{--bg:#0f172a;--card:#0b1220;--muted:#94a3b8;--ring:#38bdf8;--accent:#22c55e}
+    *{box-sizing:border-box}html,body{height:100%}
+    body{margin:0;font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;display:grid;place-items:center;background:radial-gradient(1000px 700px at 10% 10%,#1f2937 0%,var(--bg) 45%) fixed;color:#e5e7eb;padding:24px}
+    .app{width:min(980px,100%);background:linear-gradient(180deg,#0b1220,#0e1626);border:1px solid rgba(148,163,184,.18);border-radius:20px;box-shadow:0 20px 60px rgba(0,0,0,.35), inset 0 1px 0 rgba(255,255,255,.05);padding:22px}
+    header{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:18px;flex-wrap:wrap}
+    h1{font-size:clamp(18px,2.2vw,22px);margin:0}
+    .hint{color:var(--muted);font-size:14px}
+    a{color:var(--ring)}
+
+    .grid{display:grid;grid-template-columns:1.1fr .9fr;gap:16px}
+    @media (max-width:820px){.grid{grid-template-columns:1fr}}
+
+    .panel{background:rgba(255,255,255,.02);border:1px solid rgba(148,163,184,.15);border-radius:14px;padding:14px}
+
+    label{display:block;font-size:13px;color:var(--muted);margin-bottom:6px}
+    input,select{width:100%;background:#0b1220;color:#e5e7eb;border:1px solid rgba(148,163,184,.25);border-radius:10px;padding:10px 12px;font-size:14px}
+    .row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+    .row3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
+
+    .actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:12px}
+    .btn{cursor:pointer;padding:10px 14px;border-radius:10px;border:1px solid rgba(148,163,184,.25);background:#0b1220;color:#e5e7eb;font-weight:600;font-size:14px;transition:transform .12s ease, box-shadow .15s ease, border-color .15s ease}
+    .btn:hover{transform:translateY(-1px)}
+    .btn:focus-visible{outline:none;box-shadow:0 0 0 3px rgba(56,189,248,.35);border-color:var(--ring)}
+    .btn.primary{background:linear-gradient(180deg,#27d36b,var(--accent));color:#071a0d;border-color:rgba(0,0,0,.25)}
+    .btn:disabled{opacity:.5;cursor:not-allowed}
+
+    .tagwrap{display:grid;place-items:center;min-height:300px}
+    .tagbox{padding:12px;border-radius:12px;background:#fff;border:1px solid rgba(148,163,184,.2)}
+    #tagCanvas{display:block;width:360px;max-width:70vw;height:auto}
+
+    .meta{margin-top:10px;font-size:13px;color:var(--muted);text-align:center}
+    .toast{color:var(--muted);font-size:13px;min-height:18px;margin-top:8px}
+    footer{margin-top:12px;color:var(--muted);font-size:12px;text-align:center}
+    .checkline{display:flex;align-items:center;gap:8px;margin-top:10px}
+    .checkline input{width:auto}
+    .checkline label{margin:0}
+  </style>
+  <script src="../static/data/stag/stag-dictionaries.js"></script>
+</head>
+<body>
+  <main class="app" aria-live="polite">
+    <header>
+      <h1>🏷️ STag Marker Generator</h1>
+      <div class="hint">The fiducial <a href="https://chev.me/arucogen/" target="_blank" rel="noopener noreferrer">arucogen</a> doesn't make. Runs entirely in your browser.</div>
+    </header>
+
+    <div class="grid">
+      <section class="panel">
+        <label for="dict">Library (HD = min. Hamming distance between codewords)</label>
+        <select id="dict"></select>
+
+        <div class="row" style="margin-top:10px;">
+          <div>
+            <label for="markerId">Marker ID</label>
+            <input id="markerId" type="number" min="0" step="1" value="0" />
+          </div>
+          <div>
+            <label for="size">Image size (px)</label>
+            <input id="size" type="number" min="64" max="2048" step="8" value="512" />
+          </div>
+        </div>
+
+        <div class="checkline">
+          <input id="showLabel" type="checkbox" checked />
+          <label for="showLabel">Print ID + library label in the border</label>
+        </div>
+
+        <div class="actions">
+          <button class="btn primary" id="generate">Generate</button>
+          <button class="btn" id="randomId">Random ID</button>
+          <button class="btn" id="downloadPng">Download PNG</button>
+        </div>
+
+        <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+        <p class="hint" style="margin-top:14px">
+          STag markers encode 48 bits as a "sunburst" ring of dots inside a black square + white
+          locator circle, decoded with 4-fold rotational lookup against a fixed codeword dictionary
+          &mdash; no algorithmic BCH decode. See the
+          <a href="https://github.com/bbenligiray/stag" target="_blank" rel="noopener noreferrer">bbenligiray/stag</a>
+          reference implementation and the original paper (Benligiray, Topal, Akinlar, 2019).
+        </p>
+      </section>
+
+      <section class="panel tagwrap">
+        <div>
+          <div class="tagbox"><canvas id="tagCanvas" width="1000" height="1000"></canvas></div>
+          <div class="meta" id="metaInfo"></div>
+        </div>
+      </section>
+    </div>
+
+    <footer>Codeword dictionaries are the exact HD11&ndash;HD23 tables shipped in the stag repo (max-ID per library shown once loaded).</footer>
+  </main>
+
+  <script>
+    const el = id => document.getElementById(id);
+    const dictSel = el('dict');
+    const markerIdInput = el('markerId');
+    const sizeInput = el('size');
+    const showLabel = el('showLabel');
+    const canvas = el('tagCanvas');
+    const ctx = canvas.getContext('2d');
+    const toast = el('toast');
+    const metaInfo = el('metaInfo');
+
+    const LIBRARIES = [11, 13, 15, 17, 19, 21, 23];
+    const dictCache = {};
+
+    function speak(msg){ toast.textContent = msg; clearTimeout(speak._t); speak._t = setTimeout(()=>toast.textContent='', 2500); }
+
+    // ---- marker geometry, ported 1:1 from ref/marker generator/Form1.cs (bbenligiray/stag) ----
+    const NO_OF_BITS = 48;
+    const BORDER = 0.125;
+    const OUTER_CIRCLE_R = 0.4;
+    const INNER_CIRCLE_R = 0.35;
+    const CODE_R = 0.062482177287080;
+    const FILLER_R = 0.7;
+
+    function polarToCart(radius, radians){
+      return { x: 0.5 + Math.cos(radians) * radius, y: 0.5 - Math.sin(radians) * radius };
+    }
+
+    function buildCodeLocs(){
+      const locs = [];
+      for (let i = 0; i < 4; i++){
+        const off = i * (Math.PI / 2);
+        locs.push(polarToCart(0.088363142525988, 0.785398163397448 + off));
+        locs.push(polarToCart(0.206935928182607, 0.459275804122858 + off));
+        locs.push(polarToCart(0.206935928182607, (Math.PI/2) - 0.459275804122858 + off));
+        locs.push(polarToCart(0.313672146827381, 0.200579720495241 + off));
+        locs.push(polarToCart(0.327493143484516, 0.591687617505840 + off));
+        locs.push(polarToCart(0.327493143484516, (Math.PI/2) - 0.591687617505840 + off));
+        locs.push(polarToCart(0.313672146827381, (Math.PI/2) - 0.200579720495241 + off));
+        locs.push(polarToCart(0.437421957035861, 0.145724938287167 + off));
+        locs.push(polarToCart(0.437226762361658, 0.433363129825345 + off));
+        locs.push(polarToCart(0.430628029742607, 0.785398163397448 + off));
+        locs.push(polarToCart(0.437226762361658, (Math.PI/2) - 0.433363129825345 + off));
+        locs.push(polarToCart(0.437421957035861, (Math.PI/2) - 0.145724938287167 + off));
+      }
+      return locs;
+    }
+
+    const CODE_LOCS = buildCodeLocs();
+
+    function dist(a, b){ return Math.hypot(a.x - b.x, a.y - b.y); }
+
+    // pairs of bit-indices close enough that adjacent "1" dots get a connecting filler blob
+    const NEARBY = CODE_LOCS.map((p, i) =>
+      CODE_LOCS.map((q, j) => (i !== j && dist(p, q) < CODE_R * 4) ? j : -1).filter(j => j >= 0)
+    );
+
+    function drawMarker(bits, HDlabel, idLabel, size){
+      canvas.width = size; canvas.height = size;
+      ctx.clearRect(0, 0, size, size);
+
+      const markerSize = size / (1 + BORDER * 2);
+      const borderSize = markerSize * BORDER;
+      const outerD = 2 * markerSize * OUTER_CIRCLE_R;
+      const innerD = 2 * markerSize * INNER_CIRCLE_R;
+      const outerTL = (size - outerD) / 2;
+      const innerTL = (size - innerD) / 2;
+      const codeD = 2 * innerD * CODE_R;
+      const fillerD = codeD * FILLER_R;
+
+      // white quiet zone, black square, white locator circle
+      ctx.fillStyle = '#fff'; ctx.fillRect(0, 0, size, size);
+      ctx.fillStyle = '#000'; ctx.fillRect(borderSize, borderSize, markerSize, markerSize);
+      ctx.fillStyle = '#fff';
+      ctx.beginPath(); ctx.arc(size/2, size/2, outerD/2, 0, Math.PI*2); ctx.fill();
+
+      const toPix = p => ({ x: innerTL + innerD * p.x, y: innerTL + innerD * p.y });
+      const addCircle = (cx, cy, r) => { ctx.moveTo(cx + r, cy); ctx.arc(cx, cy, r, 0, Math.PI*2); };
+
+      // 1-bit dots + filler blobs bridging adjacent 1-1 pairs, all in ONE path/fill so
+      // overlapping circles merge into a single smooth blob with one clean AA edge
+      // (no seams, no leftover ghost outlines from separate fill() calls).
+      ctx.fillStyle = '#000';
+      ctx.beginPath();
+      for (let j = 0; j < NO_OF_BITS; j++) if (bits[j] === 1){ const p = toPix(CODE_LOCS[j]); addCircle(p.x, p.y, codeD/2); }
+      for (let j = 0; j < NO_OF_BITS; j++){
+        if (bits[j] !== 1) continue;
+        for (const k of NEARBY[j]){
+          if (k <= j || bits[k] !== 1) continue;
+          const pj = toPix(CODE_LOCS[j]), pk = toPix(CODE_LOCS[k]);
+          addCircle((pj.x+pk.x)/2, (pj.y+pk.y)/2, fillerD/2);
+        }
+      }
+      ctx.fill();
+
+      // 0-bit dots punched out on top, as a single path too
+      ctx.fillStyle = '#fff';
+      ctx.beginPath();
+      for (let j = 0; j < NO_OF_BITS; j++) if (bits[j] === 0){ const p = toPix(CODE_LOCS[j]); addCircle(p.x, p.y, codeD/2); }
+      ctx.fill();
+
+      // Where a 0-dot only partially overlaps a 1/filler blob it leaves a thin black
+      // "bite" remnant — the reference fixes this with 5 rounds of dilate+erode.
+      // Approximate that here with a blur + soft (smoothstep, not hard-cutoff) rethreshold:
+      // small slivers get averaged away by the blur, and the smooth cutoff keeps the
+      // result anti-aliased instead of jagged.
+      const pad = codeD * 1.5;
+      const bx0 = Math.max(0, innerTL - pad), by0 = Math.max(0, innerTL - pad);
+      const bw = Math.min(size - bx0, innerD + pad*2), bh = Math.min(size - by0, innerD + pad*2);
+      const blurPx = Math.max(1, codeD * 0.16);
+      ctx.filter = 'blur(' + blurPx + 'px)';
+      ctx.drawImage(canvas, bx0, by0, bw, bh, bx0, by0, bw, bh);
+      ctx.filter = 'none';
+      const img = ctx.getImageData(bx0, by0, bw, bh);
+      const d = img.data;
+      const lo = 118, hi = 138; // soft threshold band around mid-gray (~2-3px of AA)
+      for (let i = 0; i < d.length; i += 4){
+        const t = Math.max(0, Math.min(1, (d[i] - lo) / (hi - lo)));
+        const v = Math.round(t * 255);
+        d[i] = d[i+1] = d[i+2] = v;
+        d[i+3] = 255;
+      }
+      ctx.putImageData(img, bx0, by0);
+
+      // clean ring band between inner and outer circle (guards against any bleed)
+      ctx.fillStyle = '#fff';
+      ctx.beginPath();
+      ctx.arc(size/2, size/2, outerD/2, 0, Math.PI*2, false);
+      ctx.arc(size/2, size/2, innerD/2, 0, Math.PI*2, true);
+      ctx.fill('evenodd');
+
+      if (showLabel.checked){
+        ctx.save();
+        ctx.fillStyle = '#fff';
+        ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+        ctx.translate(borderSize*2.375, borderSize*2.375);
+        ctx.rotate(-Math.PI/4);
+        ctx.font = Math.round(borderSize*0.6) + 'px ui-sans-serif, system-ui, Arial';
+        ctx.fillText(String(idLabel), 0, 0);
+        ctx.restore();
+
+        ctx.save();
+        ctx.fillStyle = '#fff';
+        ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+        ctx.translate(borderSize*1.875, borderSize*1.875);
+        ctx.rotate(-Math.PI/4);
+        ctx.font = Math.round(borderSize*0.22) + 'px ui-sans-serif, system-ui, Arial';
+        ctx.fillText('HD' + HDlabel, 0, 0);
+        ctx.restore();
+      }
+    }
+
+    // ---- dictionary loading (bundled inline via stag-dictionaries.js, no fetch/server needed) ----
+    async function loadDict(hd){
+      if (dictCache[hd]) return dictCache[hd];
+      const lines = window.STAG_DICTS && window.STAG_DICTS[hd];
+      if (!lines) throw new Error('HD' + hd + ' dictionary not found (stag-dictionaries.js missing or failed to load)');
+      dictCache[hd] = lines;
+      return lines;
+    }
+
+    function populateDictSelect(){
+      dictSel.innerHTML = '';
+      for (const hd of LIBRARIES){
+        const opt = document.createElement('option');
+        opt.value = hd; opt.textContent = 'HD' + hd + ' (loading…)';
+        if (hd === 15) opt.selected = true;
+        dictSel.appendChild(opt);
+      }
+    }
+
+    async function refreshOptionLabel(hd){
+      try{
+        const codes = await loadDict(hd);
+        const opt = [...dictSel.options].find(o => +o.value === hd);
+        if (opt) opt.textContent = 'HD' + hd + ' (' + codes.length + ' IDs, corrects ' + Math.floor((hd-1)/2) + ' bit errors)';
+      }catch(e){
+        const opt = [...dictSel.options].find(o => +o.value === hd);
+        if (opt) opt.textContent = 'HD' + hd + ' (failed to load)';
+      }
+    }
+
+    async function generate(){
+      const hd = +dictSel.value;
+      let codes;
+      try{
+        codes = await loadDict(hd);
+      }catch(e){
+        speak(e.message);
+        return;
+      }
+      const maxId = codes.length - 1;
+      markerIdInput.max = maxId;
+      let id = Math.round(+markerIdInput.value);
+      if (!Number.isFinite(id) || id < 0) id = 0;
+      if (id > maxId) id = maxId;
+      markerIdInput.value = id;
+
+      const bits = codes[id].split('').map(c => c === '1' ? 1 : 0);
+      const size = Math.max(64, Math.min(2048, Math.round(+sizeInput.value || 512)));
+      sizeInput.value = size;
+      canvas.style.width = Math.min(360, size) + 'px';
+      canvas.style.height = Math.min(360, size) + 'px';
+
+      drawMarker(bits, hd, id, size);
+      metaInfo.textContent = 'HD' + hd + '  ·  ID ' + id + ' / ' + maxId + '  ·  ' + size + '×' + size + 'px';
+    }
+
+    function randomId(){
+      const hd = +dictSel.value;
+      const codes = dictCache[hd];
+      if (!codes){ speak('Dictionary still loading…'); return; }
+      markerIdInput.value = Math.floor(Math.random() * codes.length);
+      generate();
+    }
+
+    function downloadPNG(){
+      const a = document.createElement('a');
+      a.download = 'stag-HD' + dictSel.value + '-id' + markerIdInput.value + '.png';
+      a.href = canvas.toDataURL('image/png');
+      a.click();
+    }
+
+    populateDictSelect();
+    LIBRARIES.forEach(hd => refreshOptionLabel(hd).then(() => { if (hd === 15) generate(); }));
+
+    dictSel.addEventListener('change', generate);
+    markerIdInput.addEventListener('change', generate);
+    sizeInput.addEventListener('change', generate);
+    showLabel.addEventListener('change', generate);
+    el('generate').addEventListener('click', generate);
+    el('randomId').addEventListener('click', randomId);
+    el('downloadPng').addEventListener('click', downloadPNG);
+  </script>
+</body>
+</html>
