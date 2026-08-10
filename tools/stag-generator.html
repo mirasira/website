@@ -120,7 +120,11 @@
     // ---- marker geometry, ported 1:1 from ref/marker generator/Form1.cs (bbenligiray/stag) ----
     const NO_OF_BITS = 48;
     const BORDER = 0.125;
-    const OUTER_CIRCLE_R = 0.4;
+    // 0.4 per the reference source, but real rendered stag PNGs consistently measure a
+    // ~0.4136 ratio (verified across 40 reference images, zero variance) — their dilate/erode
+    // pass grows this large concave boundary slightly beyond the pre-processing vector radius.
+    // Matching the shipped images rather than the pre-processing constant.
+    const OUTER_CIRCLE_R = 0.413642053;
     const INNER_CIRCLE_R = 0.35;
     const CODE_R = 0.062482177287080;
     const FILLER_R = 0.7;
