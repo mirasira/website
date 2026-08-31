@@ -1,28 +1,64 @@
-.CanavasTime{
-    display:flex;
-    min-height:calc(100vh - 60px);
-    align-items:center;
-    justify-content:center;
-    position:center;
-    z-index:1;
-    padding:1.5rem;
-    flex-direction: column;
-}
-
-#Time{
-    font-size: 100%;
-}
-
-
 body{
     width: 75%;
     margin: 0 auto;
     text-align: center;
-    background-color: white;
-    color: black;
+    background-color: transparent;
+    color: #f2e9e4;
     scroll-behavior: smooth;
 }
 
-.ClasName{
-    font-size: 16px;;
+.Hero{
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 1.5rem;
+}
+
+.Hero h1{
+    font-family: 'Bodoni Moda', 'Times New Roman', serif;
+    font-size: clamp(2.4rem, 6.5vw, 4.8rem);
+    font-weight: 500;
+    margin: 0 0 .6em;
+    letter-spacing: .01em;
+    color: #e9e1d6;
+    text-shadow: 0 0 40px rgba(255,110,40,.5);
+}
+
+.Hero h1 em{
+    font-style: italic;
+    color: #ffd9a8;
+}
+
+.Hero p{
+    font-family: 'Newsreader', Georgia, serif;
+    font-style: italic;
+    font-size: clamp(1.05rem, 1.6vw, 1.3rem);
+    color: #a99284;
+    max-width: 34em;
+    line-height: 1.6;
+    margin: 0;
+}
+
+.FunFact{
+    padding: 3rem 1.5rem;
+    font-size: 1.4rem;
+    text-shadow: 0 0 20px rgba(255,120,60,.6);
+}
+
+.FunFact a, .PastFunFacts a{
+    color: #ffcf8a;
+}
+
+.PastFunFacts{
+    background: rgba(5,3,1,.72);
+    border-radius: 6px;
+    padding: 1rem;
+    margin-bottom: 2rem;
+}
+
+.PastFunFacts .table{
+    color: #f2e9e4;
 }

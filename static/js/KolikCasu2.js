@@ -1825,27 +1825,6 @@ const jsonString = `[
 
 
 
-function ToEnd(today, EndDate) {
-    const rawDiff = EndDate - today;
-    const minus = rawDiff < 0;
-    const Diff = Math.abs(rawDiff);
-
-    // Convert to exact days (avoiding daylight saving issues)
-    let totalSeconds = Math.floor(Diff / 1000);
-    let days = Math.floor(totalSeconds / (24 * 60 * 60));
-    let hours = Math.floor((totalSeconds % (24 * 60 * 60)) / (60 * 60));
-    let minutes = Math.floor((totalSeconds % (60 * 60)) / 60);
-    let seconds = totalSeconds % 60;
-
-    const formattedDays = String(days).padStart(2, '0');
-    const formattedHours = String(hours).padStart(2, '0');
-    const formattedMinutes = String(minutes).padStart(2, '0');
-    const formattedSeconds = String(seconds).padStart(2, '0');
-
-    return (minus ? '-' : '') + `${formattedDays} days <br> ${formattedHours}:${formattedMinutes}:${formattedSeconds}`;
-}
-
-
 let YearZero = 2024;
 let WeekZero = 19;
 const objs = JSON.parse(jsonString);
@@ -1927,66 +1906,4 @@ objs.slice(0, FactIndex+1).reverse().forEach((obj, index) => {
     pastFunFacts.appendChild(row);
 });
 
-let Deadline = new Date(2026, 3, 15, 23, 59, 59, 0);
-
-function drawCountdown(countdownData) {  // Receive the object
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-    ctx.font = "15px Arial";
-    ctx.fillStyle = "black";
-
-    const daysText = countdownData.days + " days"; // Add "days" text
-    const timeText = countdownData.time;
-
-    // Measure the width of the days text to center the time below it.
-    const daysWidth = ctx.measureText(daysText).width;
-    const timeWidth = ctx.measureText(timeText).width;
-    const daysHeight = 20;
-    const timeHeight = 20;
-
-
-    ctx.fillText(daysText, canvas.width / 2 - daysWidth / 2, canvas.height/2); // Centered days
-    ctx.fillText(timeText, canvas.width / 2 - timeWidth / 2, canvas.height/2 + daysHeight); // Centered time (adjust vertical position as needed)
-    ctx.fillText("Diplomka", canvas.width / 2 - timeWidth / 2, canvas.height/2 + daysHeight + timeHeight);
-}
-
-// const canvas = document.getElementById('countdownCanvas');
-// const ctx = canvas.getContext('2d');
-
-
-function resizeCanvas() {
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-}
-
-// resizeCanvas();
-// window.addEventListener('resize', resizeCanvas);
-
-
-const today = new Date();
-const countdownData = ToEnd(today, Deadline); // Get the object
-// drawCountdown(countdownData);
-
-window.setInterval(() => {
-    let IsClass = false; // Make sure to define IsClass somewhere in your code
-    if (!IsClass) {
-        const today = new Date();
-
-        
-        const startDeadline = new Date(2025, 10, 1, 0, 0, 0, 0);
-        const endDeadline = new Date(2026, 10, 1, 0, 0, 0, 0);
-        // Pick a random time between startDeadline and endDeadline
-        const randomTime = startDeadline.getTime() + Math.random() * (endDeadline.getTime() - startDeadline.getTime());
-        // Deadline = new Date(randomTime);
-
-
-
-        const countdownData = ToEnd(today, Deadline); // Get the object
-        document.getElementById("ClasName").innerHTML = "ICRA workshop deadline";
-        document.getElementById("Time").innerHTML =ToEnd(today, Deadline);
-
-
-        // drawCountdown(countdownData); // Pass the object
-    }
-}, 1000); // Update every second (1000 milliseconds)
 
