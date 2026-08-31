@@ -57,8 +57,17 @@ body{
     border-radius: 6px;
     padding: 1rem;
     margin-bottom: 2rem;
+    overflow-x: auto;
 }
 
 .PastFunFacts .table{
     color: #f2e9e4;
+    table-layout: fixed;
+    width: 100%;
+}
+
+.PastFunFacts .table td,
+.PastFunFacts .table th{
+    word-break: break-word;
+    overflow-wrap: break-word;
 }
